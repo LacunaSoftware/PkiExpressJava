@@ -77,13 +77,38 @@ abstract class PkiExpressOperator {
         Process proc = Runtime.getRuntime().exec(argArr);
 
         // Read response
-        InputStreamReader reader = new InputStreamReader(proc.getInputStream(), "UTF-8");
-        StringBuilder sb = new StringBuilder();
-        char[] buf = new char[1024];
-        while (reader.read(buf, 0, buf.length) != -1) {
-            sb.append(buf);
+        BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        ArrayList<String> response = new ArrayList<String>();
+        String lineBuff;
+        while ((lineBuff = input.readLine()) != null) {
+            response.add(lineBuff);
         }
-        return new OperatorResult(proc.exitValue(), sb.toString());
+
+        // Terminate process
+        int output;
+        try {
+
+            // Wait finish
+            output = proc.waitFor();
+
+            // Close streams
+            proc.getInputStream().close();
+            proc.getErrorStream().close();
+            proc.getOutputStream().close();
+
+            // Destroy
+            proc.destroy();
+
+        } catch (InterruptedException ex) {
+            throw new RuntimeException("An unexpected InterruptedException has occurred", ex);
+        }
+
+        // Transform to string array
+        String[] responseArr = new String[response.size()];
+        response.toArray(responseArr);
+
+        // Return result of the command
+        return new OperatorResult(output, responseArr);
     }
 
     protected List<String> getPkiExpressInvocation() {
@@ -120,7 +145,7 @@ abstract class PkiExpressOperator {
                 if (Files.exists(Paths.get("/usr/local/share/pkie/pkie.dll"))) {
                     home = Paths.get("/usr/local/share/pkie");
                 } else if (Files.exists(Paths.get("/usr/share/pkie/pkie.dll"))) {
-                    home = Paths.get("/usr/local/pkie");
+                    home = Paths.get("/usr/share/pkie");
                 }
 
             } else {

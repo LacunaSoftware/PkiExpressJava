@@ -148,7 +148,12 @@ public class SignatureFinisher extends PkiExpressOperator {
 
         OperatorResult result = invoke(CommandEnum.CommandCompleteSig, args);
         if (result.getResponse() != 0) {
-            throw new RuntimeException(result.getOutput());
+            StringBuilder sb = new StringBuilder();
+            for (String line : result.getOutput()) {
+                sb.append(line);
+                sb.append(System.getProperty("line.separator"));
+            }
+            throw new RuntimeException(sb.toString());
         }
     }
 }

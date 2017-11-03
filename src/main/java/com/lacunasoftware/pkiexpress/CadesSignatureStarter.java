@@ -113,14 +113,18 @@ public class CadesSignatureStarter extends SignatureStarter {
 
         OperatorResult result = invoke(CommandEnum.CommandStartCades, args);
         if (result.getResponse() != 0) {
-            throw new RuntimeException(result.getOutput());
+            StringBuilder sb = new StringBuilder();
+            for (String line : result.getOutput()) {
+                sb.append(line);
+                sb.append(System.getProperty("line.separator"));
+            }
+            throw new RuntimeException(sb.toString());
         }
 
         SignatureStartResult startResult = new SignatureStartResult();
-        String[] outputLines = result.getOutput().split(System.getProperty("line.separator"));
-        startResult.setToSignHash(outputLines[0]);
-        startResult.setDigestAlgorithm(outputLines[1]);
-        startResult.setDigestAlgorithmOid(outputLines[2]);
+        startResult.setToSignHash(result.getOutput()[0]);
+        startResult.setDigestAlgorithm(result.getOutput()[1]);
+        startResult.setDigestAlgorithmOid(result.getOutput()[2]);
         startResult.setTransferFile(transferFile);
         return startResult;
     }
