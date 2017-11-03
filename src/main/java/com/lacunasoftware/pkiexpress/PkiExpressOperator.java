@@ -16,6 +16,7 @@ abstract class PkiExpressOperator {
     protected List<Path> trustedRoots;
 
     public Boolean trustLacunaTestRoot;
+    private boolean disposed = false;
 
 
     protected PkiExpressOperator(PkiExpressConfig config) {
@@ -193,12 +194,19 @@ abstract class PkiExpressOperator {
 
     @Override
     public void finalize() {
-        for (Path tempFile : tempFiles) {
-            try {
-                Files.delete(tempFile);
-            } catch (Exception ex) {
-                // TODO: log
+        dispose();
+    }
+
+    public void dispose() {
+        if (!disposed) {
+            for (Path tempFile : tempFiles) {
+                try {
+                    Files.delete(tempFile);
+                } catch (Exception ex) {
+                    // TODO: log
+                }
             }
+            disposed = true;
         }
     }
 
