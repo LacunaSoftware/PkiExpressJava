@@ -48,7 +48,7 @@ public class CadesSignatureStarter extends SignatureStarter {
     }
 
     public void setFileToSign(String path) throws IOException {
-        setFileToSign(Paths.get(path));
+        setFileToSign(path != null ? Paths.get(path) : null);
     }
     //endregion
 
@@ -80,7 +80,7 @@ public class CadesSignatureStarter extends SignatureStarter {
     }
 
     public void setDataFile(String path) throws IOException {
-        setDataFile(Paths.get(path));
+        setDataFile(path != null ? Paths.get(path) : null);
     }
     //endregion
 

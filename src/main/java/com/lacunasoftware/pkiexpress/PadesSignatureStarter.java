@@ -47,7 +47,7 @@ public class PadesSignatureStarter extends SignatureStarter {
     }
 
     public void setPdfToSign(String path) throws IOException {
-        setPdfToSign(Paths.get(path));
+        setPdfToSign(path != null ? Paths.get(path) : null);
     }
     //endregion
 
@@ -78,15 +78,15 @@ public class PadesSignatureStarter extends SignatureStarter {
     }
 
     public void setVisualRepresentationFromFile(String path) throws IOException {
-        setVisualRepresentationFromFile(Paths.get(path));
+        setVisualRepresentationFromFile(path != null ? Paths.get(path) : null);
     }
     //endregion
 
     public void setVisualRepresentation(PadesVisualRepresentation visualRepresentation) throws IOException {
         Path tempPath = createTempFile();
         OutputStream outputStream = new FileOutputStream(tempPath.toFile());
-
         new ObjectMapper().writeValue(outputStream, visualRepresentation.toModel());
+        outputStream.close();
         this.vrJsonPath = tempPath;
     }
 

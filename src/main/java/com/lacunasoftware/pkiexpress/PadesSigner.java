@@ -50,7 +50,7 @@ public class PadesSigner extends Signer {
     }
 
     public void setPdfToSign(String path) throws IOException {
-        setPdfToSign(Paths.get(path));
+        setPdfToSign(path != null ? Paths.get(path) : null);
     }
     //endregion
 
@@ -81,25 +81,25 @@ public class PadesSigner extends Signer {
     }
 
     public void setVisualRepresentationFromFile(String path) throws IOException {
-        setVisualRepresentationFromFile(Paths.get(path));
+        setVisualRepresentationFromFile(path != null ? Paths.get(path) : null);
     }
     //endregion
 
     public void setVisualRepresentation(PadesVisualRepresentation visualRepresentation) throws IOException {
         Path tempPath = createTempFile();
         OutputStream outputStream = new FileOutputStream(tempPath.toFile());
-
         new ObjectMapper().writeValue(outputStream, visualRepresentation.toModel());
+        outputStream.close();
         this.vrJsonPath = tempPath;
     }
 
     public void sign() throws IOException {
 
         if (pdfToSignPath == null) {
-            throw new RuntimeException("The PDF to be signed waas not set");
+            throw new RuntimeException("The PDF to be signed was not set");
         }
 
-        if (certThumb == null) {
+        if (Util.isNullOrEmpty(certThumb)) {
             throw new RuntimeException("The certificate thumbprint was not set");
         }
 

@@ -45,7 +45,7 @@ public class XmlSignatureStarter extends SignatureStarter {
     }
 
     public void setXmlToSign(String path) throws IOException {
-        setXmlToSign(Paths.get(path));
+        setXmlToSign(path != null ? Paths.get(path) : null);
     }
     //endregion
 
