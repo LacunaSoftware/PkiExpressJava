@@ -20,6 +20,10 @@ public class CadesSigner extends Signer {
         encapsulateContent = true;
     }
 
+    public CadesSigner() throws IOException {
+        this(new PkiExpressConfig());
+    }
+
     //region setFileToSign
     public void setFileToSign(InputStream inputStream) throws IOException {
         byte[] buff = new byte[1024];

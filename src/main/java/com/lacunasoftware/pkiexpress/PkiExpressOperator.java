@@ -29,10 +29,6 @@ abstract class PkiExpressOperator {
 
     protected OperatorResult invoke(CommandEnum command, List<String> args) throws IOException {
 
-        if (config.getLicensePath() == null) {
-            throw new RuntimeException("The license's path was not set");
-        }
-
         // Add PKI Express invocation arguments
         List<String> cmdArgs = new ArrayList<>();
         cmdArgs.addAll(getPkiExpressInvocation());
@@ -42,10 +38,6 @@ abstract class PkiExpressOperator {
 
         // Add PKI Express arguments
         cmdArgs.addAll(args);
-
-        // Add the license path
-        cmdArgs.add("-lf");
-        cmdArgs.add(config.getLicensePath().toString());
 
         // Add file references if added
         if (fileReferences != null && !fileReferences.isEmpty()) {

@@ -22,6 +22,10 @@ public class PadesSigner extends Signer {
         overwriteOriginalFile = false;
     }
 
+    public PadesSigner() throws IOException {
+        this(new PkiExpressConfig());
+    }
+
     //region setPdfToSign
     public void setPdfToSign(InputStream inputStream) throws IOException {
         byte[] buff = new byte[1024];

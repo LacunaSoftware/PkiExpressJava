@@ -13,6 +13,10 @@ public class SignatureStarter extends PkiExpressOperator {
         super(config);
     }
 
+    public SignatureStarter() throws IOException {
+        this(new PkiExpressConfig());
+    }
+
     //region setCertificate
     public void setCertificate(InputStream inputStream) throws IOException {
         byte[] buff= new byte[1024];

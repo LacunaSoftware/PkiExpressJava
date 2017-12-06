@@ -11,71 +11,57 @@ import java.nio.file.Paths;
  */
 public class PkiExpressConfig {
 
-    private Path licensePath;
     private Path pkiExpressHome;
     private Path tempFolder;
     private Path transferDataFolder;
 
     /**
-     * Creates a new instance using the given license path.
+     * Creates a new instance.
      *
-     * @param licensePath The path to the license file.
      * @throws IOException if the provided license path is invalid or the library failed to create a temporary folder.
      */
-    public PkiExpressConfig(Path licensePath) throws IOException {
-        this(licensePath, null);
-    }
-
-    public PkiExpressConfig(String licensePath) throws IOException {
-        this(
-            licensePath != null ? Paths.get(licensePath) : null
-        );
+    public PkiExpressConfig() throws IOException {
+        this((Path)null);
     }
 
     /**
-     * Creates a new instance using the given license path and PKI Express executable home.
+     * Creates a new instance using the given PKI Express executable home.
      *
-     * @param licensePath The path to the license file.
      * @param pkiExpressHome The path to the folder that contains the PKI Express executable.
      * @throws IOException if the provided license path is invalid or the library failed to create a temporary folder.
      */
-    public PkiExpressConfig(Path licensePath, Path pkiExpressHome) throws IOException {
-        this(licensePath, pkiExpressHome, null, null);
+    public PkiExpressConfig(Path pkiExpressHome) throws IOException {
+        this(pkiExpressHome, null);
     }
 
-    public PkiExpressConfig(String licensePath, String pkiExpressHome) throws IOException {
+    public PkiExpressConfig(String pkiExpressHome) throws IOException {
         this(
-            licensePath != null ? Paths.get(licensePath) : null,
             pkiExpressHome != null ? Paths.get(pkiExpressHome) : null
         );
     }
 
     /**
-     * Creates a new instance using the given license path, PKI Express executable home and temporary folder.
+     * Creates a new instance using the given PKI Express executable home and temporary folder.
      *
-     * @param licensePath The path to the license file.
      * @param pkiExpressHome The path to the folder that contains the PKI Express executable.
      * @param tempFolder The path to the custom folder that will store the temporary files. If this is not set, the
      *                   library will try to create a standard temporary folder.
-     * @throws IOException if the provided license path is invalid or if the temporary folder is not set and the class
-     * failed to create a new one.
+     * @throws IOException if the provided license path is invalid or the library failed to create a temporary folder.
      */
-    public PkiExpressConfig(Path licensePath, Path pkiExpressHome, Path tempFolder) throws IOException {
-        this(licensePath, pkiExpressHome, tempFolder, null);
+    public PkiExpressConfig(Path pkiExpressHome, Path tempFolder) throws IOException {
+        this(pkiExpressHome, tempFolder, null);
     }
 
-    public PkiExpressConfig(String licensePath, String pkiExpressHome, String tempFolder) throws IOException {
+    public PkiExpressConfig(String pkiExpressHome, String tempFolder) throws IOException {
         this(
-            licensePath != null ? Paths.get(licensePath) : null,
             pkiExpressHome != null ? Paths.get(pkiExpressHome) : null,
             tempFolder != null ? Paths.get(tempFolder) : null
         );
     }
 
     /**
-     * Creates a new instance using the given license path, PKI Express executable home and temporary folder.
+     * Creates a new instance using the given PKI Express executable home, temporary folder, transfer files folder.
      *
-     * @param licensePath The path to the license file.
      * @param pkiExpressHome The path to the folder that contains the PKI Express executable.
      * @param tempFolder The path to the custom folder that will store the temporary files. If this is not set, the
      *                   library will try to create a standard temporary folder.
@@ -85,10 +71,10 @@ public class PkiExpressConfig {
      * @throws IOException if the provided license path is invalid or if the temporary folder is not set and the class
      * failed to create a new one.
      */
-    public PkiExpressConfig(Path licensePath, Path pkiExpressHome, Path tempFolder, Path transferFilesFolder) throws IOException {
+    public PkiExpressConfig(Path pkiExpressHome, Path tempFolder, Path transferFilesFolder) throws IOException {
 
-        if (!Files.exists(licensePath)) {
-            throw new FileNotFoundException("The provided license was not found");
+        if (pkiExpressHome != null && pkiExpressHome.toString().endsWith(".config")) {
+            throw new RuntimeException("Starting on version 1.1.0 of PKI Express, passing a licensing on the PKIExpressConfig constructor is not longer supported!");
         }
 
         if (tempFolder != null && Files.exists(tempFolder)) {
@@ -103,26 +89,15 @@ public class PkiExpressConfig {
             this.transferDataFolder = this.tempFolder;
         }
 
-        this.licensePath = licensePath;
         this.pkiExpressHome = pkiExpressHome;
     }
 
-    public PkiExpressConfig(String licensePath, String pkiExpressHome, String tempFolder, String transferFilesFolder) throws IOException {
+    public PkiExpressConfig(String pkiExpressHome, String tempFolder, String transferFilesFolder) throws IOException {
         this(
-            licensePath != null ? Paths.get(licensePath) : null,
             pkiExpressHome != null ? Paths.get(pkiExpressHome) : null,
             tempFolder != null ? Paths.get(tempFolder) : null,
             transferFilesFolder != null ? Paths.get(transferFilesFolder) : null
         );
-    }
-
-    /**
-     * Retrieves the license path.
-     *
-     * @return The license path.
-     */
-    public Path getLicensePath() {
-        return licensePath;
     }
 
     /**

@@ -19,6 +19,10 @@ public class PadesSignatureStarter extends SignatureStarter {
         super(config);
     }
 
+    public PadesSignatureStarter() throws IOException {
+        this(new PkiExpressConfig());
+    }
+
     //region setPdfToSign
     public void setPdfToSign(InputStream inputStream) throws IOException {
         byte[] buff = new byte[1024];
