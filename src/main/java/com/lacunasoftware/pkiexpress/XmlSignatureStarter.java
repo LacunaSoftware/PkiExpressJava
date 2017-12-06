@@ -17,6 +17,10 @@ public class XmlSignatureStarter extends SignatureStarter {
         super(config);
     }
 
+    public XmlSignatureStarter() throws IOException {
+        this(new PkiExpressConfig());
+    }
+
     //region setXmlToSign
     public void setXmlToSign(InputStream inputStream) throws IOException {
         byte[] buff = new byte[1024];

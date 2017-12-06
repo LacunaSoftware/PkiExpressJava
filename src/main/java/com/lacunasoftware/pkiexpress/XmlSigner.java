@@ -18,6 +18,10 @@ public class XmlSigner extends Signer {
         super(config);
     }
 
+    public XmlSigner() throws IOException {
+        this(new PkiExpressConfig());
+    }
+
     //region setXmlToSign
     public void setXmlToSign(InputStream inputStream) throws IOException {
         byte[] buff = new byte[1024];
