@@ -16,6 +16,7 @@ public class SignatureFinisher extends PkiExpressOperator {
     private Path outputFilePath;
     private String signature;
 
+
     public SignatureFinisher(PkiExpressConfig config) {
         super(config);
     }
@@ -150,14 +151,8 @@ public class SignatureFinisher extends PkiExpressOperator {
             args.add(dataFilePath.toString());
         }
 
-        OperatorResult result = invoke(CommandEnum.CommandCompleteSig, args);
-        if (result.getResponse() != 0) {
-            StringBuilder sb = new StringBuilder();
-            for (String line : result.getOutput()) {
-                sb.append(line);
-                sb.append(System.getProperty("line.separator"));
-            }
-            throw new RuntimeException(sb.toString());
-        }
+        // Invoke command
+        invoke(CommandEnum.CommandCompleteSig, args);
     }
+
 }

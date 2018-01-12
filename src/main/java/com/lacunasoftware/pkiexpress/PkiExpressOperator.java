@@ -7,16 +7,18 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-abstract class PkiExpressOperator {
+public abstract class PkiExpressOperator {
 
     private List<Path> tempFiles;
     private Map<String, Path> fileReferences;
+    private Boolean disposed = false;
 
     protected PkiExpressConfig config;
     protected List<Path> trustedRoots;
+    protected Boolean offline = false;
 
-    public Boolean trustLacunaTestRoot;
-    private boolean disposed = false;
+    @Deprecated
+    public Boolean trustLacunaTestRoot = false;
 
 
     protected PkiExpressOperator(PkiExpressConfig config) {
@@ -24,7 +26,6 @@ abstract class PkiExpressOperator {
         this.trustedRoots = new ArrayList<>();
         this.tempFiles = new ArrayList<>();
         this.fileReferences = new HashMap<>();
-        this.trustLacunaTestRoot = true;
     }
 
     protected OperatorResult invoke(CommandEnum command, List<String> args) throws IOException {
@@ -60,6 +61,11 @@ abstract class PkiExpressOperator {
         // Add trust Lacuna test root if set
         if (trustLacunaTestRoot) {
             cmdArgs.add("-tt");
+        }
+
+        // Add offline option if provided
+        if (offline) {
+            args.add("--offline");
         }
 
         // Process command arguments
@@ -101,7 +107,17 @@ abstract class PkiExpressOperator {
         response.toArray(responseArr);
 
         // Return result of the command
-        return new OperatorResult(output, responseArr);
+        OperatorResult result = new OperatorResult(output, responseArr);
+        if (result.getResponse() != 0) {
+            StringBuilder sb = new StringBuilder();
+            for (String line : result.getOutput()) {
+                sb.append(line);
+                sb.append(System.getProperty("line.separator"));
+            }
+            throw new RuntimeException(sb.toString());
+        }
+
+        return result;
     }
 
     protected List<String> getPkiExpressInvocation() {
@@ -188,6 +204,27 @@ abstract class PkiExpressOperator {
         return sb.toString();
     }
 
+    protected Path writeToTempFile(InputStream inputStream) throws IOException {
+        byte[] buff = new byte[1024];
+        Path tempPath = createTempFile();
+        OutputStream outputStream = new FileOutputStream(tempPath.toFile());
+
+        int nRead;
+        while ((nRead = inputStream.read(buff, 0, buff.length)) != -1) {
+            outputStream.write(buff, 0, nRead);
+        }
+        outputStream.close();
+        return tempPath;
+    }
+
+    public Boolean getTrustLacunaTestRoot() {
+        return trustLacunaTestRoot;
+    }
+
+    public void setTrustLacunaTestRoot(Boolean trustLacunaTestRoot) {
+        this.trustLacunaTestRoot = trustLacunaTestRoot;
+    }
+
     @Override
     public void finalize() {
         dispose();
@@ -214,6 +251,10 @@ abstract class PkiExpressOperator {
         fileReferences.put(alias, path);
     }
 
+    public void addFileReference(String alias, String path) {
+        addFileReference(alias, path != null ? Paths.get(path) : null);
+    }
+
     public void addTrustedRoot(Path path) {
         if (!Files.exists(path)) {
             throw new RuntimeException("The provided trusted root was not found");
@@ -221,4 +262,17 @@ abstract class PkiExpressOperator {
 
         trustedRoots.add(path);
     }
+
+    public void addTrustedRoot(String path) {
+        addTrustedRoot(path != null ? Paths.get(path) : null);
+    }
+
+    public Boolean getOffline() {
+        return offline;
+    }
+
+    public void setOffline(Boolean offline) {
+        this.offline = offline;
+    }
+
 }

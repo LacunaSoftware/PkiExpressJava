@@ -14,12 +14,12 @@ public class PadesSigner extends Signer {
     private Path pdfToSignPath;
     private Path vrJsonPath;
 
-    public boolean overwriteOriginalFile;
+    @Deprecated
+    public Boolean overwriteOriginalFile = false;
 
 
     public PadesSigner(PkiExpressConfig config) {
         super(config);
-        overwriteOriginalFile = false;
     }
 
     public PadesSigner() throws IOException {
@@ -28,17 +28,7 @@ public class PadesSigner extends Signer {
 
     //region setPdfToSign
     public void setPdfToSign(InputStream inputStream) throws IOException {
-        byte[] buff = new byte[1024];
-        Path tempPath = createTempFile();
-        OutputStream outputStream = new FileOutputStream(tempPath.toFile());
-
-        int nRead;
-        while ((nRead = inputStream.read(buff, 0, buff.length)) != -1) {
-            outputStream.write(buff, 0, nRead);
-        }
-        outputStream.close();
-
-        this.pdfToSignPath = tempPath;
+        this.pdfToSignPath = writeToTempFile(inputStream);
     }
 
     public void setPdfToSign(byte[] content) throws IOException {
@@ -58,19 +48,9 @@ public class PadesSigner extends Signer {
     }
     //endregion
 
-    //region setVisualRepresentationFromFile
+    //region setVisualRepresentation
     public void setVisualRepresentationFromFile(InputStream inputStream) throws IOException {
-        byte[] buff = new byte[1024];
-        Path tempPath = createTempFile();
-        OutputStream outputStream = new FileOutputStream(tempPath.toFile());
-
-        int nRead;
-        while ((nRead = inputStream.read(buff, 0, buff.length)) != -1) {
-            outputStream.write(buff, 0, nRead);
-        }
-        outputStream.close();
-
-        this.vrJsonPath = tempPath;
+        this.vrJsonPath = writeToTempFile(inputStream);
     }
 
     public void setVisualRepresentationFromFile(byte[] content) throws IOException {
@@ -87,7 +67,6 @@ public class PadesSigner extends Signer {
     public void setVisualRepresentationFromFile(String path) throws IOException {
         setVisualRepresentationFromFile(path != null ? Paths.get(path) : null);
     }
-    //endregion
 
     public void setVisualRepresentation(PadesVisualRepresentation visualRepresentation) throws IOException {
         Path tempPath = createTempFile();
@@ -95,6 +74,15 @@ public class PadesSigner extends Signer {
         new ObjectMapper().writeValue(outputStream, visualRepresentation.toModel());
         outputStream.close();
         this.vrJsonPath = tempPath;
+    }
+    //endregion
+
+    public Boolean getOverwriteOriginalFile() {
+        return overwriteOriginalFile;
+    }
+
+    public void setOverwriteOriginalFile(Boolean overwriteOriginalFile) {
+        this.overwriteOriginalFile = overwriteOriginalFile;
     }
 
     public void sign() throws IOException {
@@ -127,15 +115,8 @@ public class PadesSigner extends Signer {
             args.add(vrJsonPath.toString());
         }
 
-        OperatorResult result = invoke(CommandEnum.CommandSignPades, args);
-        if (result.getResponse() != 0) {
-            StringBuilder sb = new StringBuilder();
-            for (String line : result.getOutput()) {
-                sb.append(line);
-                sb.append(System.getProperty("line.separator"));
-            }
-            throw new RuntimeException(sb.toString());
-        }
+        // Invoke command
+        invoke(CommandEnum.CommandSignPades, args);
     }
 
 }

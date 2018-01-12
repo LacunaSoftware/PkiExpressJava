@@ -1,6 +1,7 @@
 package com.lacunasoftware.pkiexpress;
 
 
+import java.io.IOException;
 import java.nio.file.Path;
 
 abstract class Signer extends PkiExpressOperator {
@@ -13,6 +14,10 @@ abstract class Signer extends PkiExpressOperator {
         super(config);
     }
 
+    public Signer() throws IOException {
+        this(new PkiExpressConfig());
+    }
+
     public void setOutputFile(Path path) {
         this.outputFilePath = path;
     }
@@ -20,4 +25,5 @@ abstract class Signer extends PkiExpressOperator {
     public void setCertificateThumbprint(String certThumb) {
         this.certThumb = certThumb;
     }
+
 }
