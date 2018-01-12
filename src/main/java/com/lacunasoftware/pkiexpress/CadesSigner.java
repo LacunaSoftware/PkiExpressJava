@@ -68,7 +68,7 @@ public class CadesSigner extends Signer {
     }
     //endregion
 
-    public Boolean getEncapsulatedContent() {
+    public Boolean getEncapsulateContent() {
         return encapsulateContent;
     }
 
