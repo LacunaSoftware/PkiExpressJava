@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-abstract class PkiExpressOperator {
+public abstract class PkiExpressOperator {
 
     private List<Path> tempFiles;
     private Map<String, Path> fileReferences;
@@ -251,12 +251,20 @@ abstract class PkiExpressOperator {
         fileReferences.put(alias, path);
     }
 
+    public void addFileReference(String alias, String path) {
+        addFileReference(alias, path != null ? Paths.get(path) : null);
+    }
+
     public void addTrustedRoot(Path path) {
         if (!Files.exists(path)) {
             throw new RuntimeException("The provided trusted root was not found");
         }
 
         trustedRoots.add(path);
+    }
+
+    public void addTrustedRoot(String path) {
+        addTrustedRoot(path != null ? Paths.get(path) : null);
     }
 
     public Boolean getOffline() {
