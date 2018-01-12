@@ -85,10 +85,6 @@ public class XmlSigner extends Signer {
             }
         }
 
-        if (offline) {
-            args.add("--offline");
-        }
-
         // Invoke command
         invoke(CommandEnum.CommandSignXml, args);
     }

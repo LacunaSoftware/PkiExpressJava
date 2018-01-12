@@ -97,10 +97,6 @@ public class PadesSignatureStarter extends SignatureStarter {
             args.add(vrJsonPath.toString());
         }
 
-        if (offline) {
-            args.add("--offline");
-        }
-
         // Invoke command
         OperatorResult result = invoke(CommandEnum.CommandStartPades, args);
 

@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 public class SignatureStarter extends PkiExpressOperator {
 
     protected Path certificatePath;
-    protected Boolean offline = false;
 
 
     public SignatureStarter(PkiExpressConfig config) {
@@ -45,13 +44,5 @@ public class SignatureStarter extends PkiExpressOperator {
         setCertificate(contentRaw);
     }
     //endregion
-
-    public Boolean getOffline() {
-        return offline;
-    }
-
-    public void setOffline(Boolean offline) {
-        this.offline = offline;
-    }
 
 }

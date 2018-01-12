@@ -104,10 +104,6 @@ public class CadesSigner extends Signer {
             args.add("-det");
         }
 
-        if (offline) {
-            args.add("--offline");
-        }
-
         // Invoke command
         invoke(CommandEnum.CommandSignCades, args);
     }

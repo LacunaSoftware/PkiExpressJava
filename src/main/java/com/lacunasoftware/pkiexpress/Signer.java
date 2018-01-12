@@ -8,7 +8,6 @@ abstract class Signer extends PkiExpressOperator {
 
     protected Path outputFilePath;
     protected String certThumb;
-    protected Boolean offline = false;
 
 
     public Signer(PkiExpressConfig config) {
@@ -27,11 +26,4 @@ abstract class Signer extends PkiExpressOperator {
         this.certThumb = certThumb;
     }
 
-    public Boolean getOffline() {
-        return offline;
-    }
-
-    public void setOffline(Boolean offline) {
-        this.offline = offline;
-    }
 }

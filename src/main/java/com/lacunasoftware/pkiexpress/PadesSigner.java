@@ -115,10 +115,6 @@ public class PadesSigner extends Signer {
             args.add(vrJsonPath.toString());
         }
 
-        if (offline) {
-            args.add("--offline");
-        }
-
         // Invoke command
         invoke(CommandEnum.CommandSignPades, args);
     }

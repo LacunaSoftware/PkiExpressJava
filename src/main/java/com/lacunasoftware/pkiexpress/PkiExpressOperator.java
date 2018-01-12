@@ -15,6 +15,7 @@ abstract class PkiExpressOperator {
 
     protected PkiExpressConfig config;
     protected List<Path> trustedRoots;
+    protected Boolean offline = false;
 
     @Deprecated
     public Boolean trustLacunaTestRoot = false;
@@ -60,6 +61,11 @@ abstract class PkiExpressOperator {
         // Add trust Lacuna test root if set
         if (trustLacunaTestRoot) {
             cmdArgs.add("-tt");
+        }
+
+        // Add offline option if provided
+        if (offline) {
+            args.add("--offline");
         }
 
         // Process command arguments
@@ -252,4 +258,13 @@ abstract class PkiExpressOperator {
 
         trustedRoots.add(path);
     }
+
+    public Boolean getOffline() {
+        return offline;
+    }
+
+    public void setOffline(Boolean offline) {
+        this.offline = offline;
+    }
+
 }

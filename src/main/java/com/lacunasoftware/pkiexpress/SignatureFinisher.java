@@ -15,7 +15,6 @@ public class SignatureFinisher extends PkiExpressOperator {
     private Path dataFilePath;
     private Path outputFilePath;
     private String signature;
-    private Boolean offline = false;
 
 
     public SignatureFinisher(PkiExpressConfig config) {
@@ -123,14 +122,6 @@ public class SignatureFinisher extends PkiExpressOperator {
     }
     //endregion
 
-    public Boolean getOffline() {
-        return offline;
-    }
-
-    public void setOffline(Boolean offline) {
-        this.offline = offline;
-    }
-
     public void complete() throws IOException {
 
         if (fileToSignPath == null) {
@@ -160,11 +151,8 @@ public class SignatureFinisher extends PkiExpressOperator {
             args.add(dataFilePath.toString());
         }
 
-        if (offline) {
-            args.add("--offline");
-        }
-
         // Invoke command
         invoke(CommandEnum.CommandCompleteSig, args);
     }
+
 }

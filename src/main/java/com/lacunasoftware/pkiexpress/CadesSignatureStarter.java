@@ -103,10 +103,6 @@ public class CadesSignatureStarter extends SignatureStarter {
             args.add("-det");
         }
 
-        if (offline) {
-            args.add("--offline");
-        }
-
         // Invoke command
         OperatorResult result = invoke(CommandEnum.CommandStartCades, args);
 

@@ -83,10 +83,6 @@ public class XmlSignatureStarter extends SignatureStarter {
             }
         }
 
-        if (offline) {
-            args.add("--offline");
-        }
-
         // Invoke command
         OperatorResult result = invoke(CommandEnum.CommandStartXml, args);
 
