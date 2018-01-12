@@ -12,12 +12,12 @@ public class CadesSignatureStarter extends SignatureStarter {
     private Path fileToSignPath;
     private Path dataFilePath;
 
-    public boolean encapsulateContent;
+    @Deprecated
+    public Boolean encapsulateContent = true;
 
 
     public CadesSignatureStarter(PkiExpressConfig config) {
         super(config);
-        encapsulateContent = true;
     }
 
     public CadesSignatureStarter() throws IOException {
@@ -26,17 +26,7 @@ public class CadesSignatureStarter extends SignatureStarter {
 
     //region setFileToSign
     public void setFileToSign(InputStream inputStream) throws IOException {
-        byte[] buff = new byte[1024];
-        Path tempPath = createTempFile();
-        OutputStream outputStream = new FileOutputStream(tempPath.toFile());
-
-        int nRead;
-        while ((nRead = inputStream.read(buff, 0, buff.length)) != -1) {
-            outputStream.write(buff, 0, nRead);
-        }
-        outputStream.close();
-
-        this.fileToSignPath = tempPath;
+        this.fileToSignPath = writeToTempFile(inputStream);
     }
 
     public void setFileToSign(byte[] content) throws IOException {
@@ -58,17 +48,7 @@ public class CadesSignatureStarter extends SignatureStarter {
 
     //region setDataFile
     public void setDataFile(InputStream inputStream) throws IOException {
-        byte[] buff = new byte[1024];
-        Path tempPath = createTempFile();
-        OutputStream outputStream = new FileOutputStream(tempPath.toFile());
-
-        int nRead;
-        while ((nRead = inputStream.read(buff, 0, buff.length)) != -1) {
-            outputStream.write(buff, 0, nRead);
-        }
-        outputStream.close();
-
-        this.dataFilePath = tempPath;
+        this.dataFilePath = writeToTempFile(inputStream);
     }
 
     public void setDataFile(byte[] content) throws IOException {
@@ -87,6 +67,14 @@ public class CadesSignatureStarter extends SignatureStarter {
         setDataFile(path != null ? Paths.get(path) : null);
     }
     //endregion
+
+    public Boolean getEncapsulateContent() {
+        return encapsulateContent;
+    }
+
+    public void setEncapsulateContent(Boolean encapsulateContent) {
+        this.encapsulateContent = encapsulateContent;
+    }
 
     public SignatureStartResult start() throws IOException {
 
@@ -115,15 +103,12 @@ public class CadesSignatureStarter extends SignatureStarter {
             args.add("-det");
         }
 
-        OperatorResult result = invoke(CommandEnum.CommandStartCades, args);
-        if (result.getResponse() != 0) {
-            StringBuilder sb = new StringBuilder();
-            for (String line : result.getOutput()) {
-                sb.append(line);
-                sb.append(System.getProperty("line.separator"));
-            }
-            throw new RuntimeException(sb.toString());
+        if (offline) {
+            args.add("--offline");
         }
+
+        // Invoke command
+        OperatorResult result = invoke(CommandEnum.CommandStartCades, args);
 
         SignatureStartResult startResult = new SignatureStartResult();
         startResult.setToSignHash(result.getOutput()[0]);

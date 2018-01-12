@@ -25,17 +25,7 @@ public class PadesSignatureStarter extends SignatureStarter {
 
     //region setPdfToSign
     public void setPdfToSign(InputStream inputStream) throws IOException {
-        byte[] buff = new byte[1024];
-        Path tempPath = createTempFile();
-        OutputStream outputStream = new FileOutputStream(tempPath.toFile());
-
-        int nRead;
-        while ((nRead = inputStream.read(buff, 0, buff.length)) != -1) {
-            outputStream.write(buff, 0, nRead);
-        }
-        outputStream.close();
-
-        this.pdfToSignPath = tempPath;
+        this.pdfToSignPath = writeToTempFile(inputStream);
     }
 
     public void setPdfToSign(byte[] content) throws IOException {
@@ -55,19 +45,9 @@ public class PadesSignatureStarter extends SignatureStarter {
     }
     //endregion
 
-    //region setVisualRepresentationFromFile
+    //region setVisualRepresentation
     public void setVisualRepresentationFromFile(InputStream inputStream) throws IOException {
-        byte[] buff = new byte[1024];
-        Path tempPath = createTempFile();
-        OutputStream outputStream = new FileOutputStream(tempPath.toFile());
-
-        int nRead;
-        while ((nRead = inputStream.read(buff, 0, buff.length)) != -1) {
-            outputStream.write(buff, 0, nRead);
-        }
-        outputStream.close();
-
-        this.vrJsonPath = tempPath;
+        this.vrJsonPath = writeToTempFile(inputStream);
     }
 
     public void setVisualRepresentationFromFile(byte[] content) throws IOException {
@@ -84,7 +64,6 @@ public class PadesSignatureStarter extends SignatureStarter {
     public void setVisualRepresentationFromFile(String path) throws IOException {
         setVisualRepresentationFromFile(path != null ? Paths.get(path) : null);
     }
-    //endregion
 
     public void setVisualRepresentation(PadesVisualRepresentation visualRepresentation) throws IOException {
         Path tempPath = createTempFile();
@@ -93,6 +72,7 @@ public class PadesSignatureStarter extends SignatureStarter {
         outputStream.close();
         this.vrJsonPath = tempPath;
     }
+    //endregion
 
     public SignatureStartResult start() throws IOException {
 
@@ -117,15 +97,12 @@ public class PadesSignatureStarter extends SignatureStarter {
             args.add(vrJsonPath.toString());
         }
 
-        OperatorResult result = invoke(CommandEnum.CommandStartPades, args);
-        if (result.getResponse() != 0) {
-            StringBuilder sb = new StringBuilder();
-            for (String line : result.getOutput()) {
-                sb.append(line);
-                sb.append(System.getProperty("line.separator"));
-            }
-            throw new RuntimeException(sb.toString());
+        if (offline) {
+            args.add("--offline");
         }
+
+        // Invoke command
+        OperatorResult result = invoke(CommandEnum.CommandStartPades, args);
 
         SignatureStartResult startResult = new SignatureStartResult();
         startResult.setToSignHash(result.getOutput()[0]);

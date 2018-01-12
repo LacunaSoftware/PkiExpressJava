@@ -11,12 +11,13 @@ abstract class PkiExpressOperator {
 
     private List<Path> tempFiles;
     private Map<String, Path> fileReferences;
+    private Boolean disposed = false;
 
     protected PkiExpressConfig config;
     protected List<Path> trustedRoots;
 
-    public Boolean trustLacunaTestRoot;
-    private boolean disposed = false;
+    @Deprecated
+    public Boolean trustLacunaTestRoot = false;
 
 
     protected PkiExpressOperator(PkiExpressConfig config) {
@@ -24,7 +25,6 @@ abstract class PkiExpressOperator {
         this.trustedRoots = new ArrayList<>();
         this.tempFiles = new ArrayList<>();
         this.fileReferences = new HashMap<>();
-        this.trustLacunaTestRoot = true;
     }
 
     protected OperatorResult invoke(CommandEnum command, List<String> args) throws IOException {
@@ -101,7 +101,17 @@ abstract class PkiExpressOperator {
         response.toArray(responseArr);
 
         // Return result of the command
-        return new OperatorResult(output, responseArr);
+        OperatorResult result = new OperatorResult(output, responseArr);
+        if (result.getResponse() != 0) {
+            StringBuilder sb = new StringBuilder();
+            for (String line : result.getOutput()) {
+                sb.append(line);
+                sb.append(System.getProperty("line.separator"));
+            }
+            throw new RuntimeException(sb.toString());
+        }
+
+        return result;
     }
 
     protected List<String> getPkiExpressInvocation() {
@@ -186,6 +196,27 @@ abstract class PkiExpressOperator {
             sb.append(String.format("%02x", b));
         }
         return sb.toString();
+    }
+
+    protected Path writeToTempFile(InputStream inputStream) throws IOException {
+        byte[] buff = new byte[1024];
+        Path tempPath = createTempFile();
+        OutputStream outputStream = new FileOutputStream(tempPath.toFile());
+
+        int nRead;
+        while ((nRead = inputStream.read(buff, 0, buff.length)) != -1) {
+            outputStream.write(buff, 0, nRead);
+        }
+        outputStream.close();
+        return tempPath;
+    }
+
+    public Boolean getTrustLacunaTestRoot() {
+        return trustLacunaTestRoot;
+    }
+
+    public void setTrustLacunaTestRoot(Boolean trustLacunaTestRoot) {
+        this.trustLacunaTestRoot = trustLacunaTestRoot;
     }
 
     @Override

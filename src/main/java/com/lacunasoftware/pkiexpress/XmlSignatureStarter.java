@@ -13,6 +13,7 @@ public class XmlSignatureStarter extends SignatureStarter {
     private String toSignElementId;
     private XmlSignaturePolicies signaturePolicy;
 
+
     public XmlSignatureStarter(PkiExpressConfig config) {
         super(config);
     }
@@ -23,17 +24,7 @@ public class XmlSignatureStarter extends SignatureStarter {
 
     //region setXmlToSign
     public void setXmlToSign(InputStream inputStream) throws IOException {
-        byte[] buff = new byte[1024];
-        Path tempPath = createTempFile();
-        OutputStream outputStream = new FileOutputStream(tempPath.toFile());
-
-        int nRead;
-        while ((nRead = inputStream.read(buff, 0, buff.length)) != -1) {
-            outputStream.write(buff, 0, nRead);
-        }
-        outputStream.close();
-
-        this.xmlToSignPath = tempPath;
+        this.xmlToSignPath = writeToTempFile(inputStream);
     }
 
     public void setXmlToSign(byte[] content) throws IOException {
@@ -92,15 +83,12 @@ public class XmlSignatureStarter extends SignatureStarter {
             }
         }
 
-        OperatorResult result = invoke(CommandEnum.CommandStartXml, args);
-        if (result.getResponse() != 0) {
-            StringBuilder sb = new StringBuilder();
-            for (String line : result.getOutput()) {
-                sb.append(line);
-                sb.append(System.getProperty("line.separator"));
-            }
-            throw new RuntimeException(sb.toString());
+        if (offline) {
+            args.add("--offline");
         }
+
+        // Invoke command
+        OperatorResult result = invoke(CommandEnum.CommandStartXml, args);
 
         SignatureStartResult startResult = new SignatureStartResult();
         startResult.setToSignHash(result.getOutput()[0]);
