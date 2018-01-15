@@ -65,7 +65,7 @@ public abstract class PkiExpressOperator {
 
         // Add offline option if provided
         if (offline) {
-            args.add("--offline");
+            cmdArgs.add("--offline");
         }
 
         // Process command arguments
