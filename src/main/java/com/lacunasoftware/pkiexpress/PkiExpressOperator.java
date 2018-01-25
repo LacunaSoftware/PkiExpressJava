@@ -149,15 +149,8 @@ public abstract class PkiExpressOperator {
 
         } else {
 
-            if (os.equals("linux")) {
-
-                if (Files.exists(Paths.get("/usr/local/share/pkie/pkie.dll"))) {
-                    home = Paths.get("/usr/local/share/pkie");
-                } else if (Files.exists(Paths.get("/usr/share/pkie/pkie.dll"))) {
-                    home = Paths.get("/usr/share/pkie");
-                }
-
-            } else {
+            // On windows, search for a standard installation file.
+            if (os.equals("win")) {
 
                 if (Files.exists(Paths.get(System.getenv("ProgramFiles")).resolve("Lacuna Software\\PKI Express\\pkie.exe"))) {
                     home = Paths.get(System.getenv("ProgramFiles")).resolve("Lacuna Software\\PKI Express");
@@ -169,18 +162,24 @@ public abstract class PkiExpressOperator {
                     home = Paths.get(System.getenv("LOCALAPPDATA")).resolve("Lacuna Software\\PKI Express (x86)");
                 }
 
-            }
+                if (home == null) {
+                    throw new RuntimeException("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
+                }
 
-            if (home == null) {
-                throw new RuntimeException("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
             }
 
         }
 
         List<String> invocArgs = new ArrayList<>();
         if (os.equals("linux")) {
-            invocArgs.add("dotnet");
-            invocArgs.add(home.resolve("pkie.dll").toString());
+
+            if (home != null) {
+                invocArgs.add("dotnet");
+                invocArgs.add(home.resolve("pkie.dll").toString());
+            } else {
+                invocArgs.add("pkie");
+            }
+
         } else {
             invocArgs.add(home.resolve("pkie.exe").toString());
         }
