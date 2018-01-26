@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.security.SecureRandom;
 
 
 public abstract class PkiExpressOperator {
@@ -19,6 +20,8 @@ public abstract class PkiExpressOperator {
 
     @Deprecated
     public Boolean trustLacunaTestRoot = false;
+
+    private static SecureRandom rng = new SecureRandom();
 
 
     protected PkiExpressOperator(PkiExpressConfig config) {
@@ -195,7 +198,7 @@ public abstract class PkiExpressOperator {
 
     protected String getTransferFileName() {
         byte[] bytes = new byte[16];
-        new Random().nextBytes(bytes);
+        rng.nextBytes(bytes);
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
             sb.append(String.format("%02x", b));
