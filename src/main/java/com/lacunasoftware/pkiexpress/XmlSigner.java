@@ -85,7 +85,7 @@ public class XmlSigner extends Signer {
             }
         }
 
-        // Invoke command
-        invoke(CommandEnum.CommandSignXml, args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        invokePlain(CommandEnum.CommandSignXml, args);
     }
 }

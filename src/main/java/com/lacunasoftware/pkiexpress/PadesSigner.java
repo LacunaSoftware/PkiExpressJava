@@ -115,8 +115,8 @@ public class PadesSigner extends Signer {
             args.add(vrJsonPath.toString());
         }
 
-        // Invoke command
-        invoke(CommandEnum.CommandSignPades, args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        invokePlain(CommandEnum.CommandSignPades, args);
     }
 
 }

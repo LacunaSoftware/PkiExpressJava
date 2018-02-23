@@ -1,5 +1,7 @@
 package com.lacunasoftware.pkiexpress;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,6 +19,7 @@ public abstract class PkiExpressOperator {
     protected PkiExpressConfig config;
     protected List<Path> trustedRoots;
     protected Boolean offline = false;
+    protected VersionManager versionManager;
 
     @Deprecated
     public Boolean trustLacunaTestRoot = false;
@@ -31,7 +34,20 @@ public abstract class PkiExpressOperator {
         this.fileReferences = new HashMap<>();
     }
 
+    protected PkiExpressOperator() throws IOException {
+        this(new PkiExpressConfig());
+    }
+
+    protected String[] invokePlain(CommandEnum command, List<String> args) throws IOException {
+        OperatorResult result = invoke(command, args, true);
+        return result.getOutput();
+    }
+
     protected OperatorResult invoke(CommandEnum command, List<String> args) throws IOException {
+        return invoke(command, args, false);
+    }
+
+    protected OperatorResult invoke(CommandEnum command, List<String> args, boolean plainOutput) throws IOException {
 
         // Add PKI Express invocation arguments
         List<String> cmdArgs = new ArrayList<>();
@@ -69,6 +85,21 @@ public abstract class PkiExpressOperator {
         // Add offline option if provided
         if (offline) {
             cmdArgs.add("--offline");
+            // This option can only be used on versions greater than 1.2 of the PKI Express.
+            versionManager.requireVersion(new Version("1.2"));
+        }
+
+        // Add base64 output option.
+        if (!plainOutput) {
+            cmdArgs.add("--base64");
+            // This option can only be used on versions greater than 1.3 of the PKI Express.
+            versionManager.requireVersion(new Version("1.3"));
+        }
+
+        // Verify the necessity of using the --min-version flag.
+        if (versionManager.requireMinVersionFlag()) {
+            cmdArgs.add("--min-version");
+            cmdArgs.add(versionManager.getMinVersion().toString());
         }
 
         // Process command arguments
@@ -116,6 +147,12 @@ public abstract class PkiExpressOperator {
             for (String line : result.getOutput()) {
                 sb.append(line);
                 sb.append(System.getProperty("line.separator"));
+            }
+            if (result.getResponse() == 1 && versionManager.getMinVersion().compareTo(new Version("1.0")) > 0) {
+                String errorMsg = String.format("%s %s>>>>> TIP: This operation requires PKI Express %s, please check your PKI Express version.",
+                        sb.toString(), System.getProperty("line.separator"), versionManager.getMinVersion());
+                throw new RuntimeException(errorMsg);
+
             }
             throw new RuntimeException(sb.toString());
         }
@@ -217,6 +254,11 @@ public abstract class PkiExpressOperator {
         }
         outputStream.close();
         return tempPath;
+    }
+
+    protected <TResponse> TResponse parseOutput(String outputBase64, Class<TResponse> responseType) throws IOException {
+        byte[] output = Util.decodeBase64(outputBase64);
+        return new ObjectMapper().readValue(output, responseType);
     }
 
     public Boolean getTrustLacunaTestRoot() {

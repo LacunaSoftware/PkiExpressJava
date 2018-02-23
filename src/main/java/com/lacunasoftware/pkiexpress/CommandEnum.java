@@ -7,7 +7,9 @@ public enum CommandEnum {
     CommandStartCades("start-cades"),
     CommandStartPades("start-pades"),
     CommandStartXml("start-xml"),
-    CommandCompleteSig("complete-sig");
+    CommandCompleteSig("complete-sig"),
+    CommandOpenPades("open-pades"),
+    CommandEditPdf("edit-pdf");
 
     private final String value;
 

@@ -104,7 +104,7 @@ public class CadesSigner extends Signer {
             args.add("-det");
         }
 
-        // Invoke command
-        invoke(CommandEnum.CommandSignCades, args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        invokePlain(CommandEnum.CommandSignCades, args);
     }
 }

@@ -103,14 +103,10 @@ public class CadesSignatureStarter extends SignatureStarter {
             args.add("-det");
         }
 
-        // Invoke command
-        OperatorResult result = invoke(CommandEnum.CommandStartCades, args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        String[] response = invokePlain(CommandEnum.CommandStartCades, args);
 
-        SignatureStartResult startResult = new SignatureStartResult();
-        startResult.setToSignHash(result.getOutput()[0]);
-        startResult.setDigestAlgorithm(result.getOutput()[1]);
-        startResult.setDigestAlgorithmOid(result.getOutput()[2]);
-        startResult.setTransferFile(transferFile);
-        return startResult;
+        // Parse output
+        return getResult(response, transferFile);
     }
 }
