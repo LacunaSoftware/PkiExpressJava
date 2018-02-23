@@ -72,8 +72,13 @@ public class XmlSigner extends Signer {
 
         List<String> args = new ArrayList<String>();
         args.add(xmlToSignPath.toString());
-        args.add(certThumb);
         args.add(outputFilePath.toString());
+
+        if (certThumb != null) {
+            args.add("-t");
+            args.add(certThumb);
+            versionManager.requireVersion(new Version("1.3"));
+        }
 
         if (signaturePolicy != null) {
             args.add("-p");

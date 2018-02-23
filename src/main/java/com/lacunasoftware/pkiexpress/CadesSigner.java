@@ -92,8 +92,13 @@ public class CadesSigner extends Signer {
 
         List<String> args = new ArrayList<String>();
         args.add(fileToSignPath.toString());
-        args.add(certThumb);
         args.add(outputFilePath.toString());
+
+        if (certThumb != null) {
+            args.add("-t");
+            args.add(certThumb);
+            versionManager.requireVersion(new Version("1.3"));
+        }
 
         if (dataFilePath != null) {
             args.add("-df");

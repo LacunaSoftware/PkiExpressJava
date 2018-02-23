@@ -32,6 +32,7 @@ public abstract class PkiExpressOperator {
         this.trustedRoots = new ArrayList<>();
         this.tempFiles = new ArrayList<>();
         this.fileReferences = new HashMap<>();
+        this.versionManager = new VersionManager();
     }
 
     protected PkiExpressOperator() throws IOException {

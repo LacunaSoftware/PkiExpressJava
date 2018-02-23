@@ -49,7 +49,7 @@ public class PadesSignatureExplorer extends PkiExpressOperator {
 
     public PadesSignature open() throws IOException {
 
-        if (signatureFilePath != null) {
+        if (signatureFilePath == null) {
             throw new RuntimeException("The provided signature file was not found");
         }
 
@@ -67,6 +67,8 @@ public class PadesSignatureExplorer extends PkiExpressOperator {
         OperatorResult result = invoke(CommandEnum.CommandOpenPades, args);
 
         // Parse output
-        return parseOutput(result.getOutput()[0], PadesSignature.class);
+        PadesSignatureModel resultModel = parseOutput(result.getOutput()[0], PadesSignatureModel.class);
+
+        return new PadesSignature(resultModel);
     }
 }

@@ -101,7 +101,12 @@ public class PadesSigner extends Signer {
 
         List<String> args = new ArrayList<String>();
         args.add(pdfToSignPath.toString());
-        args.add(certThumb);
+
+        if (certThumb != null) {
+            args.add("-t");
+            args.add(certThumb);
+            versionManager.requireVersion(new Version("1.3"));
+        }
 
         // Logic to overwrite original file or use the output file
         if (overwriteOriginalFile) {

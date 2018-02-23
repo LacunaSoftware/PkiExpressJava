@@ -124,8 +124,12 @@ public class PdfMarker extends PkiExpressOperator {
             marksModels.add(pm.toModel());
         }
         request.setMarks(marksModels);
-        request.setMeasurementUnits(measurementUnits.toString());
-        request.setPageOptimization(pageOptimization.toModel());
+        if (measurementUnits != null) {
+            request.setMeasurementUnits(measurementUnits.toString());
+        }
+        if (pageOptimization != null) {
+            request.setPageOptimization(pageOptimization.toModel());
+        }
 
         // Store json file
         Path tempFilePath = createTempFile();
