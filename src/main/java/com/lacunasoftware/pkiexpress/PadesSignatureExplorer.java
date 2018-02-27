@@ -39,7 +39,7 @@ public class PadesSignatureExplorer extends PkiExpressOperator {
         setSignatureFile(path != null ? Paths.get(path) : null);
     }
 
-    public boolean isValidate() {
+    public boolean getValidate() {
         return validate;
     }
 

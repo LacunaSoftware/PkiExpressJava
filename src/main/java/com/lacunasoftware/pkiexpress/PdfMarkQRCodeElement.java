@@ -45,7 +45,7 @@ public class PdfMarkQRCodeElement extends PdfMarkElement<PdfMarkQRCodeElement> {
         this.qrCodeData = qrCodeData;
     }
 
-    public boolean isDrawQuietZones() {
+    public boolean getDrawQuietZones() {
         return drawQuietZones;
     }
 

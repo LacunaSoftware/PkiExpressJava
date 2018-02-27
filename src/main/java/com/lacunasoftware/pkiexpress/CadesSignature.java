@@ -28,7 +28,7 @@ public class CadesSignature {
         return encapsulatedContentType;
     }
 
-    public boolean isHasEncapsulatedContent() {
+    public boolean getHasEncapsulatedContent() {
         return hasEncapsulatedContent;
     }
 
