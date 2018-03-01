@@ -9,6 +9,7 @@ public enum CommandEnum {
     CommandStartXml("start-xml"),
     CommandCompleteSig("complete-sig"),
     CommandOpenPades("open-pades"),
+    CommandOpenCades("open-cades"),
     CommandEditPdf("edit-pdf");
 
     private final String value;

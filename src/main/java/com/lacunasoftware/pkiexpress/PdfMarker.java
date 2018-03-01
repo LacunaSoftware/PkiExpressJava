@@ -25,6 +25,10 @@ public class PdfMarker extends PkiExpressOperator {
         this.measurementUnits = PadesMeasurementUnits.Centimeters;
     }
 
+    public PdfMarker() throws IOException {
+        this(new PkiExpressConfig());
+    }
+
     //region setFile
     public void setFile(InputStream stream) throws IOException {
         this.filePath = writeToTempFile(stream);

@@ -1,26 +1,20 @@
 package com.lacunasoftware.pkiexpress;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PadesSignatureExplorer extends SignatureExplorer {
+public class CadesSignatureExplorer extends SignatureExplorer {
 
-    public PadesSignatureExplorer(PkiExpressConfig config) {
+    public CadesSignatureExplorer(PkiExpressConfig config) {
         super(config);
     }
 
-    public PadesSignatureExplorer() throws IOException {
+    public CadesSignatureExplorer() throws IOException {
         this(new PkiExpressConfig());
     }
 
-    public PadesSignature open() throws IOException {
+    public CadesSignature open() throws IOException {
 
         if (signatureFilePath == null) {
             throw new RuntimeException("The provided signature file was not found");
@@ -37,11 +31,11 @@ public class PadesSignatureExplorer extends SignatureExplorer {
         this.versionManager.requireVersion(new Version("1.3"));
 
         // Invoke command
-        OperatorResult result = invoke(CommandEnum.CommandOpenPades, args);
+        OperatorResult result = invoke(CommandEnum.CommandOpenCades, args);
 
         // Parse output
-        PadesSignatureModel resultModel = parseOutput(result.getOutput()[0], PadesSignatureModel.class);
+        CadesSignatureModel resultModel = parseOutput(result.getOutput()[0], CadesSignatureModel.class);
 
-        return new PadesSignature(resultModel);
+        return new CadesSignature(resultModel);
     }
 }
