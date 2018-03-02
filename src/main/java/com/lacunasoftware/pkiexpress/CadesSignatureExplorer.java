@@ -13,7 +13,7 @@ import java.util.List;
 public class CadesSignatureExplorer extends SignatureExplorer {
 
     private Path dataFilePath;
-    private Path extractedContentPath;
+    private Path extractContentPath;
 
 
     public CadesSignatureExplorer(PkiExpressConfig config) {
@@ -46,12 +46,12 @@ public class CadesSignatureExplorer extends SignatureExplorer {
     }
     //endregion
 
-    public void setExtractedContentPath(Path extractedContentPath) {
-        this.extractedContentPath = extractedContentPath;
+    public Path getExtractContentPath() {
+        return extractContentPath;
     }
 
-    public Path getExtractedContentPath() {
-        return extractedContentPath;
+    public void setExtractContentPath(Path extractedContentPath) {
+        this.extractContentPath = extractedContentPath;
     }
 
     public CadesSignature open() throws IOException {
@@ -72,9 +72,9 @@ public class CadesSignatureExplorer extends SignatureExplorer {
             args.add(dataFilePath.toString());
         }
 
-        if (extractedContentPath != null) {
+        if (extractContentPath != null) {
             args.add("--extract-content");
-            args.add(extractedContentPath.toString());
+            args.add(extractContentPath.toString());
         }
 
         // This operation can only be used on versions greater than 1.3 of the PKI Express.
