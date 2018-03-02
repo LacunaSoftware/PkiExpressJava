@@ -103,7 +103,7 @@ public class PdfMarker extends PkiExpressOperator {
 
         // Logic to overwrite original file or use the output file
         if (overwriteOriginalFile) {
-            args.add("-ow");
+            args.add("--overwrite");
         } else {
             args.add(outputFilePath.toString());
         }

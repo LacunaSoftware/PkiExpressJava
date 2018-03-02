@@ -95,7 +95,7 @@ public class CadesSigner extends Signer {
         args.add(outputFilePath.toString());
 
         if (certThumb != null) {
-            args.add("-t");
+            args.add("--thumbprint");
             args.add(certThumb);
             versionManager.requireVersion(new Version("1.3"));
         }

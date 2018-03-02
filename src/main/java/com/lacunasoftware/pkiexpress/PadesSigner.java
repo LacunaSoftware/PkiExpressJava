@@ -103,7 +103,7 @@ public class PadesSigner extends Signer {
         args.add(pdfToSignPath.toString());
 
         if (certThumb != null) {
-            args.add("-t");
+            args.add("--thumbprint");
             args.add(certThumb);
             versionManager.requireVersion(new Version("1.3"));
         }
