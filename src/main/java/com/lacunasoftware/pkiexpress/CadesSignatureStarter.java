@@ -57,7 +57,7 @@ public class CadesSignatureStarter extends SignatureStarter {
 
     public void setDataFile(Path path) throws IOException {
         if (!Files.exists(path)) {
-            throw new FileNotFoundException("The provided file to be signed was not found");
+            throw new FileNotFoundException("The provided data file was not found");
         }
 
         this.dataFilePath = path;

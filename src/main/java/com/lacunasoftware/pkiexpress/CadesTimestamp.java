@@ -13,7 +13,7 @@ public class CadesTimestamp extends CadesSignature {
     private DigestAlgorithmAndValue messageImprint;
 
     CadesTimestamp(CadesTimestampModel model) {
-        super(model.getEncapsulatedContentType().toString(), model.getHasEncapsulatedContent(), model.getSigners(), model.getEncapsulatedContent());
+        super(model);
         this.genTime = model.getGenTime();
         this.serialNumber = new BigInteger(model.getSerialNumber());
         this.messageImprint = new DigestAlgorithmAndValue(model.getMessageImprint());
