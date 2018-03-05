@@ -45,4 +45,13 @@ public class SignatureStarter extends PkiExpressOperator {
     }
     //endregion
 
+    protected SignatureStartResult getResult(String[] response, String transferFile) {
+        SignatureStartResult startResult = new SignatureStartResult();
+        startResult.setToSignHash(response[0]);
+        startResult.setDigestAlgorithm(response[1]);
+        startResult.setDigestAlgorithmOid(response[2]);
+        startResult.setTransferFile(transferFile);
+        return startResult;
+    }
+
 }

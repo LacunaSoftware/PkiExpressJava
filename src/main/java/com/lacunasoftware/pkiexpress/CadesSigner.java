@@ -92,8 +92,13 @@ public class CadesSigner extends Signer {
 
         List<String> args = new ArrayList<String>();
         args.add(fileToSignPath.toString());
-        args.add(certThumb);
         args.add(outputFilePath.toString());
+
+        if (certThumb != null) {
+            args.add("--thumbprint");
+            args.add(certThumb);
+            versionManager.requireVersion(new Version("1.3"));
+        }
 
         if (dataFilePath != null) {
             args.add("-df");
@@ -104,7 +109,7 @@ public class CadesSigner extends Signer {
             args.add("-det");
         }
 
-        // Invoke command
-        invoke(CommandEnum.CommandSignCades, args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        invokePlain(CommandEnum.CommandSignCades, args);
     }
 }

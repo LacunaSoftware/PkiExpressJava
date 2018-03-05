@@ -72,8 +72,13 @@ public class XmlSigner extends Signer {
 
         List<String> args = new ArrayList<String>();
         args.add(xmlToSignPath.toString());
-        args.add(certThumb);
         args.add(outputFilePath.toString());
+
+        if (certThumb != null) {
+            args.add("--thumbprint");
+            args.add(certThumb);
+            versionManager.requireVersion(new Version("1.3"));
+        }
 
         if (signaturePolicy != null) {
             args.add("-p");
@@ -85,7 +90,7 @@ public class XmlSigner extends Signer {
             }
         }
 
-        // Invoke command
-        invoke(CommandEnum.CommandSignXml, args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        invokePlain(CommandEnum.CommandSignXml, args);
     }
 }

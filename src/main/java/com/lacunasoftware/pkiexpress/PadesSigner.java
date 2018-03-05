@@ -101,7 +101,12 @@ public class PadesSigner extends Signer {
 
         List<String> args = new ArrayList<String>();
         args.add(pdfToSignPath.toString());
-        args.add(certThumb);
+
+        if (certThumb != null) {
+            args.add("--thumbprint");
+            args.add(certThumb);
+            versionManager.requireVersion(new Version("1.3"));
+        }
 
         // Logic to overwrite original file or use the output file
         if (overwriteOriginalFile) {
@@ -115,8 +120,8 @@ public class PadesSigner extends Signer {
             args.add(vrJsonPath.toString());
         }
 
-        // Invoke command
-        invoke(CommandEnum.CommandSignPades, args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        invokePlain(CommandEnum.CommandSignPades, args);
     }
 
 }

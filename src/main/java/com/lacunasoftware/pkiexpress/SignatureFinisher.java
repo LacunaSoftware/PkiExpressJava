@@ -151,8 +151,8 @@ public class SignatureFinisher extends PkiExpressOperator {
             args.add(dataFilePath.toString());
         }
 
-        // Invoke command
-        invoke(CommandEnum.CommandCompleteSig, args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        invokePlain(CommandEnum.CommandCompleteSig, args);
     }
 
 }
