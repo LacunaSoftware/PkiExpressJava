@@ -63,18 +63,21 @@ public class CadesSignatureExplorer extends SignatureExplorer {
         List<String> args = new ArrayList<String>();
         args.add(signatureFilePath.toString());
 
-        if (validate) {
-            args.add("--validate");
-        }
+        // Verify and add common options
+        verifyAndAddCommonOptions(args);
 
         if (dataFilePath != null) {
             args.add("--data-file");
             args.add(dataFilePath.toString());
+            // This operation can only be used on versions greater than 1.3 of the PKI Express.
+            this.versionManager.requireVersion(new Version("1.3"));
         }
 
         if (extractContentPath != null) {
             args.add("--extract-content");
             args.add(extractContentPath.toString());
+            // This operation can only be used on versions greater than 1.3 of the PKI Express.
+            this.versionManager.requireVersion(new Version("1.3"));
         }
 
         // This operation can only be used on versions greater than 1.3 of the PKI Express.
@@ -83,9 +86,8 @@ public class CadesSignatureExplorer extends SignatureExplorer {
         // Invoke command
         OperatorResult result = invoke(CommandEnum.CommandOpenCades, args);
 
-        // Parse output
+        // Parse output and return model
         CadesSignatureModel resultModel = parseOutput(result.getOutput()[0], CadesSignatureModel.class);
-
         return new CadesSignature(resultModel);
     }
 }

@@ -16,6 +16,7 @@ abstract class Signer extends PkiExpressOperator {
     protected String certThumb;
     protected Path pkcs12Path;
     protected String certPassword;
+    protected boolean useMachine;
 
 
     public Signer(PkiExpressConfig config) {
@@ -28,8 +29,8 @@ abstract class Signer extends PkiExpressOperator {
 
     public void verifyAndAddCommonOptions(List<String> args) {
 
-        if (certThumb != null && pkcs12Path != null) {
-            throw new RuntimeException("The certificate's thumbprint and the PKCS #12 were not set");
+        if (certThumb == null && pkcs12Path == null) {
+            throw new RuntimeException("No PKCS #12 file nor certificate's thumbprint was provided");
         }
 
         if (certThumb != null) {
@@ -47,6 +48,11 @@ abstract class Signer extends PkiExpressOperator {
         if (certPassword != null) {
             args.add("--password");
             args.add(certPassword);
+            versionManager.requireVersion(new Version("1.3"));
+        }
+
+        if (useMachine) {
+            args.add("--machine");
             versionManager.requireVersion(new Version("1.3"));
         }
 
@@ -83,6 +89,10 @@ abstract class Signer extends PkiExpressOperator {
 
     public void setCertPassword(String password) {
         this.certPassword = password;
+    }
+
+    public void setUseMachine(boolean useMachine) {
+        this.useMachine = useMachine;
     }
 
 }

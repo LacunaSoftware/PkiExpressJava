@@ -7,18 +7,25 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SignatureExplorer extends PkiExpressOperator {
 
     protected Path signatureFilePath;
-    protected boolean validate;
+
+    private boolean validate;
 
     public SignatureExplorer(PkiExpressConfig config) {
         super(config);
     }
 
-    public SignatureExplorer() throws IOException {
-        this(new PkiExpressConfig());
+    protected void verifyAndAddCommonOptions(List<String> args) {
+        if (validate) {
+            args.add("--validate");
+            // This operation can only be used on versions greater than 1.3 of the PKI Express.
+            this.versionManager.requireVersion(new Version("1.3"));
+        }
     }
 
     //region setSignatureFile
