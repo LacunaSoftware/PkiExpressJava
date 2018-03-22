@@ -80,7 +80,7 @@ public abstract class PkiExpressOperator {
 
         // Add trust Lacuna test root if set
         if (trustLacunaTestRoot) {
-            cmdArgs.add("--trust-root");
+            cmdArgs.add("--trust-test");
         }
 
         // Add offline option if provided
