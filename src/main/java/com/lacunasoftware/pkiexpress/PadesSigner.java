@@ -91,10 +91,6 @@ public class PadesSigner extends Signer {
             throw new RuntimeException("The PDF to be signed was not set");
         }
 
-        if (Util.isNullOrEmpty(certThumb)) {
-            throw new RuntimeException("The certificate thumbprint was not set");
-        }
-
         if (!overwriteOriginalFile && outputFilePath == null) {
             throw new RuntimeException("The output destination was not set");
         }
@@ -102,11 +98,8 @@ public class PadesSigner extends Signer {
         List<String> args = new ArrayList<String>();
         args.add(pdfToSignPath.toString());
 
-        if (certThumb != null) {
-            args.add("--thumbprint");
-            args.add(certThumb);
-            versionManager.requireVersion(new Version("1.3"));
-        }
+        // Verify and add common options between signers
+        verifyAndAddCommonOptions(args);
 
         // Logic to overwrite original file or use the output file
         if (overwriteOriginalFile) {

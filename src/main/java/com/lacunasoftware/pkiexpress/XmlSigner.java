@@ -58,10 +58,6 @@ public class XmlSigner extends Signer {
             throw new RuntimeException("The file to be signed was not set");
         }
 
-        if (Util.isNullOrEmpty(certThumb)) {
-            throw new RuntimeException("The certificate thumbprint was not set");
-        }
-
         if (outputFilePath == null) {
             throw new RuntimeException("The output destination was not set");
         }
@@ -74,11 +70,8 @@ public class XmlSigner extends Signer {
         args.add(xmlToSignPath.toString());
         args.add(outputFilePath.toString());
 
-        if (certThumb != null) {
-            args.add("--thumbprint");
-            args.add(certThumb);
-            versionManager.requireVersion(new Version("1.3"));
-        }
+        // Verify and add common options between signers
+        verifyAndAddCommonOptions(args);
 
         if (signaturePolicy != null) {
             args.add("-p");
