@@ -103,13 +103,13 @@ public class PadesSigner extends Signer {
 
         // Logic to overwrite original file or use the output file
         if (overwriteOriginalFile) {
-            args.add("-ow");
+            args.add("--overwrite");
         } else {
             args.add(outputFilePath.toString());
         }
 
         if (vrJsonPath != null) {
-            args.add("-vr");
+            args.add("--visual-rep");
             args.add(vrJsonPath.toString());
         }
 

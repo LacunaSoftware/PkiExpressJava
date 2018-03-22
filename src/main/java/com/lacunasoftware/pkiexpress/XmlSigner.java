@@ -74,11 +74,11 @@ public class XmlSigner extends Signer {
         verifyAndAddCommonOptions(args);
 
         if (signaturePolicy != null) {
-            args.add("-p");
+            args.add("--policy");
             args.add(signaturePolicy.getValue());
 
             if (signaturePolicy == XmlSignaturePolicies.NFe && !Util.isNullOrEmpty(toSignElementId)) {
-                args.add("-eid");
+                args.add("--element-id");
                 args.add(toSignElementId);
             }
         }

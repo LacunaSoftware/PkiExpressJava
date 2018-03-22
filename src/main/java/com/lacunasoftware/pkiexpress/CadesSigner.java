@@ -94,12 +94,12 @@ public class CadesSigner extends Signer {
         verifyAndAddCommonOptions(args);
 
         if (dataFilePath != null) {
-            args.add("-df");
+            args.add("--data-file");
             args.add(dataFilePath.toString());
         }
 
         if (!encapsulateContent) {
-            args.add("-det");
+            args.add("--detached");
         }
 
         // Invoke command with plain text output (to support PKI Express < 1.3)

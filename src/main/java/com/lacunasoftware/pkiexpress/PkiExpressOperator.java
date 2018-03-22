@@ -64,7 +64,7 @@ public abstract class PkiExpressOperator {
         if (fileReferences != null && !fileReferences.isEmpty()) {
 
             for (String key : fileReferences.keySet()) {
-                cmdArgs.add("-fr");
+                cmdArgs.add("--file-reference");
                 cmdArgs.add(String.format("%s=%s", key, fileReferences.get(key)));
             }
         }
@@ -73,14 +73,14 @@ public abstract class PkiExpressOperator {
         if (trustedRoots != null && !trustedRoots.isEmpty()) {
 
             for (Path trustedRoot : trustedRoots) {
-                cmdArgs.add("-tr");
+                cmdArgs.add("--trust-root");
                 cmdArgs.add(trustedRoot.toString());
             }
         }
 
         // Add trust Lacuna test root if set
         if (trustLacunaTestRoot) {
-            cmdArgs.add("-tt");
+            cmdArgs.add("--trust-root");
         }
 
         // Add offline option if provided
