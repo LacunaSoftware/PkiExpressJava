@@ -147,7 +147,7 @@ public class SignatureFinisher extends PkiExpressOperator {
         args.add(outputFilePath.toString());
 
         if (dataFilePath != null) {
-            args.add("-df");
+            args.add("--data-file");
             args.add(dataFilePath.toString());
         }
 

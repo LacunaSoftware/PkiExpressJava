@@ -93,7 +93,7 @@ public class PadesSignatureStarter extends SignatureStarter {
         args.add(config.getTransferDataFolder().resolve(transferFile).toString());
 
         if (vrJsonPath != null) {
-            args.add("-vr");
+            args.add("--visual-rep");
             args.add(vrJsonPath.toString());
         }
 

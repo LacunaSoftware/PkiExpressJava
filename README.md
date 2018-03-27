@@ -9,14 +9,14 @@ The **PKI Express package** is distributed by [Bintray](https://bintray.com/lacu
 The recommended way to install it is with Gradle:
     
     repositories {
-            mavenCentral()
-            maven {
-                url  "http://dl.bintray.com/lacunasoftware/maven"
-            }
+        mavenCentral()
+        maven {
+            url  "http://dl.bintray.com/lacunasoftware/maven"
         }
+    }
     
     dependencies {
-        compile("com.lacunasoftware.pkiexpress:pki-express:1.3.0")
+        compile("com.lacunasoftware.pkiexpress:pki-express:1.3.1")
         ...
     }
         
@@ -25,7 +25,7 @@ Or with Maven:
     <dependency>
       <groupId>com.lacunasoftware.pkiexpress</groupId>
       <artifactId>pki-express</artifactId>
-      <version>1.3.0/version>
+      <version>1.3.1/version>
       <type>pom</type>
     </dependency>
       
