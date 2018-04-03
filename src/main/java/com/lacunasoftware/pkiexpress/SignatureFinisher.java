@@ -132,7 +132,7 @@ public class SignatureFinisher extends PkiExpressOperator {
             throw new RuntimeException("The transfer data file was not set");
         }
 
-        if (Util.isNullOrEmpty(signature)) {
+        if (signature == null) {
             throw new RuntimeException("The signature was not set");
         }
 
