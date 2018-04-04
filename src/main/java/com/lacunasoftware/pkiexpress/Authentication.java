@@ -16,7 +16,7 @@ public class Authentication extends PkiExpressOperator {
     private String nonceBase64;
     private Path certificatePath;
     private String signatureBase64;
-    private boolean useExternalStorage = true;
+    private boolean useExternalStorage = false;
 
 
     public Authentication(PkiExpressConfig config) {
@@ -27,27 +27,11 @@ public class Authentication extends PkiExpressOperator {
         this(new PkiExpressConfig());
     }
 
-    public void setNonceStore(Path path) throws IOException {
-
-        if (!Files.exists(path) || !Files.isDirectory(path)) {
-            throw new FileNotFoundException("The provided nonce store path was not found");
-        }
-        this.nonceStorePath = path;
-    }
-
-    public Path getNonceStore() {
-        return nonceStorePath;
-    }
-
-    public String getNonce() {
-        return nonceBase64;
-    }
-
     public void setNonce(String nonceBase64) {
         try {
             Util.decodeBase64(nonceBase64);
         } catch(Exception ex) {
-            throw new RuntimeException("The provided signature was not valid");
+            throw new RuntimeException("The provided nonce was not valid");
         }
 
         this.nonceBase64 = nonceBase64;
@@ -92,29 +76,27 @@ public class Authentication extends PkiExpressOperator {
         this.signatureBase64 = signatureBase64;
     }
 
-    public boolean getUseExternalStorage() {
-        return useExternalStorage;
-    }
-
     public void setExternalStorage(boolean useExternalStorage) {
         this.useExternalStorage = useExternalStorage;
     }
 
     public AuthStartResult start() throws IOException {
 
-        if (!useExternalStorage && nonceStorePath == null) {
-            throw new RuntimeException("The option to use internal storage and no nonce store was provided");
-        }
-
         List<String> args = new ArrayList<String>();
 
-        // Add nonce store path based on user option.
-        addNonceStoreOption(args);
+        // If chosen to use internal nonce store, pass temp data folder to store the nonces, where
+        // PKI Express will verify the nonce against replay-attack.
+        if (!useExternalStorage) {
+            args.add("--nonce-store");
+            args.add(config.getTransferDataFolder().toString());
+            // This operation can only be used on versions greater than 1.4 of the PKI Express.
+            this.versionManager.requireVersion(new Version("1.4"));
+        }
 
         // This operation can only be used on versions greater than 1.4 of the PKI Express.
         this.versionManager.requireVersion(new Version("1.4"));
 
-        // Invoke command with plain text output (to support PKI Express < 1.3)
+        // Invoke command.
         OperatorResult response = invoke(CommandEnum.CommandStartAuth, args);
 
         // Parse output and return result
@@ -136,17 +118,19 @@ public class Authentication extends PkiExpressOperator {
             throw new RuntimeException("The signature was not set");
         }
 
-        if (!useExternalStorage && nonceStorePath == null) {
-            throw new RuntimeException("Chose to use internal storage and no nonce store was provided");
-        }
-
         List<String> args = new ArrayList<String>();
         args.add(nonceBase64);
         args.add(certificatePath.toString());
         args.add(signatureBase64);
 
-        // Add nonce store path based on user option.
-        addNonceStoreOption(args);
+        // If chosen to use internal nonce store, pass temp data folder to store the nonces, where
+        // PKI Express will verify the nonce against replay-attack.
+        if (!useExternalStorage) {
+            args.add("--nonce-store");
+            args.add(config.getTransferDataFolder().toString());
+            // This operation can only be used on versions greater than 1.4 of the PKI Express.
+            this.versionManager.requireVersion(new Version("1.4"));
+        }
 
         // This operation can only be used on versions greater than 1.4 of the PKI Express.
         this.versionManager.requireVersion(new Version("1.4"));
@@ -157,18 +141,5 @@ public class Authentication extends PkiExpressOperator {
         // Parse output and return model
         AuthCompleteModel model = parseOutput(response.getOutput()[0], AuthCompleteModel.class);
         return new AuthenticationResult(model);
-    }
-
-    private void addNonceStoreOption(List<String> args) {
-
-        if (useExternalStorage) {
-            // Use transfer data folder, when the option "use external storage" is set.
-            args.add("--nonce-store");
-            args.add(config.getTransferDataFolder().toString());
-        } else {
-            args.add("--nonce-store");
-            args.add(nonceStorePath.toString());
-        }
-
     }
 }
