@@ -12,10 +12,9 @@ import java.util.List;
 
 public class Authentication extends PkiExpressOperator {
 
-    private Path nonceStorePath;
-    private String nonceBase64;
+    private String nonce;
     private Path certificatePath;
-    private String signatureBase64;
+    private String signature;
     private boolean useExternalStorage = false;
 
 
@@ -34,7 +33,7 @@ public class Authentication extends PkiExpressOperator {
             throw new RuntimeException("The provided nonce was not valid");
         }
 
-        this.nonceBase64 = nonceBase64;
+        this.nonce = nonceBase64;
     }
 
     //region setCertificate
@@ -73,7 +72,7 @@ public class Authentication extends PkiExpressOperator {
             throw new RuntimeException("The provided signature was not valid");
         }
 
-        this.signatureBase64 = signatureBase64;
+        this.signature = signatureBase64;
     }
 
     public void setExternalStorage(boolean useExternalStorage) {
@@ -84,12 +83,12 @@ public class Authentication extends PkiExpressOperator {
 
         List<String> args = new ArrayList<String>();
 
-        // If chosen to use internal nonce store, pass temp data folder to store the nonces, where
-        // PKI Express will verify the nonce against replay-attack.
+        // The option "use external storage" is used to ignore the PKI Express's nonce
+        // verification, to make a own nonce store and nonce verification.
         if (!useExternalStorage) {
             args.add("--nonce-store");
             args.add(config.getTransferDataFolder().toString());
-            // This operation can only be used on versions greater than 1.4 of the PKI Express.
+            // This option can only be used on versions greater than 1.4 of the PKI Express.
             this.versionManager.requireVersion(new Version("1.4"));
         }
 
@@ -99,47 +98,47 @@ public class Authentication extends PkiExpressOperator {
         // Invoke command.
         OperatorResult response = invoke(CommandEnum.CommandStartAuth, args);
 
-        // Parse output and return result
+        // Parse output and return result.
         AuthStartModel model = parseOutput(response.getOutput()[0], AuthStartModel.class);
         return new AuthStartResult(model);
     }
 
-    public AuthenticationResult complete() throws IOException {
+    public AuthCompleteResult complete() throws IOException {
 
-        if (nonceBase64 == null) {
-            throw new RuntimeException("The nonce value was not set");
+        if (nonce == null) {
+            throw new RuntimeException("The nonce was not set");
         }
 
         if (certificatePath == null) {
             throw new RuntimeException("The certificate file was not set");
         }
 
-        if (signatureBase64 == null) {
+        if (signature == null) {
             throw new RuntimeException("The signature was not set");
         }
 
         List<String> args = new ArrayList<String>();
-        args.add(nonceBase64);
+        args.add(nonce);
         args.add(certificatePath.toString());
-        args.add(signatureBase64);
+        args.add(signature);
 
-        // If chosen to use internal nonce store, pass temp data folder to store the nonces, where
-        // PKI Express will verify the nonce against replay-attack.
+        // The option "use external storage" is used to ignore the PKI Express's nonce
+        // verification, to make a own nonce store and nonce verification.
         if (!useExternalStorage) {
             args.add("--nonce-store");
             args.add(config.getTransferDataFolder().toString());
-            // This operation can only be used on versions greater than 1.4 of the PKI Express.
+            // This option can only be used on versions greater than 1.4 of the PKI Express.
             this.versionManager.requireVersion(new Version("1.4"));
         }
 
         // This operation can only be used on versions greater than 1.4 of the PKI Express.
         this.versionManager.requireVersion(new Version("1.4"));
 
-        // Invoke command
+        // Invoke command.
         OperatorResult response = invoke(CommandEnum.CommandCompleteAuth, args);
 
-        // Parse output and return model
+        // Parse output and return model.
         AuthCompleteModel model = parseOutput(response.getOutput()[0], AuthCompleteModel.class);
-        return new AuthenticationResult(model);
+        return new AuthCompleteResult(model);
     }
 }
