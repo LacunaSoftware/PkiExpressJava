@@ -6,6 +6,7 @@ class AuthStartModel {
     private String digestAlgorithmName;
     private String digestAlgorithmOid;
 
+
     String getToSignData() {
         return toSignData;
     }

@@ -5,6 +5,7 @@ public class AuthCompleteModel {
     private CertificateModel certificate;
     private ValidationResultsModel validationResults;
 
+
     public CertificateModel getCertificate() {
         return certificate;
     }

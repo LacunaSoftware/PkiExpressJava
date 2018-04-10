@@ -6,6 +6,7 @@ public class AuthStartResult {
     private String digestAlgorithm;
     private String digestAlgorithmOid;
 
+
     AuthStartResult(String toSignData, String digestAlgorithmName, String digestAlgorithmOid) {
         this.nonce = toSignData;
         this.digestAlgorithm = digestAlgorithmName;

@@ -1,18 +1,23 @@
 package com.lacunasoftware.pkiexpress;
 
-public class AuthenticationResult {
+public class AuthCompleteResult {
 
     private PKCertificate certificate;
     private ValidationResults validationResults;
 
-    AuthenticationResult(CertificateModel certificate, ValidationResultsModel validationResults) {
-        this.certificate = new PKCertificate(certificate);
+
+    AuthCompleteResult(CertificateModel certificate, ValidationResultsModel validationResults) {
+
+        if (certificate != null) {
+            this.certificate = new PKCertificate(certificate);
+        }
+
         if (validationResults != null) {
             this.validationResults = new ValidationResults(validationResults);
         }
     }
 
-    AuthenticationResult(AuthCompleteModel model) {
+    AuthCompleteResult(AuthCompleteModel model) {
         this(model.getCertificate(), model.getValidationResults());
     }
 
