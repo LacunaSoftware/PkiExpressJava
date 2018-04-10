@@ -10,7 +10,9 @@ public enum CommandEnum {
     CommandCompleteSig("complete-sig"),
     CommandOpenPades("open-pades"),
     CommandOpenCades("open-cades"),
-    CommandEditPdf("edit-pdf");
+    CommandEditPdf("edit-pdf"),
+    CommandStartAuth("start-auth"),
+    CommandCompleteAuth("complete-auth");
 
     private final String value;
 
