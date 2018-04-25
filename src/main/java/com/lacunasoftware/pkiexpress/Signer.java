@@ -68,8 +68,13 @@ abstract class Signer extends PkiExpressOperator {
             args.add("--policy");
             args.add(signaturePolicy.getValue());
 
-            // This operation can only be used on versions greater than 1.5 of the PKI Express.
-            versionManager.requireVersion(new Version("1.5"));
+            // This operation evolved after version 1.5 to other signature policies.
+            if (signaturePolicy != StandardSignaturePolicies.XmlDSigBasic &&
+                    signaturePolicy != StandardSignaturePolicies.NFePadraoNacional) {
+
+                // This operation can only be used on versions greater than 1.5 of the PKI Express.
+                versionManager.requireVersion(new Version("1.5"));
+            }
         }
 
         // Add timestamp authority.
@@ -123,6 +128,7 @@ abstract class Signer extends PkiExpressOperator {
         this.signaturePolicy = signaturePolicy;
     }
 
+    @Deprecated
     public void setSignaturePolicy(XmlSignaturePolicies signaturePolicy) {
 
         switch (signaturePolicy) {
