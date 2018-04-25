@@ -13,10 +13,13 @@ import java.util.List;
 abstract class Signer extends PkiExpressOperator {
 
     protected Path outputFilePath;
-    protected String certThumb;
-    protected Path pkcs12Path;
-    protected String certPassword;
-    protected boolean useMachine;
+
+    private String certThumb;
+    private Path pkcs12Path;
+    private String certPassword;
+    private boolean useMachine;
+    private StandardSignaturePolicies signaturePolicy;
+    private TimestampAuthority timestampAuthority;
 
 
     public Signer(PkiExpressConfig config) {
@@ -27,10 +30,14 @@ abstract class Signer extends PkiExpressOperator {
         this(new PkiExpressConfig());
     }
 
-    public void verifyAndAddCommonOptions(List<String> args) {
+    protected void verifyAndAddCommonOptions(List<String> args) {
 
         if (certThumb == null && pkcs12Path == null) {
             throw new RuntimeException("No PKCS #12 file nor certificate's thumbprint was provided");
+        }
+
+        if (StandardSignaturePolicies.requireTimestamp(signaturePolicy) && timestampAuthority == null) {
+            throw new RuntimeException("The provided policy requires a timestamp authority and none was provided");
         }
 
         if (certThumb != null) {
@@ -54,6 +61,23 @@ abstract class Signer extends PkiExpressOperator {
         if (useMachine) {
             args.add("--machine");
             versionManager.requireVersion(new Version("1.3"));
+        }
+
+        // Set signature policy.
+        if (signaturePolicy != null) {
+            args.add("--policy");
+            args.add(signaturePolicy.getValue());
+
+            // This operation can only be used on versions greater than 1.5 of the PKI Express.
+            versionManager.requireVersion(new Version("1.5"));
+        }
+
+        // Add timestamp authority.
+        if (timestampAuthority != null) {
+            args.addAll(timestampAuthority.getCmdArguments());
+
+            // This operation can only be used on versions greater than 1.5 of the PKI Express.
+            versionManager.requireVersion(new Version("1.5"));
         }
 
     }
@@ -95,4 +119,25 @@ abstract class Signer extends PkiExpressOperator {
         this.useMachine = useMachine;
     }
 
+    public void setSignaturePolicy(StandardSignaturePolicies signaturePolicy) {
+        this.signaturePolicy = signaturePolicy;
+    }
+
+    public void setSignaturePolicy(XmlSignaturePolicies signaturePolicy) {
+
+        switch (signaturePolicy) {
+            case NFe:
+                this.signaturePolicy = StandardSignaturePolicies.NFePadraoNacional;
+                break;
+            case Basic:
+                this.signaturePolicy = StandardSignaturePolicies.XmlDSigBasic;
+                break;
+            default:
+                throw new RuntimeException("Invalid signature policy: " + signaturePolicy.getValue());
+        }
+    }
+
+    public void setTimestampAuthority(TimestampAuthority timestampAuthority) {
+        this.timestampAuthority = timestampAuthority;
+    }
 }

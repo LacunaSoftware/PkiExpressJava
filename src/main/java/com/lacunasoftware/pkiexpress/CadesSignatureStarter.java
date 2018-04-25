@@ -94,6 +94,9 @@ public class CadesSignatureStarter extends SignatureStarter {
         args.add(certificatePath.toString());
         args.add(config.getTransferDataFolder().resolve(transferFile).toString());
 
+        // Verify and add common options between signers.
+        verifyAndAddCommonOptions(args);
+
         if (dataFilePath != null) {
             args.add("--data-file");
             args.add(dataFilePath.toString());
