@@ -1,8 +1,6 @@
 package com.lacunasoftware.pkiexpress;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class CadesTimestampModel extends CadesSignatureModel {
 
