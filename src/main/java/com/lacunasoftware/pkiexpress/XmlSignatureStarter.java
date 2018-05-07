@@ -11,7 +11,6 @@ public class XmlSignatureStarter extends SignatureStarter {
 
     private Path xmlToSignPath;
     private String toSignElementId;
-    private XmlSignaturePolicies signaturePolicy;
 
 
     public XmlSignatureStarter(PkiExpressConfig config) {
@@ -46,10 +45,6 @@ public class XmlSignatureStarter extends SignatureStarter {
 
     public void setToSignElementId(String toSignElementId) {
         this.toSignElementId = toSignElementId;
-    }
-
-    public void setSignaturePolicy(XmlSignaturePolicies signaturePolicy) {
-        this.signaturePolicy = signaturePolicy;
     }
 
     public SignatureStartResult start() throws IOException {
