@@ -13,6 +13,7 @@ public enum StandardSignaturePolicies {
 
     // PAdES policies
     PadesBasic("pades"),
+    PadesBasicWithLTV("pades-ltv"),
     PadesT("pades-t"),
 
     // XML policies
