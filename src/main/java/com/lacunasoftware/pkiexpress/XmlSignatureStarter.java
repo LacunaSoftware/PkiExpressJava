@@ -11,7 +11,6 @@ public class XmlSignatureStarter extends SignatureStarter {
 
     private Path xmlToSignPath;
     private String toSignElementId;
-    private XmlSignaturePolicies signaturePolicy;
 
 
     public XmlSignatureStarter(PkiExpressConfig config) {
@@ -48,10 +47,6 @@ public class XmlSignatureStarter extends SignatureStarter {
         this.toSignElementId = toSignElementId;
     }
 
-    public void setSignaturePolicy(XmlSignaturePolicies signaturePolicy) {
-        this.signaturePolicy = signaturePolicy;
-    }
-
     public SignatureStartResult start() throws IOException {
 
         if (xmlToSignPath == null) {
@@ -61,11 +56,6 @@ public class XmlSignatureStarter extends SignatureStarter {
         if (certificatePath == null) {
             throw new RuntimeException("The certificate was not set");
         }
-
-        if (signaturePolicy == XmlSignaturePolicies.NFe && Util.isNullOrEmpty(toSignElementId)) {
-            throw new RuntimeException("The signature element id to be signed was not set");
-        }
-
         String transferFile = getTransferFileName();
 
         List<String> args = new ArrayList<String>();
@@ -73,14 +63,12 @@ public class XmlSignatureStarter extends SignatureStarter {
         args.add(certificatePath.toString());
         args.add(config.getTransferDataFolder().resolve(transferFile).toString());
 
-        if (signaturePolicy != null) {
-            args.add("--policy");
-            args.add(signaturePolicy.getValue());
+        // Verify and add common options between signers.
+        verifyAndAddCommonOptions(args);
 
-            if (signaturePolicy == XmlSignaturePolicies.NFe && !Util.isNullOrEmpty(toSignElementId)) {
-                args.add("--element-id");
-                args.add(toSignElementId);
-            }
+        if (!Util.isNullOrEmpty(toSignElementId)) {
+            args.add("--element-id");
+            args.add(toSignElementId);
         }
 
         // Invoke command with plain text output (to support PKI Express < 1.3)

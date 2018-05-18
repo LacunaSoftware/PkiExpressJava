@@ -3,7 +3,7 @@ package com.lacunasoftware.pkiexpress;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CadesSignatureModel {
+public class CadesSignatureModel extends SignatureModel {
 
     public enum EncapsulatedContentTypeEnum {
         Data,  SignedData,  EnvelopedData,  DigestedData,  EncryptedData,  AuthenticatedData,  TstInfo,

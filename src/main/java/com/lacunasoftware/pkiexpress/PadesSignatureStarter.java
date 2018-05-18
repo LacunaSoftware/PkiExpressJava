@@ -92,6 +92,9 @@ public class PadesSignatureStarter extends SignatureStarter {
         args.add(certificatePath.toString());
         args.add(config.getTransferDataFolder().resolve(transferFile).toString());
 
+        // Verify and add common options between signers.
+        verifyAndAddCommonOptions(args);
+
         if (vrJsonPath != null) {
             args.add("--visual-rep");
             args.add(vrJsonPath.toString());

@@ -1,5 +1,6 @@
 package com.lacunasoftware.pkiexpress;
 
+@Deprecated
 public enum XmlSignaturePolicies {
     NFe("nfe"),
     Basic("basic");
