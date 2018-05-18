@@ -9,8 +9,6 @@ import java.util.List;
 public class SignatureStarter extends PkiExpressOperator {
 
     protected Path certificatePath;
-    protected StandardSignaturePolicies signaturePolicy;
-    protected TimestampAuthority timestampAuthority;
 
 
     public SignatureStarter(PkiExpressConfig config) {
@@ -48,29 +46,6 @@ public class SignatureStarter extends PkiExpressOperator {
     }
 
     //endregion
-
-    public void setSignaturePolicy(StandardSignaturePolicies signaturePolicy) {
-        this.signaturePolicy = signaturePolicy;
-    }
-
-    @Deprecated
-    public void setSignaturePolicy(XmlSignaturePolicies signaturePolicy) {
-
-        switch (signaturePolicy) {
-            case NFe:
-                this.signaturePolicy = StandardSignaturePolicies.NFePadraoNacional;
-                break;
-            case Basic:
-                this.signaturePolicy = StandardSignaturePolicies.XmlDSigBasic;
-                break;
-            default:
-                throw new RuntimeException("Invalid signature policy: " + signaturePolicy.getValue());
-        }
-    }
-
-    public void setTimestampAuthority(TimestampAuthority timestampAuthority) {
-        this.timestampAuthority = timestampAuthority;
-    }
 
     protected SignatureStartResult getResult(String[] response, String transferFile) {
         SignatureStartResult startResult = new SignatureStartResult();

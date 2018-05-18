@@ -11,13 +11,14 @@ public class TimestampAuthority {
     private String basicAuth;
     private TsaAuthenticationType authType;
 
-    TimestampAuthority(String url) {
+    public TimestampAuthority(String url) {
         this.url = url;
+        this.authType = TsaAuthenticationType.None;
     }
 
     public void setOAuthTokenAuthentication(String token) {
         this.token = token;
-        this.authType = TsaAuthenticationType.OauthToken;
+        this.authType = TsaAuthenticationType.OAuthToken;
     }
 
     public void setBasicAuthentication(String username, String password) {
@@ -57,6 +58,8 @@ public class TimestampAuthority {
         args.add(url);
 
         switch (authType) {
+            case None:
+                break;
             case BasicAuth:
                 args.add("--tsa-basic-auth");
                 args.add(basicAuth);
@@ -65,7 +68,7 @@ public class TimestampAuthority {
                 args.add("--tsa-ssl-thumbprint");
                 args.add(sslThumbprint);
                 break;
-            case OauthToken:
+            case OAuthToken:
                 args.add("--tsa-token");
                 args.add(token);
                 break;

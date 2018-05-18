@@ -18,8 +18,6 @@ abstract class Signer extends PkiExpressOperator {
     private Path pkcs12Path;
     private String certPassword;
     private boolean useMachine;
-    private StandardSignaturePolicies signaturePolicy;
-    private TimestampAuthority timestampAuthority;
 
 
     public Signer(PkiExpressConfig config) {
@@ -122,28 +120,5 @@ abstract class Signer extends PkiExpressOperator {
 
     public void setUseMachine(boolean useMachine) {
         this.useMachine = useMachine;
-    }
-
-    public void setSignaturePolicy(StandardSignaturePolicies signaturePolicy) {
-        this.signaturePolicy = signaturePolicy;
-    }
-
-    @Deprecated
-    public void setSignaturePolicy(XmlSignaturePolicies signaturePolicy) {
-
-        switch (signaturePolicy) {
-            case NFe:
-                this.signaturePolicy = StandardSignaturePolicies.NFePadraoNacional;
-                break;
-            case Basic:
-                this.signaturePolicy = StandardSignaturePolicies.XmlDSigBasic;
-                break;
-            default:
-                throw new RuntimeException("Invalid signature policy: " + signaturePolicy.getValue());
-        }
-    }
-
-    public void setTimestampAuthority(TimestampAuthority timestampAuthority) {
-        this.timestampAuthority = timestampAuthority;
     }
 }

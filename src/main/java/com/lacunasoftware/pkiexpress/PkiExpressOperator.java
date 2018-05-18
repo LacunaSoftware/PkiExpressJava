@@ -20,6 +20,9 @@ public abstract class PkiExpressOperator {
     protected List<Path> trustedRoots;
     protected Boolean offline = false;
     protected VersionManager versionManager;
+    protected StandardSignaturePolicies signaturePolicy;
+    protected TimestampAuthority timestampAuthority;
+
 
     @Deprecated
     public Boolean trustLacunaTestRoot = false;
@@ -320,4 +323,26 @@ public abstract class PkiExpressOperator {
         this.offline = offline;
     }
 
+    public void setSignaturePolicy(StandardSignaturePolicies signaturePolicy) {
+        this.signaturePolicy = signaturePolicy;
+    }
+
+    @Deprecated
+    public void setSignaturePolicy(XmlSignaturePolicies signaturePolicy) {
+
+        switch (signaturePolicy) {
+            case NFe:
+                this.signaturePolicy = StandardSignaturePolicies.NFePadraoNacional;
+                break;
+            case Basic:
+                this.signaturePolicy = StandardSignaturePolicies.XmlDSigBasic;
+                break;
+            default:
+                throw new RuntimeException("Invalid signature policy: " + signaturePolicy.getValue());
+        }
+    }
+
+    public void setTimestampAuthority(TimestampAuthority timestampAuthority) {
+        this.timestampAuthority = timestampAuthority;
+    }
 }

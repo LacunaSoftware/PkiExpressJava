@@ -3,24 +3,25 @@ package com.lacunasoftware.pkiexpress;
 public enum StandardSignaturePolicies {
 
     // CAdES policies
-    PkiBrazilCadesAdrBasica("ad-rb"),
-    PkiBrazilCadesAdrBasicaWithRevocationValues("ad-rb-rv"),
-    PkiBrazilCadesAdrTempo("ad-rt"),
-    PkiBrazilCadesAdrCompleta("ad-rc"),
+    PkiBrazilCadesAdrBasica("adrb"),
+    PkiBrazilCadesAdrBasicaWithRevocationValues("adrb-rv"),
+    PkiBrazilCadesAdrTempo("adrt"),
+    PkiBrazilCadesAdrCompleta("adrc"),
     CadesBes("cades"),
     CadesBesWithRevocationValues("cades-rv"),
     CadesT("cades-t"),
 
     // PAdES policies
     PadesBasic("pades"),
+    PadesBasicWithLTV("pades-ltv"),
     PadesT("pades-t"),
 
     // XML policies
     NFePadraoNacional("nfe"),
     XadesBes("xades"),
     XmlDSigBasic("basic"),
-    PkiBrazilXadesAdrBasica("ad-rb"),
-    PkiBrazilXadesAdrTempo("ad-rt");
+    PkiBrazilXadesAdrBasica("adrb"),
+    PkiBrazilXadesAdrTempo("adrt");
 
     private final String value;
 
