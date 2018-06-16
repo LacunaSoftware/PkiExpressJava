@@ -21,7 +21,9 @@ public enum StandardSignaturePolicies {
     XadesBes("xades"),
     XmlDSigBasic("basic"),
     PkiBrazilXadesAdrBasica("adrb"),
-    PkiBrazilXadesAdrTempo("adrt");
+    PkiBrazilXadesAdrTempo("adrt"),
+    CodWithSHA1("cod-sha1"),
+    CodWithSHA256("cod-sha256");
 
     private final String value;
 
