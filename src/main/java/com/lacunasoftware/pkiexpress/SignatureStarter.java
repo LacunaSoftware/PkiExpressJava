@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class SignatureStarter extends PkiExpressOperator {
+public class SignatureStarter extends BaseSigner {
 
     protected Path certificatePath;
 
@@ -55,35 +55,4 @@ public class SignatureStarter extends PkiExpressOperator {
         startResult.setTransferFile(transferFile);
         return startResult;
     }
-
-    protected void verifyAndAddCommonOptions(List<String> args) {
-
-        if (StandardSignaturePolicies.requireTimestamp(signaturePolicy) && timestampAuthority == null) {
-            throw new RuntimeException("The provided policy requires a timestamp authority and none was provided");
-        }
-
-        // Set signature policy.
-        if (signaturePolicy != null) {
-            args.add("--policy");
-            args.add(signaturePolicy.getValue());
-
-            // This operation evolved after version 1.5 to other signature policies.
-            if (signaturePolicy != StandardSignaturePolicies.XmlDSigBasic &&
-                    signaturePolicy != StandardSignaturePolicies.NFePadraoNacional) {
-
-                // This operation can only be used on versions greater than 1.5 of the PKI Express.
-                versionManager.requireVersion(new Version("1.5"));
-            }
-        }
-
-
-        // Add timestamp authority.
-        if (timestampAuthority != null) {
-            args.addAll(timestampAuthority.getCmdArguments());
-
-            // This operation can only be used on versions greater than 1.5 of the PKI Express.
-            versionManager.requireVersion(new Version("1.5"));
-        }
-    }
-
 }
