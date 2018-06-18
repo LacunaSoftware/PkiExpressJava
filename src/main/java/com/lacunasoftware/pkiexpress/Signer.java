@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-abstract class Signer extends PkiExpressOperator {
+abstract class Signer extends BaseSigner {
 
     protected Path outputFilePath;
 
@@ -30,12 +30,11 @@ abstract class Signer extends PkiExpressOperator {
 
     protected void verifyAndAddCommonOptions(List<String> args) {
 
+        // Verify and add common options between signers and signature starters.
+        super.verifyAndAddCommonOptions(args);
+
         if (certThumb == null && pkcs12Path == null) {
             throw new RuntimeException("No PKCS #12 file nor certificate's thumbprint was provided");
-        }
-
-        if (StandardSignaturePolicies.requireTimestamp(signaturePolicy) && timestampAuthority == null) {
-            throw new RuntimeException("The provided policy requires a timestamp authority and none was provided");
         }
 
         if (certThumb != null) {
@@ -59,28 +58,6 @@ abstract class Signer extends PkiExpressOperator {
         if (useMachine) {
             args.add("--machine");
             versionManager.requireVersion(new Version("1.3"));
-        }
-
-        // Set signature policy.
-        if (signaturePolicy != null) {
-            args.add("--policy");
-            args.add(signaturePolicy.getValue());
-
-            // This operation evolved after version 1.5 to other signature policies.
-            if (signaturePolicy != StandardSignaturePolicies.XmlDSigBasic &&
-                    signaturePolicy != StandardSignaturePolicies.NFePadraoNacional) {
-
-                // This operation can only be used on versions greater than 1.5 of the PKI Express.
-                versionManager.requireVersion(new Version("1.5"));
-            }
-        }
-
-        // Add timestamp authority.
-        if (timestampAuthority != null) {
-            args.addAll(timestampAuthority.getCmdArguments());
-
-            // This operation can only be used on versions greater than 1.5 of the PKI Express.
-            versionManager.requireVersion(new Version("1.5"));
         }
 
     }
