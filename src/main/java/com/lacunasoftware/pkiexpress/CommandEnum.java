@@ -12,7 +12,8 @@ public enum CommandEnum {
     CommandOpenCades("open-cades"),
     CommandEditPdf("edit-pdf"),
     CommandStartAuth("start-auth"),
-    CommandCompleteAuth("complete-auth");
+    CommandCompleteAuth("complete-auth"),
+    CommandStampPdf("stamp-pdf");
 
     private final String value;
 
