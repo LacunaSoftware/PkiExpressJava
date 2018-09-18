@@ -14,7 +14,7 @@ public class PadesTimestamper extends PkiExpressOperator {
 
 	private Path pdfPath;
 	private Path outputFilePath;
-	private Boolean overwriteOriginalFile = false;
+	private boolean overwriteOriginalFile = false;
 
 	public PadesTimestamper(PkiExpressConfig config) {
 		super(config);
@@ -22,6 +22,10 @@ public class PadesTimestamper extends PkiExpressOperator {
 
 	public PadesTimestamper() throws IOException {
 		this(new PkiExpressConfig());
+	}
+
+	public Path getPdfPath() {
+		return pdfPath;
 	}
 
 	// region setPdf
@@ -47,20 +51,20 @@ public class PadesTimestamper extends PkiExpressOperator {
 
 	// endregion
 
-	public void setOutputFile(Path path) {
+	public Path getOutputFilePath() {
+		return outputFilePath;
+	}
+
+	public void setOutputFilePath(Path path) {
 		this.outputFilePath = path;
 	}
 
-	public void setOutputFile(String path) {
-		setOutputFile(path != null ? Paths.get(path) : null);
+	public void setOutputFilePath(String path) {
+		setOutputFilePath(path != null ? Paths.get(path) : null);
 	}
 
-	public Boolean getOverwriteOriginalFile() {
+	public boolean getOverwriteOriginalFile() {
 		return overwriteOriginalFile;
-	}
-
-	public void setOverwriteOriginalFile(Boolean overwriteOriginalFile) {
-		this.overwriteOriginalFile = overwriteOriginalFile;
 	}
 
 	public void setOverwriteOriginalFile(boolean overwriteOriginalFile) {
@@ -70,14 +74,14 @@ public class PadesTimestamper extends PkiExpressOperator {
 	public void stamp() throws IOException {
 
 		if (pdfPath == null) {
-			throw new RuntimeException("The PDF was not set");
+			throw new RuntimeException("The PDF to be timestamped was not set");
 		}
 
 		if (!overwriteOriginalFile && outputFilePath == null) {
 			throw new RuntimeException("The output destination was not set");
 		}
 
-		List<String> args = new ArrayList<String>();
+		List<String> args = new ArrayList<>();
 		args.add(pdfPath.toString());
 
 		// Add timestamp authority.
@@ -95,8 +99,8 @@ public class PadesTimestamper extends PkiExpressOperator {
 			args.add(outputFilePath.toString());
 		}
 
-		// This operation can only be used on versions greater than 1.3 of the PKI Express.
-		versionManager.requireVersion(new Version("1.3"));
+		// This operation can only be used on versions greater than 1.7 of the PKI Express.
+		versionManager.requireVersion(new Version("1.7"));
 
 		// Invoke command.
 		invoke(CommandEnum.CommandStampPdf, args);
