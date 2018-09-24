@@ -111,7 +111,13 @@ public abstract class PkiExpressOperator {
         cmdArgs.toArray(argArr);
 
         // Execute the command
-        Process proc = Runtime.getRuntime().exec(argArr);
+        Process proc;
+        try {
+            proc = Runtime.getRuntime().exec(argArr);
+        } catch (IOException ex) {
+            throw new InstallationNotFoundException("Could not find PKI Express' installation.", ex);
+        }
+
 
         // Read response
         BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
@@ -164,9 +170,9 @@ public abstract class PkiExpressOperator {
         return result;
     }
 
-    protected List<String> getPkiExpressInvocation() {
+    protected List<String> getPkiExpressInvocation() throws InstallationNotFoundException {
 
-        String os = null;
+        String os;
 
         // Identify OS
         if (System.getProperty("os.name").toLowerCase().contains("linux")) {
@@ -183,11 +189,11 @@ public abstract class PkiExpressOperator {
 
             if (os.equals("linux")) {
                 if (!Files.exists(home.resolve("pkie.dll"))) {
-                    throw new RuntimeException("The file pkie.dll could not be found on directory " + home.toString());
+                    throw new InstallationNotFoundException("The file pkie.dll could not be found on directory " + home.toString());
                 }
             } else {
                 if (!Files.exists(home.resolve("pkie.exe"))) {
-                    throw new RuntimeException("The file pkie.exe could not be found on directory " + home.toString());
+                    throw new InstallationNotFoundException("The file pkie.exe could not be found on directory " + home.toString());
                 }
             }
 
@@ -207,7 +213,7 @@ public abstract class PkiExpressOperator {
                 }
 
                 if (home == null) {
-                    throw new RuntimeException("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
+                    throw new InstallationNotFoundException("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
                 }
 
             }
