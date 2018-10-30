@@ -22,6 +22,8 @@ public abstract class PkiExpressOperator {
     protected VersionManager versionManager;
     protected StandardSignaturePolicies signaturePolicy;
     protected TimestampAuthority timestampAuthority;
+    protected String culture;
+    protected String timeZone;
 
 
     @Deprecated
@@ -54,8 +56,7 @@ public abstract class PkiExpressOperator {
     protected OperatorResult invoke(CommandEnum command, List<String> args, boolean plainOutput) throws IOException {
 
         // Add PKI Express invocation arguments
-        List<String> cmdArgs = new ArrayList<>();
-        cmdArgs.addAll(getPkiExpressInvocation());
+        List<String> cmdArgs = new ArrayList<>(getPkiExpressInvocation());
 
         // Add PKI Express command
         cmdArgs.add(command.getValue());
@@ -98,6 +99,22 @@ public abstract class PkiExpressOperator {
             cmdArgs.add("--base64");
             // This option can only be used on versions greater than 1.3 of the PKI Express.
             versionManager.requireVersion(new Version("1.3"));
+        }
+
+        // Add culture information.
+        if (culture != null) {
+            cmdArgs.add("--culture");
+            cmdArgs.add(culture);
+            // This option can only be used on versions greater than 1.10 of the PKI Express.
+            versionManager.requireVersion(new Version("1.10"));
+        }
+
+        // Add timezone option.
+        if (timeZone != null) {
+            cmdArgs.add("--timezone");
+            cmdArgs.add(timeZone);
+            // This option can only be used on versions greater than 1.10 of the PKI Express.
+            versionManager.requireVersion(new Version("1.10"));
         }
 
         // Verify the necessity of using the --min-version flag.
@@ -277,6 +294,22 @@ public abstract class PkiExpressOperator {
 
     public void setTrustLacunaTestRoot(Boolean trustLacunaTestRoot) {
         this.trustLacunaTestRoot = trustLacunaTestRoot;
+    }
+
+    public String getCulture() {
+        return culture;
+    }
+
+    public void setCulture(String culture) {
+        this.culture = culture;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 
     @Override
