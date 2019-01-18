@@ -2,54 +2,55 @@ package com.lacunasoftware.pkiexpress;
 
 
 public class PdfMarkQRCodeElement extends PdfMarkElement<PdfMarkQRCodeElement> {
+	private String qrCodeData;
+	private boolean drawQuietZones;
 
-    private String qrCodeData;
-    private boolean drawQuietZones;
 
-    public PdfMarkQRCodeElement() {
-        super(PdfMarkElementType.QRCode);
-    }
+	public PdfMarkQRCodeElement() {
+		super(PdfMarkElementType.QRCode);
+	}
 
-    public PdfMarkQRCodeElement(PadesVisualRectangle relativeContainer, String qrCodeData) {
-        super(PdfMarkElementType.QRCode, relativeContainer);
-        this.qrCodeData = qrCodeData;
-    }
+	public PdfMarkQRCodeElement(PadesVisualRectangle relativeContainer, String qrCodeData) {
+		super(PdfMarkElementType.QRCode, relativeContainer);
+		this.qrCodeData = qrCodeData;
+	}
 
-    @Override
-    public PdfMarkElementModel toModel() {
-        PdfMarkElementModel model = super.toModel();
-        model.setQrCodeData(qrCodeData);
-        model.setQrCodeDrawQuietZones(drawQuietZones);
-        return model;
-    }
 
-    //region FluentApi
+	@Override
+	public PdfMarkElementModel toModel() {
+		PdfMarkElementModel model = super.toModel();
+		model.setQrCodeData(qrCodeData);
+		model.setQrCodeDrawQuietZones(drawQuietZones);
+		return model;
+	}
 
-    public PdfMarkQRCodeElement withQRCodeData(String qrCodeData) {
-        this.qrCodeData = qrCodeData;
-        return this;
-    }
+	//region FluentApi
 
-    public PdfMarkQRCodeElement drawQuietZones() {
-        this.drawQuietZones = true;
-        return this;
-    }
+	public PdfMarkQRCodeElement withQRCodeData(String qrCodeData) {
+		this.qrCodeData = qrCodeData;
+		return this;
+	}
 
-    //endregion
+	public PdfMarkQRCodeElement drawQuietZones() {
+		this.drawQuietZones = true;
+		return this;
+	}
 
-    public String getQrCodeData() {
-        return qrCodeData;
-    }
+	//endregion
 
-    public void setQrCodeData(String qrCodeData) {
-        this.qrCodeData = qrCodeData;
-    }
+	public String getQrCodeData() {
+		return qrCodeData;
+	}
 
-    public boolean getDrawQuietZones() {
-        return drawQuietZones;
-    }
+	public void setQrCodeData(String qrCodeData) {
+		this.qrCodeData = qrCodeData;
+	}
 
-    public void setDrawQuietZones(boolean drawQuietZones) {
-        this.drawQuietZones = drawQuietZones;
-    }
+	public boolean getDrawQuietZones() {
+		return drawQuietZones;
+	}
+
+	public void setDrawQuietZones(boolean drawQuietZones) {
+		this.drawQuietZones = drawQuietZones;
+	}
 }

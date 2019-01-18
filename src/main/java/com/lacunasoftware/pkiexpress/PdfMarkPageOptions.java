@@ -2,5 +2,5 @@ package com.lacunasoftware.pkiexpress;
 
 
 public enum PdfMarkPageOptions {
-    AllPages, SinglePage, SinglePageFromEnd, NewPage
+	AllPages, SinglePage, SinglePageFromEnd, NewPage
 }

@@ -1,5 +1,6 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,84 +11,85 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class CadesSignatureExplorer extends SignatureExplorer {
+	private Path dataFilePath;
+	private Path extractContentPath;
 
-    private Path dataFilePath;
-    private Path extractContentPath;
+
+	public CadesSignatureExplorer(PkiExpressConfig config) {
+		super(config);
+	}
+
+	public CadesSignatureExplorer() throws IOException {
+		this(new PkiExpressConfig());
+	}
 
 
-    public CadesSignatureExplorer(PkiExpressConfig config) {
-        super(config);
-    }
+	//region setDataFile
+	public void setDataFile(InputStream inputStream) throws IOException {
+		this.dataFilePath = writeToTempFile(inputStream);
+	}
 
-    public CadesSignatureExplorer() throws IOException {
-        this(new PkiExpressConfig());
-    }
+	public void setDataFile(byte[] content) throws IOException {
+		setDataFile(new ByteArrayInputStream(content, 0, content.length));
+	}
 
-    //region setDataFile
-    public void setDataFile(InputStream inputStream) throws IOException {
-        this.dataFilePath = writeToTempFile(inputStream);
-    }
+	public void setDataFile(Path path) throws IOException {
+		if (!Files.exists(path)) {
+			throw new FileNotFoundException("The provided data file was not found");
+		}
 
-    public void setDataFile(byte[] content) throws IOException {
-        setDataFile(new ByteArrayInputStream(content, 0, content.length));
-    }
+		this.dataFilePath = path;
+	}
 
-    public void setDataFile(Path path) throws IOException {
-        if (!Files.exists(path)) {
-            throw new FileNotFoundException("The provided data file was not found");
-        }
+	public void setDataFile(String path) throws IOException {
+		setDataFile(path != null ? Paths.get(path) : null);
+	}
+	//endregion
 
-        this.dataFilePath = path;
-    }
+	public Path getExtractContentPath() {
+		return extractContentPath;
+	}
 
-    public void setDataFile(String path) throws IOException {
-        setDataFile(path != null ? Paths.get(path) : null);
-    }
-    //endregion
+	public void setExtractContentPath(Path extractedContentPath) {
+		this.extractContentPath = extractedContentPath;
+	}
 
-    public Path getExtractContentPath() {
-        return extractContentPath;
-    }
+	public CadesSignature open() throws IOException {
 
-    public void setExtractContentPath(Path extractedContentPath) {
-        this.extractContentPath = extractedContentPath;
-    }
+		if (signatureFilePath == null) {
+			throw new RuntimeException("The provided signature file was not found");
+		}
 
-    public CadesSignature open() throws IOException {
+		List<String> args = new ArrayList<String>();
+		args.add(signatureFilePath.toString());
 
-        if (signatureFilePath == null) {
-            throw new RuntimeException("The provided signature file was not found");
-        }
+		// Verify and add common options
+		verifyAndAddCommonOptions(args);
 
-        List<String> args = new ArrayList<String>();
-        args.add(signatureFilePath.toString());
+		if (dataFilePath != null) {
+			args.add("--data-file");
+			args.add(dataFilePath.toString());
+			// This operation can only be used on versions greater than 1.3 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.3"));
+		}
 
-        // Verify and add common options
-        verifyAndAddCommonOptions(args);
+		if (extractContentPath != null) {
+			args.add("--extract-content");
+			args.add(extractContentPath.toString());
+			// This operation can only be used on versions greater than 1.3 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.3"));
+		}
 
-        if (dataFilePath != null) {
-            args.add("--data-file");
-            args.add(dataFilePath.toString());
-            // This operation can only be used on versions greater than 1.3 of the PKI Express.
-            this.versionManager.requireVersion(new Version("1.3"));
-        }
+		// This operation can only be used on versions greater than 1.3 of the PKI Express.
+		this.versionManager.requireVersion(new Version("1.3"));
 
-        if (extractContentPath != null) {
-            args.add("--extract-content");
-            args.add(extractContentPath.toString());
-            // This operation can only be used on versions greater than 1.3 of the PKI Express.
-            this.versionManager.requireVersion(new Version("1.3"));
-        }
+		// Invoke command
+		OperatorResult result = invoke(CommandEnum.CommandOpenCades, args);
 
-        // This operation can only be used on versions greater than 1.3 of the PKI Express.
-        this.versionManager.requireVersion(new Version("1.3"));
-
-        // Invoke command
-        OperatorResult result = invoke(CommandEnum.CommandOpenCades, args);
-
-        // Parse output and return model
-        CadesSignatureModel resultModel = parseOutput(result.getOutput()[0], CadesSignatureModel.class);
-        return new CadesSignature(resultModel);
-    }
+		// Parse output and return model
+		CadesSignatureModel resultModel = parseOutput(result.getOutput()[0], CadesSignatureModel.class);
+		return new CadesSignature(resultModel);
+	}
 }

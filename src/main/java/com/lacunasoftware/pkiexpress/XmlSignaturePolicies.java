@@ -1,17 +1,18 @@
 package com.lacunasoftware.pkiexpress;
 
+
 @Deprecated
 public enum XmlSignaturePolicies {
-    NFe("nfe"),
-    Basic("basic");
+	NFe("nfe"),
+	Basic("basic");
 
-    private final String value;
+	private final String value;
 
-    XmlSignaturePolicies(String value) {
-        this.value = value;
-    }
+	XmlSignaturePolicies(String value) {
+		this.value = value;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 }

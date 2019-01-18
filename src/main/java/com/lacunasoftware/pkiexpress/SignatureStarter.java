@@ -1,58 +1,60 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+
 public class SignatureStarter extends BaseSigner {
+	protected Path certificatePath;
 
-    protected Path certificatePath;
+
+	public SignatureStarter(PkiExpressConfig config) {
+		super(config);
+	}
+
+	public SignatureStarter() throws IOException {
+		this(new PkiExpressConfig());
+	}
 
 
-    public SignatureStarter(PkiExpressConfig config) {
-        super(config);
-    }
+	//region setCertificate
+	public void setCertificate(InputStream inputStream) throws IOException {
+		this.certificatePath = writeToTempFile(inputStream);
+	}
 
-    public SignatureStarter() throws IOException {
-        this(new PkiExpressConfig());
-    }
+	public void setCertificate(byte[] content) throws IOException {
+		setCertificate(new ByteArrayInputStream(content, 0, content.length));
+	}
 
-    //region setCertificate
-    public void setCertificate(InputStream inputStream) throws IOException {
-        this.certificatePath = writeToTempFile(inputStream);
-    }
+	public void setCertificate(Path path) throws IOException {
+		if (!Files.exists(path)) {
+			throw new FileNotFoundException("The provided certificate was not found");
+		}
 
-    public void setCertificate(byte[] content) throws IOException {
-        setCertificate(new ByteArrayInputStream(content, 0, content.length));
-    }
+		this.certificatePath = path;
+	}
 
-    public void setCertificate(Path path) throws IOException {
-        if (!Files.exists(path)) {
-            throw new FileNotFoundException("The provided certificate was not found");
-        }
+	public void setCertificate(String path) throws IOException {
+		setCertificate(Paths.get(path));
+	}
 
-        this.certificatePath = path;
-    }
+	public void setCertificateBase64(String contentBase64) throws IOException {
+		byte[] contentRaw = Util.decodeBase64(contentBase64);
+		setCertificate(contentRaw);
+	}
 
-    public void setCertificate(String path) throws IOException {
-        setCertificate(Paths.get(path));
-    }
+	//endregion
 
-    public void setCertificateBase64(String contentBase64) throws IOException {
-        byte[] contentRaw = Util.decodeBase64(contentBase64);
-        setCertificate(contentRaw);
-    }
-
-    //endregion
-
-    protected SignatureStartResult getResult(String[] response, String transferFile) {
-        SignatureStartResult startResult = new SignatureStartResult();
-        startResult.setToSignHash(response[0]);
-        startResult.setDigestAlgorithm(response[1]);
-        startResult.setDigestAlgorithmOid(response[2]);
-        startResult.setTransferFile(transferFile);
-        return startResult;
-    }
+	protected SignatureStartResult getResult(String[] response, String transferFile) {
+		SignatureStartResult startResult = new SignatureStartResult();
+		startResult.setToSignHash(response[0]);
+		startResult.setDigestAlgorithm(response[1]);
+		startResult.setDigestAlgorithmOid(response[2]);
+		startResult.setTransferFile(transferFile);
+		return startResult;
+	}
 }

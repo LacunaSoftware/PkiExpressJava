@@ -1,40 +1,94 @@
 package com.lacunasoftware.pkiexpress;
 
+
 public class ValidationItemModel {
+	public enum TypeEnum {
+		Success,
+		CertificateNotYetValid,
+		CertificateExpired,
+		CertificateRevoked,
+		CertificateIssuerNotFound,
+		CertificateRevocationStatusUnknown,
+		CertificateChainRootNotTrusted,
+		InvalidCertificateSignature,
+		DecodeError,
+		RequiredSignedAttributeMissing,
+		ForbiddenSignedAttributePresent,
+		RequiredUnsignedAttributeMissing,
+		ForbiddenUnsignedAttributePresent,
+		ContentTypeMismatch,
+		MessageDigestMismatch,
+		SigningCertificateDigestMismatch,
+		SignatureAlgorithmValidationFailed,
+		RevocationDataIssuedBeforeGracePeriod,
+		UncertifiedDateReference,
+		SignaturePolicyMismatch,
+		SigningTimeOutOfCertificateValidity,
+		UnknownSignedAttributesPresent,
+		UnknownUnsignedAttributesPresent,
+		TimestampWithMoreThanOneSigner,
+		TimestampMessageImprintMismatch,
+		TimestampValidationException,
+		CompleteReferencesMismatch,
+		InvalidSignatureTimestamp,
+		InvalidReferencesTimestamp,
+		InvalidArchiveTimestamp,
+		InvalidKeyUsage,
+		InvalidOcspResponse,
+		UnauthorizedIssuer,
+		UnknownRootTrustStatus,
+		InvalidTsl,
+		InvalidCrl,
+		CertificateIssuerValid,
+		CertificateIssuerInvalid,
+		CertificateValidationFailed,
+		SignatureVulnerableToSignerSubstitution,
+		InvalidXmlSignatureSchema,
+		XmlDSigCoreValidationFailed,
+		SignatureTimestampIgnored,
+		InvalidCertificationPathLen,
+		SigningCertificateNotFound,
+		UnauthorizedACIssuer,
+		AlgorithmNotAllowed,
+		UnacceptableSignaturePolicy,
+	}
 
-    public enum TypeEnum {
-        Success,  CertificateNotYetValid,  CertificateExpired,  CertificateRevoked,  CertificateIssuerNotFound,  CertificateRevocationStatusUnknown,  CertificateChainRootNotTrusted,  InvalidCertificateSignature,  DecodeError,  RequiredSignedAttributeMissing,  ForbiddenSignedAttributePresent,  RequiredUnsignedAttributeMissing,  ForbiddenUnsignedAttributePresent,  ContentTypeMismatch,  MessageDigestMismatch,  SigningCertificateDigestMismatch,  SignatureAlgorithmValidationFailed,  RevocationDataIssuedBeforeGracePeriod,  UncertifiedDateReference,  SignaturePolicyMismatch,  SigningTimeOutOfCertificateValidity,  UnknownSignedAttributesPresent,  UnknownUnsignedAttributesPresent,  TimestampWithMoreThanOneSigner,  TimestampMessageImprintMismatch,  TimestampValidationException,  CompleteReferencesMismatch,  InvalidSignatureTimestamp,  InvalidReferencesTimestamp,  InvalidArchiveTimestamp,  InvalidKeyUsage,  InvalidOcspResponse,  UnauthorizedIssuer,  UnknownRootTrustStatus,  InvalidTsl,  InvalidCrl,  CertificateIssuerValid,  CertificateIssuerInvalid,  CertificateValidationFailed,  SignatureVulnerableToSignerSubstitution,  InvalidXmlSignatureSchema,  XmlDSigCoreValidationFailed,  SignatureTimestampIgnored,  InvalidCertificationPathLen,  SigningCertificateNotFound,  UnauthorizedACIssuer,  AlgorithmNotAllowed,  UnacceptableSignaturePolicy,
-    };
-    private TypeEnum type = null;
-    private String message = null;
-    private String detail = null;
-    private ValidationResultsModel innerValidationResults = null;
 
-    public TypeEnum getType() {
-        return type;
-    }
-    public void setType(TypeEnum type) {
-        this.type = type;
-    }
+	private TypeEnum type = null;
+	private String message = null;
+	private String detail = null;
+	private ValidationResultsModel innerValidationResults = null;
 
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
-    public String getDetail() {
-        return detail;
-    }
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
+	public TypeEnum getType() {
+		return type;
+	}
 
-    public ValidationResultsModel getInnerValidationResults() {
-        return innerValidationResults;
-    }
-    public void setInnerValidationResults(ValidationResultsModel innerValidationResults) {
-        this.innerValidationResults = innerValidationResults;
-    }
+	public void setType(TypeEnum type) {
+		this.type = type;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public ValidationResultsModel getInnerValidationResults() {
+		return innerValidationResults;
+	}
+
+	public void setInnerValidationResults(ValidationResultsModel innerValidationResults) {
+		this.innerValidationResults = innerValidationResults;
+	}
 }
