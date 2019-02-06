@@ -87,7 +87,10 @@ public class PadesSigner extends Signer {
 		this.overwriteOriginalFile = overwriteOriginalFile;
 	}
 
-	public void sign() throws IOException {
+	public PKCertificate sign() throws IOException {
+		return sign(false);
+	}
+	public PKCertificate sign(boolean getCert) throws IOException {
 
 		if (pdfToSignPath == null) {
 			throw new RuntimeException("The PDF to be signed was not set");
@@ -115,8 +118,20 @@ public class PadesSigner extends Signer {
 			args.add(vrJsonPath.toString());
 		}
 
+		if (getCert) {
+			// This operation can only be used on version greater than 1.8 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.8"));
+
+			// Invoke command.
+			OperatorResult result = invoke(CommandEnum.CommandSignPades, args);
+
+			// Parse output and return model.
+			SignatureResult resultModel = parseOutput(result.getOutput()[0], SignatureResult.class);
+			return new PKCertificate(resultModel.getSigner());
+		}
+
 		// Invoke command with plain text output (to support PKI Express < 1.3)
 		invokePlain(CommandEnum.CommandSignPades, args);
+		return null;
 	}
-
 }

@@ -78,7 +78,11 @@ public class CadesSigner extends Signer {
 		this.encapsulateContent = encapsulateContent;
 	}
 
-	public void sign() throws IOException {
+	public PKCertificate sign() throws IOException {
+		return sign(false);
+	}
+
+	public PKCertificate sign(boolean getCert) throws IOException {
 
 		if (fileToSignPath == null) {
 			throw new RuntimeException("The file to be signed was not set");
@@ -104,7 +108,20 @@ public class CadesSigner extends Signer {
 			args.add("--detached");
 		}
 
+		if (getCert) {
+			// This operation can only be used on version greater than 1.8 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.8"));
+
+			// Invoke command.
+			OperatorResult result = invoke(CommandEnum.CommandSignCades, args);
+
+			// Parse output and return model.
+			SignatureResult resultModel = parseOutput(result.getOutput()[0], SignatureResult.class);
+			return new PKCertificate(resultModel.getSigner());
+		}
+
 		// Invoke command with plain text output (to support PKI Express < 1.3)
 		invokePlain(CommandEnum.CommandSignCades, args);
+		return null;
 	}
 }
