@@ -123,7 +123,11 @@ public class SignatureFinisher extends PkiExpressOperator {
 	}
 	//endregion
 
-	public void complete() throws IOException {
+	public PKCertificate complete() throws IOException {
+		return complete(false);
+	}
+
+	public PKCertificate complete(boolean getCert) throws IOException {
 
 		if (fileToSignPath == null) {
 			throw new RuntimeException("The file to be signed was not set");
@@ -152,8 +156,20 @@ public class SignatureFinisher extends PkiExpressOperator {
 			args.add(dataFilePath.toString());
 		}
 
+		if (getCert) {
+			// This operation can only be used on version greater than 1.8 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.8"));
+
+			// Invoke command.
+			OperatorResult result = invoke(CommandEnum.CommandCompleteSig, args);
+
+			// Parse output and return model
+			SignatureResult resultModel = parseOutput(result.getOutput()[0], SignatureResult.class);
+			return new PKCertificate(resultModel.getSigner());
+		}
+
 		// Invoke command with plain text output (to support PKI Express < 1.3)
 		invokePlain(CommandEnum.CommandCompleteSig, args);
+		return null;
 	}
-
 }

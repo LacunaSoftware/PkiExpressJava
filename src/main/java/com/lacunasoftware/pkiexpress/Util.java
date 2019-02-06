@@ -10,19 +10,19 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 
-public class Util {
+class Util {
 
-	public static String repeatChar(char c, int count) {
+	static String repeatChar(char c, int count) {
 		char[] array = new char[count];
 		Arrays.fill(array, c);
 		return new String(array);
 	}
 
-	public static boolean isNullOrEmpty(String s) {
+	static boolean isNullOrEmpty(String s) {
 		return (s == null || s.isEmpty());
 	}
 
-	public static byte[] readStream(InputStream stream) throws IOException {
+	static byte[] readStream(InputStream stream) throws IOException {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		int nRead;
 		byte[] data = new byte[16384];
@@ -33,11 +33,11 @@ public class Util {
 		return buffer.toByteArray();
 	}
 
-	public static byte[] decodeBase64(String s) {
+	static byte[] decodeBase64(String s) {
 		return new ObjectMapper().convertValue(s, byte[].class);
 	}
 
-	public static String encodeBase64(byte[] content) {
+	static String encodeBase64(byte[] content) {
 		return new ObjectMapper().convertValue(content, String.class);
 	}
 
