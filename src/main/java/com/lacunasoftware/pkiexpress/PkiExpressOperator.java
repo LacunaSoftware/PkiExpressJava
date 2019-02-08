@@ -44,6 +44,25 @@ public abstract class PkiExpressOperator {
 		this(new PkiExpressConfig());
 	}
 
+	private String escapeArgument(String arg) {
+		int firstQuote = arg.indexOf('\"');
+		int lastQuote = arg.lastIndexOf('\"');
+
+		// Verify the argument already has quotes.
+		String content;
+		if (firstQuote == 0 && lastQuote == (arg.length() - 1)) {
+			content = arg.substring(1, (arg.length() - 2));
+		} else {
+			content = arg;
+		}
+
+		// Perform the character escaping on the argument's content.
+		String escaped = content.replace("\"", "\\\"");
+
+		// Add quotes outside the argument's content.
+		return "\"" + escaped + '\"';
+	}
+
 
 	protected String[] invokePlain(CommandEnum command, List<String> args) throws IOException {
 		OperatorResult result = invoke(command, args, true);
@@ -127,6 +146,12 @@ public abstract class PkiExpressOperator {
 		// Process command arguments
 		String[] argArr = new String[cmdArgs.size()];
 		cmdArgs.toArray(argArr);
+
+		// Escape arguments in order to treat args with \" character, which is not used as the escape
+		// character.
+		for (int i = 0; i < argArr.length; i++) {
+			argArr[i] = escapeArgument(argArr[i]);
+		}
 
 		// Execute the command
 		Process proc;
@@ -233,7 +258,6 @@ public abstract class PkiExpressOperator {
 				if (home == null) {
 					throw new InstallationNotFoundException("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
 				}
-
 			}
 
 		}
