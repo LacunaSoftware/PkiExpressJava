@@ -1,16 +1,17 @@
 package com.lacunasoftware.pkiexpress;
 
+
 /**
  * The text specifications and elements for the PAdES signature visual representation
  */
 public class PadesVisualText {
-
 	private Double fontSize;
 	private String text;
 	private Boolean includeSigningTime;
 	private PadesTextHorizontalAlign horizontalAlign;
 	private PadesVisualRectangle container;
 	private String signingTimeFormat;
+
 
 	public PadesVisualText() {
 		this.horizontalAlign = PadesTextHorizontalAlign.Left;
@@ -73,6 +74,7 @@ public class PadesVisualText {
 		this.includeSigningTime = includeSigningTime;
 		this.fontSize = fontSize;
 	}
+
 
 	public Double getFontSize() {
 		return fontSize;

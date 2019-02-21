@@ -1,95 +1,100 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.math.BigInteger;
 import java.util.Date;
+
 
 /**
  * Contains information about a X.509 public key certificate
  */
 public class PKCertificate {
+	private Name subjectName;
+	private String emailAddress;
+	private Name issuerName;
+	private BigInteger serialNumber;
+	private Date validityStart;
+	private Date validityEnd;
+	private PkiBrazilCertificateFields pkiBrazil;
+	private PkiItalyCertificateFields pkiItaly;
+	private PKCertificate issuer;
+	private byte[] binaryThumbprintSHA256;
+	private String thumbprint;
 
-    private Name subjectName;
-    private String emailAddress;
-    private Name issuerName;
-    private BigInteger serialNumber;
-    private Date validityStart;
-    private Date validityEnd;
-    private PkiBrazilCertificateFields pkiBrazil;
-    private PkiItalyCertificateFields pkiItaly;
-    private PKCertificate issuer;
-    private byte[] binaryThumbprintSHA256;
-    private String thumbprint;
 
-    PKCertificate(CertificateModel model) {
-        this.subjectName = new Name(model.getSubjectName());
-        this.emailAddress = model.getEmailAddress();
-        this.issuerName = new Name(model.getIssuerName());
-        this.serialNumber = new BigInteger(model.getSerialNumber());
-        this.validityStart = model.getValidityStart();
-        this.validityEnd = model.getValidityEnd();
-        if (model.getPkiBrazil() != null) {
-            this.pkiBrazil = new PkiBrazilCertificateFields(model.getPkiBrazil());
-        }
-        if (model.getPkiItaly() != null) {
-            this.pkiItaly = new PkiItalyCertificateFields(model.getPkiItaly());
-        }
-        if (model.getIssuer() != null) {
-            this.issuer = new PKCertificate(model.getIssuer());
-        }
-        this.binaryThumbprintSHA256 = Util.decodeBase64(model.getBinaryThumbprintSHA256());
-        this.thumbprint = model.getThumbprint();
-    }
+	PKCertificate(CertificateModel model) {
+		this.subjectName = new Name(model.getSubjectName());
+		this.emailAddress = model.getEmailAddress();
+		this.issuerName = new Name(model.getIssuerName());
+		this.serialNumber = new BigInteger(model.getSerialNumber());
+		this.validityStart = model.getValidityStart();
+		this.validityEnd = model.getValidityEnd();
+		if (model.getPkiBrazil() != null) {
+			this.pkiBrazil = new PkiBrazilCertificateFields(model.getPkiBrazil());
+		}
+		if (model.getPkiItaly() != null) {
+			this.pkiItaly = new PkiItalyCertificateFields(model.getPkiItaly());
+		}
+		if (model.getIssuer() != null) {
+			this.issuer = new PKCertificate(model.getIssuer());
+		}
+		this.binaryThumbprintSHA256 = Util.decodeBase64(model.getBinaryThumbprintSHA256());
+		this.thumbprint = model.getThumbprint();
+	}
 
-    public Name getSubjectName() {
-        return subjectName;
-    }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+	public Name getSubjectName() {
+		return subjectName;
+	}
 
-    public Name getIssuerName() {
-        return issuerName;
-    }
+	public String getEmailAddress() {
+		return emailAddress;
+	}
 
-    public BigInteger getSerialNumber() {
-        return serialNumber;
-    }
+	public Name getIssuerName() {
+		return issuerName;
+	}
 
-    public Date getValidityStart() {
-        return validityStart;
-    }
+	public BigInteger getSerialNumber() {
+		return serialNumber;
+	}
 
-    public Date getValidityEnd() {
-        return validityEnd;
-    }
+	public Date getValidityStart() {
+		return validityStart;
+	}
 
-    /**
-     * Gets the ICP-Brasil specific certificate fields
-     * @return ICP-Brasil specific certificate fields
-     */
-    public PkiBrazilCertificateFields getPkiBrazil() {
-        return pkiBrazil;
-    }
+	public Date getValidityEnd() {
+		return validityEnd;
+	}
 
-    /**
-     * Gets PKI-Italy specific fields
-     * @return PKI-Italy specific fields
-     */
-    public PkiItalyCertificateFields getPkiItaly() {
-        return pkiItaly;
-    }
+	/**
+	 * Gets the ICP-Brasil specific certificate fields
+	 *
+	 * @return ICP-Brasil specific certificate fields
+	 */
+	public PkiBrazilCertificateFields getPkiBrazil() {
+		return pkiBrazil;
+	}
 
-    public PKCertificate getIssuer() {
-        return issuer;
-    }
+	/**
+	 * Gets PKI-Italy specific fields
+	 *
+	 * @return PKI-Italy specific fields
+	 */
+	public PkiItalyCertificateFields getPkiItaly() {
+		return pkiItaly;
+	}
 
-    public byte[] getBinaryThumbprintSHA256() {
-        return binaryThumbprintSHA256;
-    }
+	public PKCertificate getIssuer() {
+		return issuer;
+	}
 
-    public String getThumbprint() {
-        return thumbprint;
-    }
+	public byte[] getBinaryThumbprintSHA256() {
+		return binaryThumbprintSHA256;
+	}
+
+	public String getThumbprint() {
+		return thumbprint;
+	}
 
 }

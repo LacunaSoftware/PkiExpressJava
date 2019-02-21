@@ -1,81 +1,84 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class TimestampAuthority {
+	private String url;
+	private String token;
+	private String sslThumbprint;
+	private String basicAuth;
+	private TsaAuthenticationType authType;
 
-    private String url;
-    private String token;
-    private String sslThumbprint;
-    private String basicAuth;
-    private TsaAuthenticationType authType;
 
-    public TimestampAuthority(String url) {
-        this.url = url;
-        this.authType = TsaAuthenticationType.None;
-    }
+	public TimestampAuthority(String url) {
+		this.url = url;
+		this.authType = TsaAuthenticationType.None;
+	}
 
-    public void setOAuthTokenAuthentication(String token) {
-        this.token = token;
-        this.authType = TsaAuthenticationType.OAuthToken;
-    }
 
-    public void setBasicAuthentication(String username, String password) {
-        this.basicAuth = String.format("%s:%s", username, password);
-        this.authType = TsaAuthenticationType.BasicAuth;
-    }
+	public void setOAuthTokenAuthentication(String token) {
+		this.token = token;
+		this.authType = TsaAuthenticationType.OAuthToken;
+	}
 
-    public void setSSLThumbprint(String sslThumbprint) {
-        this.sslThumbprint = sslThumbprint;
-        this.authType = TsaAuthenticationType.SSL;
-    }
+	public void setBasicAuthentication(String username, String password) {
+		this.basicAuth = String.format("%s:%s", username, password);
+		this.authType = TsaAuthenticationType.BasicAuth;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public void setSSLThumbprint(String sslThumbprint) {
+		this.sslThumbprint = sslThumbprint;
+		this.authType = TsaAuthenticationType.SSL;
+	}
 
-    public String getToken() {
-        return token;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public String getSslThumbprint() {
-        return sslThumbprint;
-    }
+	public String getToken() {
+		return token;
+	}
 
-    public String getBasicAuth() {
-        return basicAuth;
-    }
+	public String getSslThumbprint() {
+		return sslThumbprint;
+	}
 
-    public TsaAuthenticationType getAuthType() {
-        return authType;
-    }
+	public String getBasicAuth() {
+		return basicAuth;
+	}
 
-    List<String> getCmdArguments() {
+	public TsaAuthenticationType getAuthType() {
+		return authType;
+	}
 
-        List<String> args = new ArrayList<String>();
-        args.add("--tsa-url");
-        args.add(url);
+	List<String> getCmdArguments() {
 
-        switch (authType) {
-            case None:
-                break;
-            case BasicAuth:
-                args.add("--tsa-basic-auth");
-                args.add(basicAuth);
-                break;
-            case SSL:
-                args.add("--tsa-ssl-thumbprint");
-                args.add(sslThumbprint);
-                break;
-            case OAuthToken:
-                args.add("--tsa-token");
-                args.add(token);
-                break;
-            default:
-                throw new RuntimeException("Unknown authentication type of the timestamp authority");
-        }
+		List<String> args = new ArrayList<String>();
+		args.add("--tsa-url");
+		args.add(url);
 
-        return args;
-    }
+		switch (authType) {
+			case None:
+				break;
+			case BasicAuth:
+				args.add("--tsa-basic-auth");
+				args.add(basicAuth);
+				break;
+			case SSL:
+				args.add("--tsa-ssl-thumbprint");
+				args.add(sslThumbprint);
+				break;
+			case OAuthToken:
+				args.add("--tsa-token");
+				args.add(token);
+				break;
+			default:
+				throw new RuntimeException("Unknown authentication type of the timestamp authority");
+		}
+
+		return args;
+	}
 }

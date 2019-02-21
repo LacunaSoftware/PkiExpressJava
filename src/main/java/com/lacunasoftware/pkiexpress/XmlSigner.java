@@ -1,5 +1,6 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,69 +8,87 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class XmlSigner extends Signer {
+	private Path xmlToSignPath;
+	private String toSignElementId;
 
-    private Path xmlToSignPath;
-    private String toSignElementId;
+
+	public XmlSigner(PkiExpressConfig config) {
+		super(config);
+	}
+
+	public XmlSigner() throws IOException {
+		this(new PkiExpressConfig());
+	}
 
 
-    public XmlSigner(PkiExpressConfig config) {
-        super(config);
-    }
+	//region setXmlToSign
+	public void setXmlToSign(InputStream inputStream) throws IOException {
+		this.xmlToSignPath = writeToTempFile(inputStream);
+	}
 
-    public XmlSigner() throws IOException {
-        this(new PkiExpressConfig());
-    }
+	public void setXmlToSign(byte[] content) throws IOException {
+		setXmlToSign(new ByteArrayInputStream(content, 0, content.length));
+	}
 
-    //region setXmlToSign
-    public void setXmlToSign(InputStream inputStream) throws IOException {
-        this.xmlToSignPath = writeToTempFile(inputStream);
-    }
+	public void setXmlToSign(Path path) throws IOException {
+		if (!Files.exists(path)) {
+			throw new FileNotFoundException("The provided file to be signed was not found");
+		}
 
-    public void setXmlToSign(byte[] content) throws IOException {
-        setXmlToSign(new ByteArrayInputStream(content, 0, content.length));
-    }
+		this.xmlToSignPath = path;
+	}
 
-    public void setXmlToSign(Path path) throws IOException {
-        if (!Files.exists(path)) {
-            throw new FileNotFoundException("The provided file to be signed was not found");
-        }
+	public void setXmlToSign(String path) throws IOException {
+		setXmlToSign(path != null ? Paths.get(path) : null);
+	}
+	//endregion
 
-        this.xmlToSignPath = path;
-    }
+	public void setToSignElementId(String toSignElementId) {
+		this.toSignElementId = toSignElementId;
+	}
 
-    public void setXmlToSign(String path) throws IOException {
-        setXmlToSign(path != null ? Paths.get(path) : null);
-    }
-    //endregion
+	public PKCertificate sign() throws IOException {
+		return sign(false);
+	}
 
-    public void setToSignElementId(String toSignElementId) {
-        this.toSignElementId = toSignElementId;
-    }
+	public PKCertificate sign(boolean getCert) throws IOException {
 
-    public void sign() throws IOException {
+		if (xmlToSignPath == null) {
+			throw new RuntimeException("The file to be signed was not set");
+		}
 
-        if (xmlToSignPath == null) {
-            throw new RuntimeException("The file to be signed was not set");
-        }
+		if (outputFilePath == null) {
+			throw new RuntimeException("The output destination was not set");
+		}
 
-        if (outputFilePath == null) {
-            throw new RuntimeException("The output destination was not set");
-        }
+		List<String> args = new ArrayList<String>();
+		args.add(xmlToSignPath.toString());
+		args.add(outputFilePath.toString());
 
-        List<String> args = new ArrayList<String>();
-        args.add(xmlToSignPath.toString());
-        args.add(outputFilePath.toString());
+		// Verify and add common options between signers
+		verifyAndAddCommonOptions(args);
 
-        // Verify and add common options between signers
-        verifyAndAddCommonOptions(args);
+		if (!Util.isNullOrEmpty(toSignElementId)) {
+			args.add("--element-id");
+			args.add(toSignElementId);
+		}
 
-        if (!Util.isNullOrEmpty(toSignElementId)) {
-            args.add("--element-id");
-            args.add(toSignElementId);
-        }
+		if (getCert) {
+			// This operation can only be used on version greater than 1.8 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.8"));
 
-        // Invoke command with plain text output (to support PKI Express < 1.3)
-        invokePlain(CommandEnum.CommandSignXml, args);
-    }
+			// Invoke command.
+			OperatorResult result = invoke(CommandEnum.CommandSignXml, args);
+
+			// Parse output and return model.
+			SignatureResult resultModel = parseOutput(result.getOutput()[0], SignatureResult.class);
+			return new PKCertificate(resultModel.getSigner());
+		}
+
+		// Invoke command with plain text output (to support PKI Express < 1.3)
+		invokePlain(CommandEnum.CommandSignXml, args);
+		return null;
+	}
 }

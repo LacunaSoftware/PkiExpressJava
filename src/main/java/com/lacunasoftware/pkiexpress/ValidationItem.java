@@ -1,14 +1,15 @@
 package com.lacunasoftware.pkiexpress;
 
+
 /**
  * An item of validation.
  */
 public class ValidationItem {
-	
 	private ValidationItemTypes type;
 	private String message;
 	private String detail;
 	private ValidationResults innerValidationResults;
+
 
 	ValidationItem(ValidationItemModel model) {
 		this.type = ValidationItemTypes.valueOf(model.getType().toString());
@@ -18,12 +19,12 @@ public class ValidationItem {
 			this.innerValidationResults = new ValidationResults(model.getInnerValidationResults());
 		}
 	}
-	
+
 
 	public ValidationItemTypes getType() {
 		return type;
 	}
-	
+
 	public String getMessage() {
 		return message;
 	}
@@ -40,7 +41,7 @@ public class ValidationItem {
 	public String toString() {
 		return toString(0);
 	}
-	
+
 	String toString(int identationLevel) {
 		String tab = Util.repeatChar('\t', identationLevel);
 		StringBuilder text = new StringBuilder();

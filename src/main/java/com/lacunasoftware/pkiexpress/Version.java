@@ -1,65 +1,68 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
+
 class Version {
+	private List<Integer> internalVersions;
 
-    private List<Integer> internalVersions;
 
-    Version(String version) {
+	Version(String version) {
 
-        if (version == null || version.length() <= 0) {
-            throw new IllegalArgumentException("No string version was provided");
-        }
+		if (version == null || version.length() <= 0) {
+			throw new IllegalArgumentException("No string version was provided");
+		}
 
-        String[] versions = version.split("\\.");
-        this.internalVersions = new ArrayList<Integer>();
-        for (int i = 0; i < versions.length; i++) {
-            this.internalVersions.add(Integer.parseInt(versions[i]));
-        }
-    }
+		String[] versions = version.split("\\.");
+		this.internalVersions = new ArrayList<Integer>();
+		for (int i = 0; i < versions.length; i++) {
+			this.internalVersions.add(Integer.parseInt(versions[i]));
+		}
+	}
 
-    int compareTo(Version comparedVersion) {
 
-        List<Integer> instanceInternalVersions = new ArrayList<Integer>(this.internalVersions);
-        List<Integer> comparedInternalVersions = new ArrayList<Integer>(comparedVersion.getInternalVersions());
+	int compareTo(Version comparedVersion) {
 
-        while (instanceInternalVersions.size() != comparedInternalVersions.size()) {
-            if (instanceInternalVersions.size() > comparedInternalVersions.size()) {
-                comparedInternalVersions.add(0);
-            } else {
-                instanceInternalVersions.add(0);
-            }
-        }
+		List<Integer> instanceInternalVersions = new ArrayList<Integer>(this.internalVersions);
+		List<Integer> comparedInternalVersions = new ArrayList<Integer>(comparedVersion.getInternalVersions());
 
-        for (int i = 0; i < instanceInternalVersions.size(); i++) {
-            if (instanceInternalVersions.get(i) > comparedInternalVersions.get(i)) {
-                return 1;
-            } else if (instanceInternalVersions.get(i) < comparedInternalVersions.get(i)) {
-                return -1;
-            }
-        }
+		while (instanceInternalVersions.size() != comparedInternalVersions.size()) {
+			if (instanceInternalVersions.size() > comparedInternalVersions.size()) {
+				comparedInternalVersions.add(0);
+			} else {
+				instanceInternalVersions.add(0);
+			}
+		}
 
-        return 0;
-    }
+		for (int i = 0; i < instanceInternalVersions.size(); i++) {
+			if (instanceInternalVersions.get(i) > comparedInternalVersions.get(i)) {
+				return 1;
+			} else if (instanceInternalVersions.get(i) < comparedInternalVersions.get(i)) {
+				return -1;
+			}
+		}
 
-    public List<Integer> getInternalVersions() {
-        return internalVersions;
-    }
+		return 0;
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < this.internalVersions.size() - 1; i++) {
-            sb.append(this.internalVersions.get(i).toString());
-            sb.append(".");
-        }
+	public List<Integer> getInternalVersions() {
+		return internalVersions;
+	}
 
-        if (this.internalVersions.size() > 0) {
-            sb.append(this.internalVersions.get(this.internalVersions.size() - 1));
-        }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < this.internalVersions.size() - 1; i++) {
+			sb.append(this.internalVersions.get(i).toString());
+			sb.append(".");
+		}
 
-        return sb.toString();
-    }
+		if (this.internalVersions.size() > 0) {
+			sb.append(this.internalVersions.get(this.internalVersions.size() - 1));
+		}
+
+		return sb.toString();
+	}
 }

@@ -1,39 +1,42 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class PadesSignatureExplorer extends SignatureExplorer {
 
-    public PadesSignatureExplorer(PkiExpressConfig config) {
-        super(config);
-    }
+	public PadesSignatureExplorer(PkiExpressConfig config) {
+		super(config);
+	}
 
-    public PadesSignatureExplorer() throws IOException {
-        this(new PkiExpressConfig());
-    }
+	public PadesSignatureExplorer() throws IOException {
+		this(new PkiExpressConfig());
+	}
 
-    public PadesSignature open() throws IOException {
 
-        if (signatureFilePath == null) {
-            throw new RuntimeException("The provided signature file was not found");
-        }
+	public PadesSignature open() throws IOException {
 
-        List<String> args = new ArrayList<String>();
-        args.add(signatureFilePath.toString());
+		if (signatureFilePath == null) {
+			throw new RuntimeException("The provided signature file was not found");
+		}
 
-        // Verify and add common options
-        verifyAndAddCommonOptions(args);
+		List<String> args = new ArrayList<String>();
+		args.add(signatureFilePath.toString());
 
-        // This operation can only be used on versions greater than 1.3 of the PKI Express.
-        this.versionManager.requireVersion(new Version("1.3"));
+		// Verify and add common options
+		verifyAndAddCommonOptions(args);
 
-        // Invoke command
-        OperatorResult result = invoke(CommandEnum.CommandOpenPades, args);
+		// This operation can only be used on versions greater than 1.3 of the PKI Express.
+		this.versionManager.requireVersion(new Version("1.3"));
 
-        // Parse output and return model
-        PadesSignatureModel resultModel = parseOutput(result.getOutput()[0], PadesSignatureModel.class);
-        return new PadesSignature(resultModel);
-    }
+		// Invoke command
+		OperatorResult result = invoke(CommandEnum.CommandOpenPades, args);
+
+		// Parse output and return model
+		PadesSignatureModel resultModel = parseOutput(result.getOutput()[0], PadesSignatureModel.class);
+		return new PadesSignature(resultModel);
+	}
 }

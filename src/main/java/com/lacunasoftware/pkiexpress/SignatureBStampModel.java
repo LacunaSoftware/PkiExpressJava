@@ -1,74 +1,77 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.util.Date;
 import java.util.List;
 
+
 public class SignatureBStampModel {
+	public enum BlockchainsEnum {
+		Bitcoin
+	}
 
-    public enum BlockchainsEnum {
-        Bitcoin
-    }
-    private List<DigestAlgorithmAndValueModel> documentDigests;
-    private List<DigestAlgorithmAndValueModel> indexDigests;
-    private FileModel indexFile;
-    private BlockchainsEnum blockchain;
-    private String transactionId;
-    private long blockNumber;
-    private Date blockDate;
+	private List<DigestAlgorithmAndValueModel> documentDigests;
+	private List<DigestAlgorithmAndValueModel> indexDigests;
+	private FileModel indexFile;
+	private BlockchainsEnum blockchain;
+	private String transactionId;
+	private long blockNumber;
+	private Date blockDate;
 
-    public List<DigestAlgorithmAndValueModel> getDocumentDigests() {
-        return documentDigests;
-    }
 
-    public void setDocumentDigests(List<DigestAlgorithmAndValueModel> documentDigests) {
-        this.documentDigests = documentDigests;
-    }
+	public List<DigestAlgorithmAndValueModel> getDocumentDigests() {
+		return documentDigests;
+	}
 
-    public List<DigestAlgorithmAndValueModel> getIndexDigests() {
-        return indexDigests;
-    }
+	public void setDocumentDigests(List<DigestAlgorithmAndValueModel> documentDigests) {
+		this.documentDigests = documentDigests;
+	}
 
-    public void setIndexDigests(List<DigestAlgorithmAndValueModel> indexDigests) {
-        this.indexDigests = indexDigests;
-    }
+	public List<DigestAlgorithmAndValueModel> getIndexDigests() {
+		return indexDigests;
+	}
 
-    public FileModel getIndexFile() {
-        return indexFile;
-    }
+	public void setIndexDigests(List<DigestAlgorithmAndValueModel> indexDigests) {
+		this.indexDigests = indexDigests;
+	}
 
-    public void setIndexFile(FileModel indexFile) {
-        this.indexFile = indexFile;
-    }
+	public FileModel getIndexFile() {
+		return indexFile;
+	}
 
-    public BlockchainsEnum getBlockchain() {
-        return blockchain;
-    }
+	public void setIndexFile(FileModel indexFile) {
+		this.indexFile = indexFile;
+	}
 
-    public void setBlockchain(BlockchainsEnum blockchain) {
-        this.blockchain = blockchain;
-    }
+	public BlockchainsEnum getBlockchain() {
+		return blockchain;
+	}
 
-    public String getTransactionId() {
-        return transactionId;
-    }
+	public void setBlockchain(BlockchainsEnum blockchain) {
+		this.blockchain = blockchain;
+	}
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
+	public String getTransactionId() {
+		return transactionId;
+	}
 
-    public long getBlockNumber() {
-        return blockNumber;
-    }
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
 
-    public void setBlockNumber(long blockNumber) {
-        this.blockNumber = blockNumber;
-    }
+	public long getBlockNumber() {
+		return blockNumber;
+	}
 
-    public Date getBlockDate() {
-        return blockDate;
-    }
+	public void setBlockNumber(long blockNumber) {
+		this.blockNumber = blockNumber;
+	}
 
-    public void setBlockDate(Date blockDate) {
-        this.blockDate = blockDate;
-    }
+	public Date getBlockDate() {
+		return blockDate;
+	}
+
+	public void setBlockDate(Date blockDate) {
+		this.blockDate = blockDate;
+	}
 }

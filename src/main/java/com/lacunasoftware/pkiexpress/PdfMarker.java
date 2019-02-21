@@ -1,5 +1,6 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
@@ -9,138 +10,144 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class PdfMarker extends PkiExpressOperator {
+	private PadesMeasurementUnits measurementUnits;
+	private PadesPageOptimization pageOptimization;
+	private List<PdfMark> marks;
+	private Path filePath;
+	private Path outputFilePath;
+	private boolean overwriteOriginalFile = false;
 
-    private PadesMeasurementUnits measurementUnits;
-    private PadesPageOptimization pageOptimization;
-    private List<PdfMark> marks;
-    private Path filePath;
-    private Path outputFilePath;
-    private boolean overwriteOriginalFile = false;
+
+	public PdfMarker(PkiExpressConfig config) {
+		super(config);
+		this.marks = new ArrayList<PdfMark>();
+		this.measurementUnits = PadesMeasurementUnits.Centimeters;
+	}
+
+	public PdfMarker() throws IOException {
+		this(new PkiExpressConfig());
+	}
 
 
-    public PdfMarker(PkiExpressConfig config) {
-        super(config);
-        this.marks = new ArrayList<PdfMark>();
-        this.measurementUnits = PadesMeasurementUnits.Centimeters;
-    }
+	//region setFile
+	public void setFile(InputStream stream) throws IOException {
+		this.filePath = writeToTempFile(stream);
+	}
 
-    public PdfMarker() throws IOException {
-        this(new PkiExpressConfig());
-    }
+	public void setFile(byte[] content) throws IOException {
+		setFile(new ByteArrayInputStream(content, 0, content.length));
+	}
 
-    //region setFile
-    public void setFile(InputStream stream) throws IOException {
-        this.filePath = writeToTempFile(stream);
-    }
+	public void setFile(Path path) throws IOException {
+		if (!Files.exists(path)) {
+			throw new FileNotFoundException("The provided file to be signed was not found");
+		}
+		this.filePath = path;
+	}
 
-    public void setFile(byte[] content) throws IOException {
-        setFile(new ByteArrayInputStream(content, 0, content.length));
-    }
+	public void setFile(String path) throws IOException {
+		setFile(path != null ? Paths.get(path) : null);
+	}
+	//endregion
 
-    public void setFile(Path path) throws IOException {
-        if (!Files.exists(path)) {
-            throw new FileNotFoundException("The provided file to be signed was not found");
-        }
-        this.filePath = path;
-    }
+	public void setOutputFilePath(Path outputFilePath) {
+		this.outputFilePath = outputFilePath;
+	}
 
-    public void setFile(String path) throws IOException {
-        setFile(path != null ? Paths.get(path) : null);
-    }
-    //endregion
+	public PadesMeasurementUnits getMeasurementUnits() {
+		return measurementUnits;
+	}
 
-    public void setOutputFilePath(Path outputFilePath) {
-        this.outputFilePath = outputFilePath;
-    }
+	public void setMeasurementUnits(PadesMeasurementUnits measurementUnits) {
+		this.measurementUnits = measurementUnits;
+	}
 
-    public PadesMeasurementUnits getMeasurementUnits() {
-        return measurementUnits;
-    }
-    public void setMeasurementUnits(PadesMeasurementUnits measurementUnits) {
-        this.measurementUnits = measurementUnits;
-    }
+	public PadesPageOptimization getPageOptimization() {
+		return pageOptimization;
+	}
 
-    public PadesPageOptimization getPageOptimization() {
-        return pageOptimization;
-    }
-    public void setPageOptimization(PadesPageOptimization pageOptimization) {
-        this.pageOptimization = pageOptimization;
-    }
+	public void setPageOptimization(PadesPageOptimization pageOptimization) {
+		this.pageOptimization = pageOptimization;
+	}
 
-    public List<PdfMark> getMarks() {
-        return marks;
-    }
-    public void setMarks(List<PdfMark> marks) {
-        this.marks = marks;
-    }
-    public void addMark(PdfMark mark) {
-        if (this.marks == null) {
-            this.marks = new ArrayList<PdfMark>();
-        }
-        this.marks.add(mark);
-    }
+	public List<PdfMark> getMarks() {
+		return marks;
+	}
 
-    public boolean getOverwriteOriginalFile() {
-        return overwriteOriginalFile;
-    }
-    public void setOverwriteOriginalFile(boolean overwriteOriginalFile) {
-        this.overwriteOriginalFile = overwriteOriginalFile;
-    }
+	public void setMarks(List<PdfMark> marks) {
+		this.marks = marks;
+	}
 
-    public void apply() throws IOException {
+	public void addMark(PdfMark mark) {
+		if (this.marks == null) {
+			this.marks = new ArrayList<PdfMark>();
+		}
+		this.marks.add(mark);
+	}
 
-        if (filePath == null) {
-            throw new RuntimeException("The file to be marked was not set");
-        }
+	public boolean getOverwriteOriginalFile() {
+		return overwriteOriginalFile;
+	}
 
-        List<String> args = new ArrayList<String>();
-        args.add(filePath.toString());
+	public void setOverwriteOriginalFile(boolean overwriteOriginalFile) {
+		this.overwriteOriginalFile = overwriteOriginalFile;
+	}
 
-        // Generate changes file
-        Path changesFilePath = generateChangesFile(marks, measurementUnits, pageOptimization);
-        args.add(changesFilePath.toString());
+	public void apply() throws IOException {
 
-        // Logic to overwrite original file or use the output file
-        if (overwriteOriginalFile) {
-            args.add("--overwrite");
-        } else {
-            args.add(outputFilePath.toString());
-        }
+		if (filePath == null) {
+			throw new RuntimeException("The file to be marked was not set");
+		}
 
-        // This operation can only be used on versions greater than 1.3 of the PKI Express.
-        versionManager.requireVersion(new Version("1.3"));
+		List<String> args = new ArrayList<String>();
+		args.add(filePath.toString());
 
-        // Invoke command
-        invoke(CommandEnum.CommandEditPdf, args);
-    }
+		// Generate changes file
+		Path changesFilePath = generateChangesFile(marks, measurementUnits, pageOptimization);
+		args.add(changesFilePath.toString());
 
-    private Path generateChangesFile(
-            List<PdfMark> marks,
-            PadesMeasurementUnits measurementUnits,
-            PadesPageOptimization pageOptimization
-    ) throws IOException {
+		// Logic to overwrite original file or use the output file
+		if (overwriteOriginalFile) {
+			args.add("--overwrite");
+		} else {
+			args.add(outputFilePath.toString());
+		}
 
-        // Generate model
-        ChangesFileModel request = new ChangesFileModel();
-        List<PdfMarkModel> marksModels = new ArrayList<PdfMarkModel>();
-        for (PdfMark pm : marks) {
-            marksModels.add(pm.toModel());
-        }
-        request.setMarks(marksModels);
-        if (measurementUnits != null) {
-            request.setMeasurementUnits(measurementUnits.toString());
-        }
-        if (pageOptimization != null) {
-            request.setPageOptimization(pageOptimization.toModel());
-        }
+		// This operation can only be used on versions greater than 1.3 of the PKI Express.
+		versionManager.requireVersion(new Version("1.3"));
 
-        // Store json file
-        Path tempFilePath = createTempFile();
-        OutputStream outputStream = new FileOutputStream(tempFilePath.toFile());
-        new ObjectMapper().writeValue(outputStream, request);
-        outputStream.close();
+		// Invoke command
+		invoke(CommandEnum.CommandEditPdf, args);
+	}
 
-        return tempFilePath;
-    }
+	private Path generateChangesFile(
+			List<PdfMark> marks,
+			PadesMeasurementUnits measurementUnits,
+			PadesPageOptimization pageOptimization
+	) throws IOException {
+
+		// Generate model
+		ChangesFileModel request = new ChangesFileModel();
+		List<PdfMarkModel> marksModels = new ArrayList<PdfMarkModel>();
+		for (PdfMark pm : marks) {
+			marksModels.add(pm.toModel());
+		}
+		request.setMarks(marksModels);
+		if (measurementUnits != null) {
+			request.setMeasurementUnits(measurementUnits.toString());
+		}
+		if (pageOptimization != null) {
+			request.setPageOptimization(pageOptimization.toModel());
+		}
+
+		// Store json file
+		Path tempFilePath = createTempFile();
+		OutputStream outputStream = new FileOutputStream(tempFilePath.toFile());
+		new ObjectMapper().writeValue(outputStream, request);
+		outputStream.close();
+
+		return tempFilePath;
+	}
 }

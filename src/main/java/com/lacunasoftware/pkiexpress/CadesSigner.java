@@ -1,5 +1,6 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,102 +8,120 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class CadesSigner extends Signer {
+	private Path fileToSignPath;
+	private Path dataFilePath;
 
-    private Path fileToSignPath;
-    private Path dataFilePath;
-
-    @Deprecated
-    public Boolean encapsulateContent = true;
+	@Deprecated
+	public Boolean encapsulateContent = true;
 
 
-    public CadesSigner(PkiExpressConfig config) {
-        super(config);
-    }
+	public CadesSigner(PkiExpressConfig config) {
+		super(config);
+	}
 
-    public CadesSigner() throws IOException {
-        this(new PkiExpressConfig());
-    }
+	public CadesSigner() throws IOException {
+		this(new PkiExpressConfig());
+	}
 
-    //region setFileToSign
-    public void setFileToSign(InputStream inputStream) throws IOException {
-        this.fileToSignPath = writeToTempFile(inputStream);
-    }
 
-    public void setFileToSign(byte[] content) throws IOException {
-        setFileToSign(new ByteArrayInputStream(content, 0, content.length));
-    }
+	//region setFileToSign
+	public void setFileToSign(InputStream inputStream) throws IOException {
+		this.fileToSignPath = writeToTempFile(inputStream);
+	}
 
-    public void setFileToSign(Path path) throws IOException {
-        if (!Files.exists(path)) {
-            throw new FileNotFoundException("The provided file to be signed was not found");
-        }
+	public void setFileToSign(byte[] content) throws IOException {
+		setFileToSign(new ByteArrayInputStream(content, 0, content.length));
+	}
 
-        this.fileToSignPath = path;
-    }
+	public void setFileToSign(Path path) throws IOException {
+		if (!Files.exists(path)) {
+			throw new FileNotFoundException("The provided file to be signed was not found");
+		}
 
-    public void setFileToSign(String path) throws IOException {
-        setFileToSign(path != null ? Paths.get(path) : null);
-    }
-    //endregion
+		this.fileToSignPath = path;
+	}
 
-    //region setDatafile
-    public void setDataFile(InputStream inputStream) throws IOException {
-        this.dataFilePath = writeToTempFile(inputStream);
-    }
+	public void setFileToSign(String path) throws IOException {
+		setFileToSign(path != null ? Paths.get(path) : null);
+	}
+	//endregion
 
-    public void setDataFile(byte[] content) throws IOException {
-        setDataFile(new ByteArrayInputStream(content, 0, content.length));
-    }
+	//region setDatafile
+	public void setDataFile(InputStream inputStream) throws IOException {
+		this.dataFilePath = writeToTempFile(inputStream);
+	}
 
-    public void setDataFile(Path path) throws IOException {
-        if (!Files.exists(path)) {
-            throw new FileNotFoundException("The provided file to be signed was not found");
-        }
+	public void setDataFile(byte[] content) throws IOException {
+		setDataFile(new ByteArrayInputStream(content, 0, content.length));
+	}
 
-        this.dataFilePath = path;
-    }
+	public void setDataFile(Path path) throws IOException {
+		if (!Files.exists(path)) {
+			throw new FileNotFoundException("The provided file to be signed was not found");
+		}
 
-    public void setDataFile(String path) throws IOException {
-        setDataFile(path != null ? Paths.get(path) : null);
-    }
-    //endregion
+		this.dataFilePath = path;
+	}
 
-    public Boolean getEncapsulateContent() {
-        return encapsulateContent;
-    }
+	public void setDataFile(String path) throws IOException {
+		setDataFile(path != null ? Paths.get(path) : null);
+	}
+	//endregion
 
-    public void setEncapsulateContent(Boolean encapsulateContent) {
-        this.encapsulateContent = encapsulateContent;
-    }
+	public Boolean getEncapsulateContent() {
+		return encapsulateContent;
+	}
 
-    public void sign() throws IOException {
+	public void setEncapsulateContent(Boolean encapsulateContent) {
+		this.encapsulateContent = encapsulateContent;
+	}
 
-        if (fileToSignPath == null) {
-            throw new RuntimeException("The file to be signed was not set");
-        }
+	public PKCertificate sign() throws IOException {
+		return sign(false);
+	}
 
-        if (outputFilePath == null) {
-            throw new RuntimeException("The output destination was not set");
-        }
+	public PKCertificate sign(boolean getCert) throws IOException {
 
-        List<String> args = new ArrayList<String>();
-        args.add(fileToSignPath.toString());
-        args.add(outputFilePath.toString());
+		if (fileToSignPath == null) {
+			throw new RuntimeException("The file to be signed was not set");
+		}
 
-        // Verify and add common options between signers
-        verifyAndAddCommonOptions(args);
+		if (outputFilePath == null) {
+			throw new RuntimeException("The output destination was not set");
+		}
 
-        if (dataFilePath != null) {
-            args.add("--data-file");
-            args.add(dataFilePath.toString());
-        }
+		List<String> args = new ArrayList<String>();
+		args.add(fileToSignPath.toString());
+		args.add(outputFilePath.toString());
 
-        if (!encapsulateContent) {
-            args.add("--detached");
-        }
+		// Verify and add common options between signers
+		verifyAndAddCommonOptions(args);
 
-        // Invoke command with plain text output (to support PKI Express < 1.3)
-        invokePlain(CommandEnum.CommandSignCades, args);
-    }
+		if (dataFilePath != null) {
+			args.add("--data-file");
+			args.add(dataFilePath.toString());
+		}
+
+		if (!encapsulateContent) {
+			args.add("--detached");
+		}
+
+		if (getCert) {
+			// This operation can only be used on version greater than 1.8 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.8"));
+
+			// Invoke command.
+			OperatorResult result = invoke(CommandEnum.CommandSignCades, args);
+
+			// Parse output and return model.
+			SignatureResult resultModel = parseOutput(result.getOutput()[0], SignatureResult.class);
+			return new PKCertificate(resultModel.getSigner());
+		}
+
+		// Invoke command with plain text output (to support PKI Express < 1.3)
+		invokePlain(CommandEnum.CommandSignCades, args);
+		return null;
+	}
 }

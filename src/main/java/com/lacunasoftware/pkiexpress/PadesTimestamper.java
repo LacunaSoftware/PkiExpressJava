@@ -1,5 +1,6 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,11 +11,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PadesTimestamper extends PkiExpressOperator {
 
+public class PadesTimestamper extends PkiExpressOperator {
 	private Path pdfPath;
 	private Path outputFilePath;
 	private boolean overwriteOriginalFile = false;
+
 
 	public PadesTimestamper(PkiExpressConfig config) {
 		super(config);
@@ -23,6 +25,7 @@ public class PadesTimestamper extends PkiExpressOperator {
 	public PadesTimestamper() throws IOException {
 		this(new PkiExpressConfig());
 	}
+
 
 	public Path getPdfPath() {
 		return pdfPath;

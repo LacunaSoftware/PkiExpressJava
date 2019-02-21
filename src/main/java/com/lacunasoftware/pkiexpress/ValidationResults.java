@@ -1,22 +1,25 @@
 package com.lacunasoftware.pkiexpress;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Contains the results of a validation.
  */
 public class ValidationResults {
-	
 	private List<ValidationItem> passedChecks = new ArrayList<ValidationItem>();
 	private List<ValidationItem> errors = new ArrayList<ValidationItem>();
 	private List<ValidationItem> warnings = new ArrayList<ValidationItem>();
+
 
 	ValidationResults(ValidationResultsModel model) {
 		convertItems(model.getPassedChecks(), this.passedChecks);
 		convertItems(model.getWarnings(), this.warnings);
 		convertItems(model.getErrors(), this.errors);
 	}
+
 
 	public List<ValidationItem> getPassedChecks() {
 		return passedChecks;
@@ -37,29 +40,31 @@ public class ValidationResults {
 	/**
 	 * Denotes whether the validation passed all checks without errors. If this method returns true,
 	 * there may be warnings, but not errors.
+	 *
 	 * @return true if the validation passed all checks without errors, false otherwise.
 	 */
 	public boolean isValid() {
 		return errors.isEmpty();
 	}
-	
+
 	public boolean hasErrors() {
 		return !errors.isEmpty();
 	}
-	
+
 	public boolean hasWarnings() {
 		return !warnings.isEmpty();
 	}
-	
+
 	public String getSummary() {
 		return getSummary(0);
 	}
-	
+
 	@Override
 	public String toString() {
 		return toString(0);
-	};
-	
+	}
+
+
 	String toString(int identationLevel) {
 		String tab = Util.repeatChar('\t', identationLevel);
 		StringBuilder text = new StringBuilder();
@@ -87,7 +92,7 @@ public class ValidationResults {
 		}
 		return text.toString();
 	}
-	
+
 	private String getSummary(int identationLevel) {
 		String tab = Util.repeatChar('\t', identationLevel);
 		StringBuilder text = new StringBuilder();
@@ -113,13 +118,13 @@ public class ValidationResults {
 		}
 		return text.toString();
 	}
-	
+
 	private static void convertItems(List<ValidationItemModel> from, List<ValidationItem> to) {
 		for (ValidationItemModel model : from) {
 			to.add(new ValidationItem(model));
 		}
 	}
-	
+
 	private static void appendItems(StringBuilder text, List<ValidationItem> items, int identationLevel) {
 		boolean isFirst = true;
 		String tab = Util.repeatChar('\t', identationLevel);
