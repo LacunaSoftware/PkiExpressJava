@@ -87,7 +87,7 @@ public class Pkcs12Generator extends PkiExpressOperator {
 		args.add(this.key);
 		args.add(this.certFilePath.toString());
 
-		if (this.password != null) {
+		if (password != null) {
 			args.add("--password");
 			args.add(password);
 		}
