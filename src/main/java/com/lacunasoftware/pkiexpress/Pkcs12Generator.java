@@ -70,7 +70,8 @@ public class Pkcs12Generator extends PkiExpressOperator {
 	}
 
 	public Pkcs12GenerationResult generate() throws IOException {
-		return generate(this.password);
+		String password = this.password;
+		return generate(password);
 	}
 
 	public Pkcs12GenerationResult generate(String password) throws IOException {
@@ -86,9 +87,9 @@ public class Pkcs12Generator extends PkiExpressOperator {
 		args.add(this.key);
 		args.add(this.certFilePath.toString());
 
-		if (this.password != null) {
+		if (password != null) {
 			args.add("--password");
-			args.add(this.password);
+			args.add(password);
 		}
 
 		// This operation can only be used on version greater than 1.11 of the PKI Express.
