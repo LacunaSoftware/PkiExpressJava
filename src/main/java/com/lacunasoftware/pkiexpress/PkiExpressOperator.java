@@ -47,20 +47,25 @@ public abstract class PkiExpressOperator {
 	private String escapeArgument(String arg) {
 		int firstQuote = arg.indexOf('\"');
 		int lastQuote = arg.lastIndexOf('\"');
+		boolean hasQuotes = false;
 
-		// Verify the argument already has quotes.
+		// Verify the argument already has quotes. Remove temporarily these quotes.
 		String content;
 		if (firstQuote == 0 && lastQuote == (arg.length() - 1)) {
 			content = arg.substring(1, (arg.length() - 2));
+			hasQuotes = true;
 		} else {
 			content = arg;
 		}
 
-		// Perform the character escaping on the argument's content.
+		// Perform the character \" escaping on the argument's content.
 		String escaped = content.replace("\"", "\\\"");
 
-		// Add quotes outside the argument's content.
-		return "\"" + escaped + '\"';
+		// Return quotes outside the argument's content when it was removed.
+		if (hasQuotes) {
+			return String.format("\"%s\"", escaped);
+		}
+		return escaped;
 	}
 
 
