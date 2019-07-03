@@ -1,6 +1,11 @@
 package com.lacunasoftware.pkiexpress;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ValidationItemModel {
 	public enum TypeEnum {
 		Success,
@@ -60,34 +65,34 @@ public class ValidationItemModel {
 	private ValidationResultsModel innerValidationResults = null;
 
 
+	@JsonProperty("type")
 	public TypeEnum getType() {
 		return type;
 	}
-
 	public void setType(TypeEnum type) {
 		this.type = type;
 	}
 
+	@JsonProperty("message")
 	public String getMessage() {
 		return message;
 	}
-
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
+	@JsonProperty("detail")
 	public String getDetail() {
 		return detail;
 	}
-
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
 
+	@JsonProperty("innerValidationResults")
 	public ValidationResultsModel getInnerValidationResults() {
 		return innerValidationResults;
 	}
-
 	public void setInnerValidationResults(ValidationResultsModel innerValidationResults) {
 		this.innerValidationResults = innerValidationResults;
 	}

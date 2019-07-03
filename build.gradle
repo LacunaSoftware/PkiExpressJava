@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
 }
 
 task fatJar(type: Jar) {
