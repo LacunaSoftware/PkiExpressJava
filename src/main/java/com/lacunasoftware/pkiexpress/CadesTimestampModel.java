@@ -22,7 +22,7 @@ public class CadesTimestampModel extends CadesSignatureModel {
 		this.genTime = genTime;
 	}
 
-	@JsonProperty("genSerialNumber")
+	@JsonProperty("serialNumber")
 	public String getSerialNumber() {
 		return serialNumber;
 	}

@@ -21,6 +21,7 @@ public class FileModel {
 		this.mimeType = mimeType;
 	}
 
+	@JsonProperty("content")
 	public String getContent() {
 		return content;
 	}
