@@ -3,14 +3,17 @@ package com.lacunasoftware.pkiexpress;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 
 class Util {
+
+	// region String
 
 	static String repeatChar(char c, int count) {
 		char[] array = new char[count];
@@ -18,9 +21,22 @@ class Util {
 		return new String(array);
 	}
 
-	static boolean isNullOrEmpty(String s) {
-		return (s == null || s.isEmpty());
+	static String join(String delimiter, List<String> elements) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < elements.size(); i++) {
+			sb.append(elements.get(i));
+			if (i < elements.size() -1) {
+				sb.append(delimiter);
+			}
+		}
+		return sb.toString();
 	}
+
+	static boolean isNullOrEmpty(String s) {
+		return s == null || s.length() == 0;
+	}
+
+	// endregion
 
 	static byte[] readStream(InputStream stream) throws IOException {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
