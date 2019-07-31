@@ -14,6 +14,7 @@ import java.util.List;
 public class PadesSignatureStarter extends SignatureStarter {
 	private Path pdfToSignPath;
 	private Path vrJsonPath;
+	private boolean suppressDefaultVisualRepresentation = false;
 
 
 	public PadesSignatureStarter(PkiExpressConfig config) {
@@ -76,6 +77,14 @@ public class PadesSignatureStarter extends SignatureStarter {
 	}
 	//endregion
 
+	public boolean isSuppressDefaultVisualRepresentation() {
+		return suppressDefaultVisualRepresentation;
+	}
+
+	public void setSuppressDefaultVisualRepresentation(boolean suppressDefaultVisualRepresentation) {
+		this.suppressDefaultVisualRepresentation = suppressDefaultVisualRepresentation;
+	}
+
 	public SignatureStartResult start() throws IOException {
 
 		if (pdfToSignPath == null) {
@@ -100,6 +109,10 @@ public class PadesSignatureStarter extends SignatureStarter {
 		if (vrJsonPath != null) {
 			args.add("--visual-rep");
 			args.add(vrJsonPath.toString());
+		}
+
+		if (suppressDefaultVisualRepresentation) {
+			args.add("--suppress-default-visual-rep");
 		}
 
 		// Invoke command with plain text output (to support PKI Express < 1.3)
