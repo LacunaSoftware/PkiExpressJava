@@ -14,6 +14,7 @@ import java.util.List;
 public class PadesSigner extends Signer {
 	private Path pdfToSignPath;
 	private Path vrJsonPath;
+	private boolean suppressDefaultVisualRepresentation = false;
 
 	@Deprecated
 	public Boolean overwriteOriginalFile = false;
@@ -87,6 +88,14 @@ public class PadesSigner extends Signer {
 		this.overwriteOriginalFile = overwriteOriginalFile;
 	}
 
+	public boolean isSuppressDefaultVisualRepresentation() {
+		return suppressDefaultVisualRepresentation;
+	}
+
+	public void setSuppressDefaultVisualRepresentation(boolean suppressDefaultVisualRepresentation) {
+		this.suppressDefaultVisualRepresentation = suppressDefaultVisualRepresentation;
+	}
+
 	public PKCertificate sign() throws IOException {
 		return sign(false);
 	}
@@ -116,6 +125,10 @@ public class PadesSigner extends Signer {
 		if (vrJsonPath != null) {
 			args.add("--visual-rep");
 			args.add(vrJsonPath.toString());
+		}
+
+		if (suppressDefaultVisualRepresentation) {
+			args.add("--suppress-default-visual-rep");
 		}
 
 		if (getCert) {
