@@ -113,6 +113,9 @@ public class PadesSignatureStarter extends SignatureStarter {
 
 		if (suppressDefaultVisualRepresentation) {
 			args.add("--suppress-default-visual-rep");
+
+			// This option can only be used on versions greater than 1.13.1 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.13.1"));
 		}
 
 		// Invoke command with plain text output (to support PKI Express < 1.3)

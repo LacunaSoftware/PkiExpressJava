@@ -129,6 +129,9 @@ public class PadesSigner extends Signer {
 
 		if (suppressDefaultVisualRepresentation) {
 			args.add("--suppress-default-visual-rep");
+
+			// This option can only be used on versions greater than 1.13.1 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.13.1"));
 		}
 
 		if (getCert) {

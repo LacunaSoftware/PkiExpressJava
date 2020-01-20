@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SignatureFinisher extends PkiExpressOperator {
 	private Path fileToSignPath;
-	private Path transferFilePath;
+	private String transferFileId;
 	private Path dataFilePath;
 	private Path outputFilePath;
 	private String signature;
@@ -91,15 +91,34 @@ public class SignatureFinisher extends PkiExpressOperator {
 	//endregion
 
 	//region setTransferFilePath
+
+	/**
+	 * Set transfer file id to be used when finalizing the signature.
+	 * @param path the transfer file id
+	 *
+	 * @deprecated Use setTransferFileId() instead.
+	 */
+	@Deprecated
 	public void setTransferFilePath(Path path) {
-		if (!Files.exists(config.getTransferDataFolder().resolve(path))) {
-			throw new RuntimeException("The provided transfer file was not found");
-		}
-		this.transferFilePath = path;
+		setTransferFileId(path.toString());
 	}
 
+	/**
+	 * Set transfer file id to be used when finalizing the signature.
+	 * @param path the transfer file id.
+	 *
+	 * @deprecated Use setTransferFileId() instead.
+	 */
+	@Deprecated
 	public void setTransferFilePath(String path) {
-		setTransferFilePath(Paths.get(path));
+		setTransferFileId(path);
+	}
+
+	public void setTransferFileId(String transferFileId) {
+		if (!Files.exists(config.getTransferDataFolder().resolve(transferFileId))) {
+			throw new RuntimeException("The provided transfer file was not found");
+		}
+		this.transferFileId = transferFileId;
 	}
 	//endregion
 
@@ -133,7 +152,7 @@ public class SignatureFinisher extends PkiExpressOperator {
 			throw new RuntimeException("The file to be signed was not set");
 		}
 
-		if (transferFilePath == null) {
+		if (transferFileId == null) {
 			throw new RuntimeException("The transfer data file was not set");
 		}
 
@@ -147,7 +166,7 @@ public class SignatureFinisher extends PkiExpressOperator {
 
 		List<String> args = new ArrayList<String>();
 		args.add(fileToSignPath.toString());
-		args.add(config.getTransferDataFolder().resolve(transferFilePath).toString());
+		args.add(config.getTransferDataFolder().resolve(transferFileId).toString());
 		args.add(signature);
 		args.add(outputFilePath.toString());
 

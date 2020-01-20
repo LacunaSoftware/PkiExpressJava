@@ -35,7 +35,7 @@ abstract class Signer extends BaseSigner {
 		super.verifyAndAddCommonOptions(args);
 
 		if (certThumb == null && pkcs12Path == null) {
-			throw new RuntimeException("No PKCS #12 file nor certificate's thumbprint was provided");
+			throw new RuntimeException("No PKCS #12 file or certificate's thumbprint was provided");
 		}
 
 		if (certThumb != null) {
