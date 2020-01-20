@@ -15,6 +15,7 @@ public class PadesSigner extends Signer {
 	private Path pdfToSignPath;
 	private Path vrJsonPath;
 	private boolean suppressDefaultVisualRepresentation = false;
+	private String reason;
 
 	@Deprecated
 	public Boolean overwriteOriginalFile = false;
@@ -88,6 +89,14 @@ public class PadesSigner extends Signer {
 		this.overwriteOriginalFile = overwriteOriginalFile;
 	}
 
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
 	public boolean isSuppressDefaultVisualRepresentation() {
 		return suppressDefaultVisualRepresentation;
 	}
@@ -127,8 +136,19 @@ public class PadesSigner extends Signer {
 			args.add(vrJsonPath.toString());
 		}
 
+		if (!Util.isNullOrEmpty(reason)) {
+			args.add("--reason");
+			args.add(reason);
+
+			// This option can only be used on versions greater than 1.13.0 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.13.0"));
+		}
+
 		if (suppressDefaultVisualRepresentation) {
 			args.add("--suppress-default-visual-rep");
+
+			// This option can only be used on versions greater than 1.13.1 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.13.1"));
 		}
 
 		if (getCert) {

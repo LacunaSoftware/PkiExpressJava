@@ -59,7 +59,7 @@ public class CadesSignatureExplorer extends SignatureExplorer {
 	public CadesSignature open() throws IOException {
 
 		if (signatureFilePath == null) {
-			throw new RuntimeException("The provided signature file was not found");
+			throw new RuntimeException("The provided signature file was not set");
 		}
 
 		List<String> args = new ArrayList<String>();
@@ -71,15 +71,11 @@ public class CadesSignatureExplorer extends SignatureExplorer {
 		if (dataFilePath != null) {
 			args.add("--data-file");
 			args.add(dataFilePath.toString());
-			// This operation can only be used on versions greater than 1.3 of the PKI Express.
-			this.versionManager.requireVersion(new Version("1.3"));
 		}
 
 		if (extractContentPath != null) {
 			args.add("--extract-content");
 			args.add(extractContentPath.toString());
-			// This operation can only be used on versions greater than 1.3 of the PKI Express.
-			this.versionManager.requireVersion(new Version("1.3"));
 		}
 
 		// This operation can only be used on versions greater than 1.3 of the PKI Express.

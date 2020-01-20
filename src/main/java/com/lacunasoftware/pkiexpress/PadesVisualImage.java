@@ -37,11 +37,9 @@ public class PadesVisualImage {
 	 * @param imageMimeType
 	 */
 	public PadesVisualImage(byte[] imageContent, String imageMimeType) {
+		this();
 		content = imageContent;
 		mimeType = imageMimeType;
-		opacity = 100;
-		horizontalAlign = PadesHorizontalAlign.Center;
-		verticalAlign = PadesVerticalAlign.Center;
 	}
 
 	/**
@@ -51,11 +49,9 @@ public class PadesVisualImage {
 	 * @param imageMimeType
 	 */
 	public PadesVisualImage(String imageUrl, String imageMimeType) {
+		this();
 		url = imageUrl;
 		mimeType = imageMimeType;
-		opacity = 100;
-		horizontalAlign = PadesHorizontalAlign.Center;
-		verticalAlign = PadesVerticalAlign.Center;
 	}
 
 
