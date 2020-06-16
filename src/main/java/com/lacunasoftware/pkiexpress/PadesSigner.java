@@ -16,6 +16,7 @@ public class PadesSigner extends Signer {
 	private Path vrJsonPath;
 	private boolean suppressDefaultVisualRepresentation = false;
 	private String reason;
+	private String customSignatureFieldName;
 
 	@Deprecated
 	public Boolean overwriteOriginalFile = false;
@@ -105,6 +106,14 @@ public class PadesSigner extends Signer {
 		this.suppressDefaultVisualRepresentation = suppressDefaultVisualRepresentation;
 	}
 
+	public String getCustomSignatureFieldName() {
+		return customSignatureFieldName;
+	}
+
+	public void setCustomSignatureFieldName(String customSignatureFieldName) {
+		this.customSignatureFieldName = customSignatureFieldName;
+	}
+
 	public PKCertificate sign() throws IOException {
 		return sign(false);
 	}
@@ -134,6 +143,11 @@ public class PadesSigner extends Signer {
 		if (vrJsonPath != null) {
 			args.add("--visual-rep");
 			args.add(vrJsonPath.toString());
+		}
+
+		if (customSignatureFieldName != null) {
+			args.add("--custom-signature-field-name");
+			args.add(customSignatureFieldName);
 		}
 
 		if (!Util.isNullOrEmpty(reason)) {
