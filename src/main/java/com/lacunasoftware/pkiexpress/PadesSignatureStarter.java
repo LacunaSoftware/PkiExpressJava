@@ -132,6 +132,9 @@ public class PadesSignatureStarter extends SignatureStarter {
 		if (customSignatureFieldName != null) {
 			args.add("--custom-signature-field-name");
 			args.add(customSignatureFieldName);
+
+			// This option can only be used on versions greater than 1.15.0 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.15.0"));
 		}
 
 		if (!Util.isNullOrEmpty(reason)) {
