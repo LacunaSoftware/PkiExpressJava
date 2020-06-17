@@ -16,6 +16,7 @@ public class PadesSignatureStarter extends SignatureStarter {
 	private Path vrJsonPath;
 	private boolean suppressDefaultVisualRepresentation = false;
 	private String reason;
+	private String customSignatureFieldName;
 
 
 	public PadesSignatureStarter(PkiExpressConfig config) {
@@ -94,6 +95,14 @@ public class PadesSignatureStarter extends SignatureStarter {
 		this.reason = reason;
 	}
 
+	public String getCustomSignatureFieldName() {
+		return customSignatureFieldName;
+	}
+
+	public void setCustomSignatureFieldName(String customSignatureFieldName) {
+		this.customSignatureFieldName = customSignatureFieldName;
+	}
+
 	public SignatureStartResult start() throws IOException {
 
 		if (pdfToSignPath == null) {
@@ -118,6 +127,14 @@ public class PadesSignatureStarter extends SignatureStarter {
 		if (vrJsonPath != null) {
 			args.add("--visual-rep");
 			args.add(vrJsonPath.toString());
+		}
+
+		if (customSignatureFieldName != null) {
+			args.add("--custom-signature-field-name");
+			args.add(customSignatureFieldName);
+
+			// This option can only be used on versions greater than 1.15.0 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.15.0"));
 		}
 
 		if (!Util.isNullOrEmpty(reason)) {
