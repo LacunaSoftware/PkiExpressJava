@@ -16,7 +16,8 @@ public enum CommandEnum {
 	CommandCompleteAuth("complete-auth"),
 	CommandStampPdf("stamp-pdf"),
 	CommandGenKey("gen-key"),
-	CommandCreatePfx("create-pfx");
+	CommandCreatePfx("create-pfx"),
+	CommandReadCert("read-cert");
 
 
 	private final String value;
