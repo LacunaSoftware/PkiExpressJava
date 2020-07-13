@@ -17,6 +17,7 @@ public class PadesSignatureStarter extends SignatureStarter {
 	private boolean suppressDefaultVisualRepresentation = false;
 	private String reason;
 	private String customSignatureFieldName;
+	private PadesCertificationLevel certificationLevel;
 
 
 	public PadesSignatureStarter(PkiExpressConfig config) {
@@ -103,6 +104,14 @@ public class PadesSignatureStarter extends SignatureStarter {
 		this.customSignatureFieldName = customSignatureFieldName;
 	}
 
+	public PadesCertificationLevel getCertificationLevel() {
+		return certificationLevel;
+	}
+
+	public void setCertficationLevel(PadesCertificationLevel certificationLevel) {
+		this.certificationLevel = certificationLevel;
+	}
+
 	public SignatureStartResult start() throws IOException {
 
 		if (pdfToSignPath == null) {
@@ -135,6 +144,14 @@ public class PadesSignatureStarter extends SignatureStarter {
 
 			// This option can only be used on versions greater than 1.15.0 of the PKI Express.
 			this.versionManager.requireVersion(new Version("1.15.0"));
+		}
+
+		if (certificationLevel != null) {
+			args.add("--certification-level");
+			args.add(certificationLevel.getValue());
+
+			// This option can only be used on versions greater than 1.16.0 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.16.0"));
 		}
 
 		if (!Util.isNullOrEmpty(reason)) {
