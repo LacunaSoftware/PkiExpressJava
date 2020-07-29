@@ -17,8 +17,7 @@ public enum CommandEnum {
 	CommandStampPdf("stamp-pdf"),
 	CommandGenKey("gen-key"),
 	CommandCreatePfx("create-pfx"),
-	CommandReadCert("read-cert");
-	CommandCreatePfx("create-pfx"),
+	CommandReadCert("read-cert"),
 	CommandCheckService("check-service"),
 	CommandDiscoverServices("discover-services"),
 	CommandPasswordAuthorize("pwd-auth"),

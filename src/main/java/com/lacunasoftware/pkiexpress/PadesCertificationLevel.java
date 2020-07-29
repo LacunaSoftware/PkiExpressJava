@@ -7,14 +7,11 @@ public enum PadesCertificationLevel {
 	CertifiedFromFillingAndAnnotations("certified-form-filling-annotations"),
 	CertifiedNoChangesAllowed("certified-no-changes-allowed");
 
-
 	private final String value;
 
-
-	CommandEnum(String value) {
+	PadesCertificationLevel(String value) {
 		this.value = value;
 	}
-
 
 	public String getValue() {
 		return value;
