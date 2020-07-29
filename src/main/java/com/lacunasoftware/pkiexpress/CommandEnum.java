@@ -18,6 +18,11 @@ public enum CommandEnum {
 	CommandGenKey("gen-key"),
 	CommandCreatePfx("create-pfx"),
 	CommandReadCert("read-cert");
+	CommandCreatePfx("create-pfx"),
+	CommandCheckService("check-service"),
+	CommandDiscoverServices("discover-services"),
+	CommandPasswordAuthorize("pwd-auth"),
+	CommandCompleteServiceAuth("complete-service-auth");
 
 
 	private final String value;

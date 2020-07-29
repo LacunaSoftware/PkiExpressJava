@@ -24,6 +24,7 @@ public abstract class PkiExpressOperator {
 	protected TimestampAuthority timestampAuthority;
 	protected String culture;
 	protected String timeZone;
+	protected String trustServiceSession;
 
 
 	@Deprecated
@@ -140,6 +141,14 @@ public abstract class PkiExpressOperator {
 			cmdArgs.add(timeZone);
 			// This option can only be used on versions greater than 1.10 of the PKI Express.
 			versionManager.requireVersion(new Version("1.10"));
+		}
+
+		// Add trust service session.
+		if (trustServiceSession != null) {
+			cmdArgs.add("--trust-service-session");
+			cmdArgs.add(trustServiceSession);
+			// This option can only be used on versions greater than 1.17 of the PKI Express.
+			versionManager.requireVersion(new Version("1.17"));
 		}
 
 		// Verify the necessity of using the --min-version flag.
@@ -340,6 +349,14 @@ public abstract class PkiExpressOperator {
 
 	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
+	}
+
+	public String getTrustServiceSession() {
+		return trustServiceSession;
+	}
+
+	public void setTrustServiceSession(String trustServiceSession) {
+		this.trustServiceSession = trustServiceSession;
 	}
 
 	@Override
