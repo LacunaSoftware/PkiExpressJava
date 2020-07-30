@@ -18,6 +18,7 @@ abstract class Signer extends BaseSigner {
 	private Path pkcs12Path;
 	private String certPassword;
 	private boolean useMachine;
+	private String trustServiceSession;
 
 
 	public Signer(PkiExpressConfig config) {
@@ -34,8 +35,8 @@ abstract class Signer extends BaseSigner {
 		// Verify and add common options between signers and signature starters.
 		super.verifyAndAddCommonOptions(args);
 
-		if (certThumb == null && pkcs12Path == null) {
-			throw new RuntimeException("No PKCS #12 file or certificate's thumbprint was provided");
+		if (certThumb == null && pkcs12Path == null && trustServiceSession == null) {
+			throw new RuntimeException("No PKCS #12 file, certificate's thumbprint or TrustServiceSession was provided");
 		}
 
 		if (certThumb != null) {
@@ -59,6 +60,14 @@ abstract class Signer extends BaseSigner {
 		if (useMachine) {
 			args.add("--machine");
 			versionManager.requireVersion(new Version("1.3"));
+		}
+
+		// Add trust service session.
+		if (trustServiceSession != null) {
+			args.add("--trust-service-session");
+			args.add(trustServiceSession);
+			// This option can only be used on versions greater than 1.17 of the PKI Express.
+			versionManager.requireVersion(new Version("1.17"));
 		}
 
 	}
@@ -98,5 +107,13 @@ abstract class Signer extends BaseSigner {
 
 	public void setUseMachine(boolean useMachine) {
 		this.useMachine = useMachine;
+	}
+
+	public String getTrustServiceSession() {
+		return trustServiceSession;
+	}
+
+	public void setTrustServiceSession(String trustServiceSession) {
+		this.trustServiceSession = trustServiceSession;
 	}
 }
