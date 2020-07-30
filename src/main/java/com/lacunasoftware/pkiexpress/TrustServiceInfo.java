@@ -6,7 +6,10 @@ public class TrustServiceInfo {
 	private String badgeUrl;
 
 	public TrustServiceInfo(TrustServiceInfoModel model) {
-		this.service = model.getService();
+		if (model.getService() != null) {
+			this.service = model.getService().getName();
+		}
+
 		this.provider = model.getProvider();
 		this.badgeUrl = model.getBadgeUrl();
 	}

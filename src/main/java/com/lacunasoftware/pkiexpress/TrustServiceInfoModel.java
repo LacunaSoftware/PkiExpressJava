@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TrustServiceInfoModel {
-	private String service;
+	private TrustServiceNameModel service;
 	private String provider;
 	private String badgeUrl;
 
 	@JsonProperty("service")
-	public String getService() {
+	public TrustServiceNameModel getService() {
 		return service;
 	}
-	public void setService(String service) {
+	public void setService(TrustServiceNameModel service) {
 		this.service = service;
 	}
 

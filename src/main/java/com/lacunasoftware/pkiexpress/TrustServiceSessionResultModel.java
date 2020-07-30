@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TrustServiceSessionResultModel {
 	private String session;
 
-	@JsonProperty("serviceInfo")
+	@JsonProperty("session")
 	public String getSession() {
 		return session;
 	}
