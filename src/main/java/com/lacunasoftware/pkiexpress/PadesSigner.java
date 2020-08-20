@@ -174,8 +174,8 @@ public class PadesSigner extends Signer {
 			args.add("--reason");
 			args.add(reason);
 
-			// This option can only be used on versions greater than 1.14.0 of the PKI Express.
-			this.versionManager.requireVersion(new Version("1.14.0"));
+			// This option can only be used on versions greater than 1.13.0 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.13.0"));
 		}
 
 		if (suppressDefaultVisualRepresentation) {
