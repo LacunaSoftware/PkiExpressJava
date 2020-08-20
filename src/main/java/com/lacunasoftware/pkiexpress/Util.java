@@ -7,7 +7,10 @@ import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -64,5 +67,17 @@ class Util {
 		model.setGreen(color.getGreen());
 		model.setBlue(color.getBlue());
 		return model;
+	}
+
+	static Date parseApiDate(String dateStr) {
+		Date date;
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+		try {
+			date = fmt.parse(dateStr);
+		} catch (ParseException ex) {
+			date = null;
+		}
+
+		return date;
 	}
 }
