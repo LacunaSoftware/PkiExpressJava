@@ -11,6 +11,7 @@ public enum CommandEnum {
 	CommandCompleteSig("complete-sig"),
 	CommandOpenPades("open-pades"),
 	CommandOpenCades("open-cades"),
+	CommandOpenCertificate("open-cert"),
 	CommandEditPdf("edit-pdf"),
 	CommandStartAuth("start-auth"),
 	CommandCompleteAuth("complete-auth"),
