@@ -37,6 +37,7 @@ public class ValidationItemModel {
 		CompleteReferencesMismatch,
 		InvalidSignatureTimestamp,
 		InvalidReferencesTimestamp,
+		InvalidSigAndRefsTimestamp,
 		InvalidArchiveTimestamp,
 		InvalidKeyUsage,
 		InvalidOcspResponse,
@@ -56,6 +57,7 @@ public class ValidationItemModel {
 		UnauthorizedACIssuer,
 		AlgorithmNotAllowed,
 		UnacceptableSignaturePolicy,
+		TslNotAvailable
 	}
 
 
