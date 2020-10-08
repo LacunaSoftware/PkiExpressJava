@@ -34,6 +34,7 @@ public enum ValidationItemTypes {
 	CompleteReferencesMismatch,
 	InvalidSignatureTimestamp,
 	InvalidReferencesTimestamp,
+	InvalidSigAndRefsTimestamp,
 	InvalidArchiveTimestamp,
 	InvalidKeyUsage,
 	InvalidOcspResponse,
@@ -52,5 +53,6 @@ public enum ValidationItemTypes {
 	SigningCertificateNotFound,
 	UnauthorizedACIssuer,
 	AlgorithmNotAllowed,
-	UnacceptableSignaturePolicy
+	UnacceptableSignaturePolicy,
+	TslNotAvailable
 }

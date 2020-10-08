@@ -7,6 +7,7 @@ import java.util.List;
 
 
 public class PadesSignatureExplorer extends SignatureExplorer {
+	private StandardSignaturePoliciesForValidation policy = null;
 
 	public PadesSignatureExplorer(PkiExpressConfig config) {
 		super(config);
@@ -16,6 +17,9 @@ public class PadesSignatureExplorer extends SignatureExplorer {
 		this(new PkiExpressConfig());
 	}
 
+	public void setPolicy(StandardSignaturePoliciesForValidation policy) {
+		this.policy = policy;
+	}
 
 	public PadesSignature open() throws IOException {
 
@@ -28,6 +32,15 @@ public class PadesSignatureExplorer extends SignatureExplorer {
 
 		// Verify and add common options
 		verifyAndAddCommonOptions(args);
+
+		// Set signature policy.
+		if (policy != null) {
+			args.add("--policy");
+			args.add(policy.getValue());
+
+			// This policy can only be used on version greater than 1.20 of the PKI Express.
+			versionManager.requireVersion(new Version("1.20"));
+		}
 
 		// This operation can only be used on versions greater than 1.3 of the PKI Express.
 		this.versionManager.requireVersion(new Version("1.3"));
