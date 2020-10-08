@@ -1,7 +1,7 @@
 package com.lacunasoftware.pkiexpress;
 
 
-public enum SignatureValidationPolicies {
+public enum StandardSignaturePoliciesForValidation {
 	Pades("pades"),
 	PadesWithCertProtection("pades-with-cert-protection"),
 	PkiBrazil("pki-brazil"),
@@ -12,7 +12,7 @@ public enum SignatureValidationPolicies {
 	private final String value;
 
 
-	SignatureValidationPolicies(String value) {
+	StandardSignaturePoliciesForValidation(String value) {
 		this.value = value;
 	}
 
@@ -21,7 +21,7 @@ public enum SignatureValidationPolicies {
 		return value;
 	}
 
-	public boolean equals(SignatureValidationPolicies other) {
+	public boolean equals(StandardSignaturePoliciesForValidation other) {
 		return this.value.equals(other.getValue());
 	}
 }
