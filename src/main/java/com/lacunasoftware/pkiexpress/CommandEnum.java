@@ -13,6 +13,7 @@ public enum CommandEnum {
 	CommandOpenCades("open-cades"),
 	CommandOpenCertificate("open-cert"),
 	CommandEditPdf("edit-pdf"),
+	CommandMergeCms("merge-cms"),
 	CommandStartAuth("start-auth"),
 	CommandCompleteAuth("complete-auth"),
 	CommandStampPdf("stamp-pdf"),
