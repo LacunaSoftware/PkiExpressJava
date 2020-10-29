@@ -45,10 +45,10 @@ public class PadesSignatureExplorer extends SignatureExplorer {
 		// This operation can only be used on versions greater than 1.3 of the PKI Express.
 		this.versionManager.requireVersion(new Version("1.3"));
 
-		// Invoke command
+		// Invoke command.
 		OperatorResult result = invoke(CommandEnum.CommandOpenPades, args);
 
-		// Parse output and return model
+		// Parse output and return model.
 		PadesSignatureModel resultModel = parseOutput(result.getOutput()[0], PadesSignatureModel.class);
 		return new PadesSignature(resultModel);
 	}
