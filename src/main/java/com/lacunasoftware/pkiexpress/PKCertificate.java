@@ -2,6 +2,7 @@ package com.lacunasoftware.pkiexpress;
 
 
 import java.math.BigInteger;
+import java.security.Key;
 import java.util.Date;
 
 
@@ -20,6 +21,7 @@ public class PKCertificate {
 	private PKCertificate issuer;
 	private byte[] binaryThumbprintSHA256;
 	private String thumbprint;
+	private KeyUsage keyUsage;
 
 
 	PKCertificate(CertificateModel model) {
@@ -40,8 +42,11 @@ public class PKCertificate {
 		}
 		this.binaryThumbprintSHA256 = Util.decodeBase64(model.getBinaryThumbprintSHA256());
 		this.thumbprint = model.getThumbprint();
-	}
+		if (model.getKeyUsage() != null) {
+			this.keyUsage = new KeyUsage(model.getKeyUsage());
+		}
 
+	}
 
 	public Name getSubjectName() {
 		return subjectName;
@@ -97,4 +102,11 @@ public class PKCertificate {
 		return thumbprint;
 	}
 
+	public KeyUsage getKeyUsage() {
+		return keyUsage;
+	}
+
+	public void setKeyUsage(KeyUsage keyUsage) {
+		this.keyUsage = keyUsage;
+	}
 }

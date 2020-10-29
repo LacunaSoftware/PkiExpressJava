@@ -23,6 +23,7 @@ public class CertificateModel {
 	private String thumbprint = null;
 	private String subjectCommonName = null;
 	private String subjectDisplayName = null;
+	private Integer keyUsage = null;
 
 
 	@JsonProperty("subjectName")
@@ -135,5 +136,13 @@ public class CertificateModel {
 	}
 	public void setSubjectDisplayName(String subjectDisplayName) {
 		this.subjectDisplayName = subjectDisplayName;
+	}
+
+	@JsonProperty("keyUsage")
+	public Integer getKeyUsage() {
+		return keyUsage;
+	}
+	public void setKeyUsage(Integer keyUsage) {
+		this.keyUsage = keyUsage;
 	}
 }
