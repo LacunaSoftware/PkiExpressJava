@@ -2,7 +2,6 @@ package com.lacunasoftware.pkiexpress;
 
 
 import java.math.BigInteger;
-import java.security.Key;
 import java.util.Date;
 
 
