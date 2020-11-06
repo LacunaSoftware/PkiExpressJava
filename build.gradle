@@ -33,7 +33,7 @@ publishing {
             from components.java
             groupId 'com.lacunasoftware.pkiexpress'
             artifactId 'pki-express'
-            version "1.15.0"
+            version "1.16.0"
         }
     }
 }
@@ -50,9 +50,9 @@ bintray {
         licenses = ['Unlicense']
         vcsUrl = 'https://github.com/LacunaSoftware/PkiExpressJava.git'
         version {
-            name = '1.15.0'
+            name = '1.16.0'
             desc = 'Classes to use Lacuna Software PKI Express'
-            vcsTag = '1.15.0'
+            vcsTag = '1.16.0'
         }
     }
 }
