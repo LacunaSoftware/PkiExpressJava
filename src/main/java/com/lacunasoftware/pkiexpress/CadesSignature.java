@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class CadesSignature {
 	protected List<CadesSignerInfo> signers = new ArrayList<CadesSignerInfo>();
-	protected Boolean hasEncapsulatedContent;
+	protected boolean hasEncapsulatedContent;
 
 	
 	CadesSignature(CadesSignatureModel model) {
@@ -24,7 +24,7 @@ public class CadesSignature {
 		return signers;
 	}
 
-	public Boolean getHasEncapsulatedContent() {
+	public boolean getHasEncapsulatedContent() {
 		return hasEncapsulatedContent;
 	}
 }
