@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Metadata extends PkiExpressOperator {
-	public static final String LIBRARY_VERSION = "1.16.0";
+	public static final String LIBRARY_VERSION = "1.16.1";
 
 	public Metadata(PkiExpressConfig config) {
 		super(config);
