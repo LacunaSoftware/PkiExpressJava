@@ -9,6 +9,7 @@ import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CertificateModel {
+	private String content = null;
 	private NameModel subjectName = null;
 	private String emailAddress = null;
 	private NameModel issuerName = null;
@@ -25,6 +26,14 @@ public class CertificateModel {
 	private String subjectDisplayName = null;
 	private Integer keyUsage = null;
 
+
+	@JsonProperty("content")
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 
 	@JsonProperty("subjectName")
 	public NameModel getSubjectName() {
