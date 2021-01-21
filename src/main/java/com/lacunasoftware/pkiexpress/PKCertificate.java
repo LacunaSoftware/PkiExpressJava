@@ -9,6 +9,7 @@ import java.util.Date;
  * Contains information about a X.509 public key certificate
  */
 public class PKCertificate {
+	private byte[] content;
 	private Name subjectName;
 	private String emailAddress;
 	private Name issuerName;
@@ -24,6 +25,7 @@ public class PKCertificate {
 
 
 	PKCertificate(CertificateModel model) {
+		this.content = Util.decodeBase64(model.getContent());
 		this.subjectName = new Name(model.getSubjectName());
 		this.emailAddress = model.getEmailAddress();
 		this.issuerName = new Name(model.getIssuerName());
@@ -95,6 +97,10 @@ public class PKCertificate {
 
 	public byte[] getBinaryThumbprintSHA256() {
 		return binaryThumbprintSHA256;
+	}
+
+	public byte[] getContent(){
+		return content;
 	}
 
 	public String getThumbprint() {

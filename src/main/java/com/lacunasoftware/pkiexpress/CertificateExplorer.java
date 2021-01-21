@@ -15,6 +15,8 @@ import java.util.List;
 public class CertificateExplorer extends PkiExpressOperator {
 	private Path certificatePath;
 	private boolean validate;
+	private boolean fillContent;
+	private boolean fillIssuer;
 
 	public CertificateExplorer(PkiExpressConfig config) {
 		super(config);
@@ -65,6 +67,30 @@ public class CertificateExplorer extends PkiExpressOperator {
 
 	// endregion
 
+	// region fillContent
+
+	public boolean getFillContent() {
+		return fillContent;
+	}
+
+	public void setFillContent(boolean fillContent) {
+		this.fillContent = fillContent;
+	}
+
+	// endregion
+
+	// region fillIssuer
+
+	public boolean getFillIssuer() {
+		return fillIssuer;
+	}
+
+	public void setFillIssuer(boolean fillIssuer) {
+		this.fillIssuer = fillIssuer;
+	}
+
+	// endregion
+
 	public CertificateExplorerResult open() throws IOException {
 		if (certificatePath == null) {
 			throw new RuntimeException("The certificate file was not set");
@@ -76,6 +102,20 @@ public class CertificateExplorer extends PkiExpressOperator {
 
 		if (validate) {
 			args.add("--validate");
+		}
+
+		if (fillIssuer) {
+			args.add("--fill-issuer");
+
+			// This operation can only be used on versions greater than 1.22 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.22"));
+		}
+
+		if (fillContent) {
+			args.add("--fill-content");
+
+			// This operation can only be used on versions greater than 1.22 of the PKI Express.
+			this.versionManager.requireVersion(new Version("1.22"));
 		}
 
 		// This operation can only be used on versions greater than 1.20 of the PKI Express.
