@@ -18,6 +18,7 @@ public class CadesSignerInfo {
 	private Date certifiedDateReference;
 	private List<CadesTimestamp> timestamps = new ArrayList<CadesTimestamp>();
 	private ValidationResults validationResults;
+	private CommitmentType commitmentType;
 
 
 	CadesSignerInfo(
@@ -28,7 +29,8 @@ public class CadesSignerInfo {
 			Date certifiedDateReference,
 			SignaturePolicyIdentifierModel signaturePolicy,
 			List<CadesTimestampModel> timestamps,
-			ValidationResultsModel validationResults
+			ValidationResultsModel validationResults,
+			CommitmentTypeModel commitmentType
 	) {
 		this.messageDigest = new DigestAlgorithmAndValue(messageDigest);
 		//this.signature = ...; // TODO!
@@ -46,6 +48,9 @@ public class CadesSignerInfo {
 		if (validationResults != null) {
 			this.validationResults = new ValidationResults(validationResults);
 		}
+		if (commitmentType != null) {
+			this.commitmentType = new CommitmentType(commitmentType);
+		}
 	}
 
 	CadesSignerInfo(CadesSignerModel model) {
@@ -57,7 +62,8 @@ public class CadesSignerInfo {
 				model.getCertifiedDateReference(),
 				model.getSignaturePolicy(),
 				model.getTimestamps(),
-				model.getValidationResults()
+				model.getValidationResults(),
+				model.getCommitmentType()
 		);
 	}
 
@@ -88,5 +94,9 @@ public class CadesSignerInfo {
 
 	public ValidationResults getValidationResults() {
 		return validationResults;
+	}
+
+	public CommitmentType getCommitmentType() {
+		return commitmentType;
 	}
 }
