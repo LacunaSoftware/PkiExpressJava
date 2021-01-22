@@ -18,6 +18,8 @@ public abstract class PkiExpressOperator {
 
 	protected PkiExpressConfig config;
 	protected List<Path> trustedRoots;
+	protected boolean trustOnlyICPBrasil = false;
+	protected boolean trustOnlySystem = false;
 	protected Boolean offline = false;
 	protected VersionManager versionManager;
 	protected StandardSignaturePolicies signaturePolicy;
@@ -105,6 +107,16 @@ public abstract class PkiExpressOperator {
 				cmdArgs.add("--trust-root");
 				cmdArgs.add(trustedRoot.toString());
 			}
+		}
+
+		if (trustOnlyICPBrasil){
+			cmdArgs.add("--trust-clear");
+			cmdArgs.add("--trust-brazil");
+		}
+
+		if (trustOnlySystem){
+			cmdArgs.add("--trust-clear");
+			cmdArgs.add("--trust-system");
 		}
 
 		// Add trust Lacuna test root if set
@@ -382,6 +394,14 @@ public abstract class PkiExpressOperator {
 
 	public void addTrustedRoot(String path) {
 		addTrustedRoot(path != null ? Paths.get(path) : null);
+	}
+
+	public void setTrustOnlyICPBrasil(boolean trust) {
+		trustOnlyICPBrasil = trust;
+	}
+
+	public void setTrustOnlySystem(boolean trust) {
+		trustOnlySystem = trust;
 	}
 
 	public Boolean getOffline() {

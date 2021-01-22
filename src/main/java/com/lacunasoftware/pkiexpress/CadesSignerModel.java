@@ -19,6 +19,7 @@ public class CadesSignerModel {
 	private Date certifiedDateReference = null;
 	private List<CadesTimestampModel> timestamps = new ArrayList<CadesTimestampModel>();
 	private ValidationResultsModel validationResults = null;
+	private CommitmentTypeModel commitmentType = null;
 
 
 	@JsonProperty("messageDigest")
@@ -83,5 +84,13 @@ public class CadesSignerModel {
 	}
 	public void setValidationResults(ValidationResultsModel validationResults) {
 		this.validationResults = validationResults;
+	}
+
+	@JsonProperty("commitmentType")
+	public CommitmentTypeModel getCommitmentType() {
+		return commitmentType;
+	}
+	public void setCommitmentType(CommitmentTypeModel commitmentType) {
+		this.commitmentType = commitmentType;
 	}
 }
