@@ -15,7 +15,8 @@ import java.util.List;
 public class SignatureExplorer extends PkiExpressOperator {
 	protected Path signatureFilePath;
 	private boolean validate;
-
+	private boolean fillCertContent;
+	private boolean trustUncertifiedSigningTime;
 
 	public SignatureExplorer(PkiExpressConfig config) {
 		super(config);
@@ -27,6 +28,18 @@ public class SignatureExplorer extends PkiExpressOperator {
 			args.add("--validate");
 			// This operation can only be used on versions greater than 1.3 of the PKI Express.
 			this.versionManager.requireVersion(new Version("1.3"));
+		}
+		
+		if (trustUncertifiedSigningTime) {
+			args.add("--trust-uncertified-signing-time");
+			// This policy can only be used on version greater than 1.23 of the PKI Express.
+			versionManager.requireVersion(new Version("1.23"));
+		}
+
+		if (fillCertContent) {
+			args.add("--fill-cert-content");
+			// This policy can only be used on version greater than 1.23 of the PKI Express.
+			versionManager.requireVersion(new Version("1.23"));
 		}
 	}
 
@@ -58,5 +71,19 @@ public class SignatureExplorer extends PkiExpressOperator {
 
 	public void setValidate(boolean validate) {
 		this.validate = validate;
+	}
+
+	public void setTrustUncertifiedSigningTime(boolean trust){
+		this.trustUncertifiedSigningTime = trust;
+	}
+	public void setFillCertContent(boolean fillCertContent){
+		this.fillCertContent = fillCertContent;
+	}
+
+	public boolean getTrustUncertifiedSigningTime(){
+		return trustUncertifiedSigningTime;
+	}
+	public boolean getFillCertContent(){
+		return fillCertContent;
 	}
 }
