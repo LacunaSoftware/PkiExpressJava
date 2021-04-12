@@ -1,0 +1,6 @@
+signing.keyId= 0x00000000
+signing.password=
+signing.secretKeyRingFile= (RELATIVE PATH TO PGP/GPG/ASC FILE)
+
+ossrhUsername = (SONATYPE JIRA USERNAME)
+ossrhPassword = (SONATYPE JIRA PASSWORD)

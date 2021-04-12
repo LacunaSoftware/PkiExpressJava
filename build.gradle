@@ -1,15 +1,16 @@
-plugins {
-    id "com.jfrog.bintray" version "1.8.4"
-}
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
+
+group = 'com.lacunasoftware.pkiexpress'
+archivesBaseName = 'pki-express'
+version = '1.17.1'
 
 repositories {
     mavenCentral()
@@ -27,32 +28,64 @@ task fatJar(type: Jar) {
     with jar
 }
 
-publishing {
-    publications {
-        ClientPublish(MavenPublication) {
-            from components.java
-            groupId 'com.lacunasoftware.pkiexpress'
-            artifactId 'pki-express'
-            version "1.17.1"
-        }
-    }
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
 }
 
-bintray {
-    user = 'lacunasoftware'
-    key = System.getenv('BINTRAY_KEY')
-    publications = ['ClientPublish']
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 
-    pkg {
-        repo = 'maven'
-        name = 'pki-express'
-        userOrg = user
-        licenses = ['Unlicense']
-        vcsUrl = 'https://github.com/LacunaSoftware/PkiExpressJava.git'
-        version {
-            name = '1.17.1'
-            desc = 'Classes to use Lacuna Software PKI Express'
-            vcsTag = '1.17.1'
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'pki-express'
+                packaging 'jar'
+                artifactId 'pki-express'
+                description 'Classes to use Lacuna Software PKI Express'
+                url 'https://github.com/LacunaSoftware/PkiExpressJava'
+
+                scm {
+                    connection 'scm:git:git@github.com:LacunaSoftware/PkiExpressJava.git'
+                    developerConnection 'scm:git:git@github.com:LacunaSoftware/PkiExpressJava.git'
+                    url 'https://github.com/LacunaSoftware/PkiExpressJava'
+                }
+
+                licenses {
+                    license {
+                        name 'Unlicense'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'ismaelm'
+                        name 'Ismael Medeiros'
+                        email 'IsmaelM@lacunasoftware.com'
+                    }
+                }
+            }
         }
     }
 }
