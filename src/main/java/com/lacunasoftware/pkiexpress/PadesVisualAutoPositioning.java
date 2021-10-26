@@ -8,7 +8,8 @@ public class PadesVisualAutoPositioning extends PadesVisualPositioning {
 	private PadesVisualRectangle container;
 	private PadesSize signatureRectangleSize;
 	private double rowSpacing;
-
+	private HorizontalDirections horizontalDirection;
+	private VerticalDirections verticalDirection;
 
 	public PadesVisualAutoPositioning() {
 		super();
@@ -73,6 +74,22 @@ public class PadesVisualAutoPositioning extends PadesVisualPositioning {
 		this.rowSpacing = rowSpacing;
 	}
 
+	public HorizontalDirections getHorizontalDirection() {
+		return horizontalDirection;
+	}
+
+	public void setHorizontalDirection(HorizontalDirections horizontalDirection) {
+		this.horizontalDirection = horizontalDirection;
+	}
+
+	public VerticalDirections getVerticalDirection() {
+		return verticalDirection;
+	}
+
+	public void setVerticalDirection(VerticalDirections verticalDirection) {
+		this.verticalDirection = verticalDirection;
+	}
+
 	@Override
 	PadesVisualPositioningModel toModel() {
 		PadesVisualPositioningModel model = super.toModel();
@@ -80,6 +97,15 @@ public class PadesVisualAutoPositioning extends PadesVisualPositioning {
 		auto.setContainer(container.toModel());
 		auto.setSignatureRectangleSize(signatureRectangleSize.toModel());
 		auto.setRowSpacing(rowSpacing);
+
+		if (horizontalDirection != null) {
+			auto.setHorizontalDirection(PadesVisualAutoPositioningModel.HorizontalDirectionEnum.valueOf(horizontalDirection.toString()));
+		}
+
+		if (verticalDirection != null) {
+			auto.setVerticalDirection(PadesVisualAutoPositioningModel.VerticalDirectionEnum.valueOf(verticalDirection.toString()));
+		}
+
 		model.setAuto(auto);
 		return model;
 	}
