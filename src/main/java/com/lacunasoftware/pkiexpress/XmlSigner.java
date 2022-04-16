@@ -83,6 +83,7 @@ public class XmlSigner extends Signer {
 		if (!Util.isNullOrEmpty(this.signatureElementInsertion)) {
 			args.add("--sig-element-insertion");
 			args.add(this.signatureElementInsertion);
+			this.versionManager.requireVersion(new Version("1.26.0"));
 		}
 
 		if (getCert) {

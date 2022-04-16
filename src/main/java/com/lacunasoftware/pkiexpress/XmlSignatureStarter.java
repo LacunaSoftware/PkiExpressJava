@@ -76,6 +76,7 @@ public class XmlSignatureStarter extends SignatureStarter {
 		if (!Util.isNullOrEmpty(toSignElementId)) {
 			args.add("--element-id");
 			args.add(toSignElementId);
+			this.versionManager.requireVersion(new Version("1.26.0"));
 		}
 
 		if (!Util.isNullOrEmpty(this.signatureElementInsertion)) {
