@@ -7,6 +7,7 @@ public enum StandardSignaturePolicies {
 	PkiBrazilCadesAdrBasicaWithRevocationValues("adrb-rv"),
 	PkiBrazilCadesAdrTempo("adrt"),
 	PkiBrazilCadesAdrCompleta("adrc"),
+	PkiBrazilCadesAdrArquivamento("adra"),
 	CadesBes("cades"),
 	CadesBesWithRevocationValues("cades-rv"),
 	CadesT("cades-t"),
@@ -22,6 +23,8 @@ public enum StandardSignaturePolicies {
 	XmlDSigBasic("basic"),
 	PkiBrazilXadesAdrBasica("adrb"),
 	PkiBrazilXadesAdrTempo("adrt"),
+	PkiBrazilXadesAdrCompleta("adrc"),
+	PkiBrazilXadesAdrArquivamento("adra"),
 	CodWithSHA1("cod-sha1"),
 	CodWithSHA256("cod-sha256");
 
@@ -50,8 +53,11 @@ public enum StandardSignaturePolicies {
 
 		return policy.equals(PkiBrazilCadesAdrTempo) ||
 				policy.equals(PkiBrazilCadesAdrCompleta) ||
+				policy.equals(PkiBrazilCadesAdrArquivamento) ||
 				policy.equals(CadesT) ||
 				policy.equals(PadesT) ||
-				policy.equals(PkiBrazilXadesAdrTempo);
+				policy.equals(PkiBrazilXadesAdrTempo) ||
+				policy.equals(PkiBrazilXadesAdrCompleta) ||
+				policy.equals(PkiBrazilXadesAdrArquivamento);
 	}
 }

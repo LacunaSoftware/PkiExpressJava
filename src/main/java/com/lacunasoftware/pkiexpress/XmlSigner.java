@@ -12,6 +12,7 @@ import java.util.List;
 public class XmlSigner extends Signer {
 	private Path xmlToSignPath;
 	private String toSignElementId;
+	private String signatureElementInsertion;
 
 
 	public XmlSigner(PkiExpressConfig config) {
@@ -49,6 +50,10 @@ public class XmlSigner extends Signer {
 		this.toSignElementId = toSignElementId;
 	}
 
+	public void setSignatureElementInsertion(XmlElementInsertion insertion) {
+		this.signatureElementInsertion = insertion.getValue();
+	}
+
 	public PKCertificate sign() throws IOException {
 		return sign(false);
 	}
@@ -73,6 +78,11 @@ public class XmlSigner extends Signer {
 		if (!Util.isNullOrEmpty(toSignElementId)) {
 			args.add("--element-id");
 			args.add(toSignElementId);
+		}
+
+		if (!Util.isNullOrEmpty(this.signatureElementInsertion)) {
+			args.add("--sig-element-insertion");
+			args.add(this.signatureElementInsertion);
 		}
 
 		if (getCert) {
