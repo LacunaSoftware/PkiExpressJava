@@ -16,8 +16,12 @@ public class PKCertificate {
 	private BigInteger serialNumber;
 	private Date validityStart;
 	private Date validityEnd;
+	private PkiArgentinaCertificateFields pkiArgentina;
 	private PkiBrazilCertificateFields pkiBrazil;
+	private PkiEcuadorCertificateFields pkiEcuador;
 	private PkiItalyCertificateFields pkiItaly;
+	private PkiParaguayCertificateFields pkiParaguay;
+	private PkiPeruCertificateFields pkiPeru;
 	private PKCertificate issuer;
 	private byte[] binaryThumbprintSHA256;
 	private String thumbprint;
@@ -37,6 +41,18 @@ public class PKCertificate {
 		}
 		if (model.getPkiItaly() != null) {
 			this.pkiItaly = new PkiItalyCertificateFields(model.getPkiItaly());
+		}
+		if (model.getPkiArgentina() != null) {
+			this.pkiArgentina = new PkiArgentinaCertificateFields(model.getPkiArgentina());
+		}
+		if (model.getPkiEcuador() != null) {
+			this.pkiEcuador = new PkiEcuadorCertificateFields(model.getPkiEcuador());
+		}
+		if (model.getPkiParaguay() != null) {
+			this.pkiParaguay = new PkiParaguayCertificateFields(model.getPkiParaguay());
+		}
+		if (model.getPkiPeru() != null) {
+			this.pkiPeru = new PkiPeruCertificateFields(model.getPkiPeru());
 		}
 		if (model.getIssuer() != null) {
 			this.issuer = new PKCertificate(model.getIssuer());

@@ -18,8 +18,12 @@ public class CertificateModel {
 	private Date validityStart = null;
 	private Date validityEnd = null;
 	private CertificateModel issuer = null;
+	private PkiArgentinaCertificateModel pkiArgentina = null;
 	private PkiBrazilCertificateModel pkiBrazil = null;
+	private PkiEcuadorCertificateModel pkiEcuador = null;
 	private PkiItalyCertificateModel pkiItaly = null;
+	private PkiParaguayCertificateModel pkiParaguay = null;
+	private PkiPeruCertificateModel pkiPeru = null;
 	private String binaryThumbprintSHA256 = null;
 	private String thumbprint = null;
 	private String subjectCommonName = null;
@@ -113,6 +117,38 @@ public class CertificateModel {
 	}
 	public void setPkiItaly(PkiItalyCertificateModel pkiItaly) {
 		this.pkiItaly = pkiItaly;
+	}
+
+	@JsonProperty("pkiArgentina")
+	public PkiArgentinaCertificateModel getPkiArgentina() {
+		return pkiArgentina;
+	}
+	public void setPkiArgentina(PkiArgentinaCertificateModel pkiArgentina) {
+		this.pkiArgentina = pkiArgentina;
+	}
+
+	@JsonProperty("pkiEcuador")
+	public PkiEcuadorCertificateModel getPkiEcuador() {
+		return pkiEcuador;
+	}
+	public void setPkiEcuador(PkiEcuadorCertificateModel pkiEcuador) {
+		this.pkiEcuador = pkiEcuador;
+	}
+
+	@JsonProperty("pkiParaguay")
+	public PkiParaguayCertificateModel getPkiParaguay() {
+		return pkiParaguay;
+	}
+	public void setPkiParaguay(PkiParaguayCertificateModel pkiParaguay) {
+		this.pkiParaguay = pkiParaguay;
+	}
+
+	@JsonProperty("pkiPeru")
+	public PkiPeruCertificateModel getPkiPeru() {
+		return pkiPeru;
+	}
+	public void setPkiPeru(PkiPeruCertificateModel pkiPeru) {
+		this.pkiPeru = pkiPeru;
 	}
 
 	@JsonProperty("binaryThumbprintSHA256")
