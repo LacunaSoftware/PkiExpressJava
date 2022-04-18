@@ -107,6 +107,22 @@ public class PKCertificate {
 		return pkiItaly;
 	}
 
+	public PkiArgentinaCertificateFields getPkiArgentina() {
+		return pkiArgentina;
+	}
+
+	public PkiEcuadorCertificateFields getPkiEcuador() {
+		return pkiEcuador;
+	}
+
+	public PkiParaguayCertificateFields getPkiParaguay() {
+		return pkiParaguay;
+	}
+
+	public PkiPeruCertificateFields getPkiPeru() {
+		return pkiPeru;
+	}
+
 	public PKCertificate getIssuer() {
 		return issuer;
 	}
