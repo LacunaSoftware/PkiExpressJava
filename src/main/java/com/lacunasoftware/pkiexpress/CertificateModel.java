@@ -3,9 +3,9 @@ package com.lacunasoftware.pkiexpress;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CertificateModel {
@@ -29,7 +29,7 @@ public class CertificateModel {
 	private String subjectCommonName = null;
 	private String subjectDisplayName = null;
 	private Integer keyUsage = null;
-
+	private List<CertificatePolicyModel> certificatePolicies = new ArrayList<CertificatePolicyModel>();
 
 	@JsonProperty("content")
 	public String getContent() {
@@ -190,4 +190,14 @@ public class CertificateModel {
 	public void setKeyUsage(Integer keyUsage) {
 		this.keyUsage = keyUsage;
 	}
+
+	@JsonProperty("certificatePolicies")
+	public List<CertificatePolicyModel> getCertificatePolicies() {
+		return this.certificatePolicies;
+	}
+
+	public void setCertificatePolicies(List<CertificatePolicyModel> certificatePolicies) {
+		this.certificatePolicies = certificatePolicies;
+	}
+
 }

@@ -3,7 +3,8 @@ package com.lacunasoftware.pkiexpress;
 
 import java.math.BigInteger;
 import java.util.Date;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains information about a X.509 public key certificate
@@ -26,6 +27,7 @@ public class PKCertificate {
 	private byte[] binaryThumbprintSHA256;
 	private String thumbprint;
 	private KeyUsage keyUsage;
+	private List<CertificatePolicy> certificatePolicies = new ArrayList<CertificatePolicy>();
 
 
 	PKCertificate(CertificateModel model) {
@@ -62,7 +64,11 @@ public class PKCertificate {
 		if (model.getKeyUsage() != null) {
 			this.keyUsage = new KeyUsage(model.getKeyUsage());
 		}
-
+		if (model.getCertificatePolicies() != null) {
+			for (CertificatePolicyModel policyModel : model.getCertificatePolicies()) {
+				this.certificatePolicies.add(new CertificatePolicy(policyModel));
+			}
+		}
 	}
 
 	public Name getSubjectName() {
@@ -145,5 +151,9 @@ public class PKCertificate {
 
 	public void setKeyUsage(KeyUsage keyUsage) {
 		this.keyUsage = keyUsage;
+	}
+
+	public List<CertificatePolicy> getCertificatePolicies() {
+		return this.certificatePolicies;
 	}
 }
