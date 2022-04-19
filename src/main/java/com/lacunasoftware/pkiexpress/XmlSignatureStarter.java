@@ -12,6 +12,7 @@ import java.util.List;
 public class XmlSignatureStarter extends SignatureStarter {
 	private Path xmlToSignPath;
 	private String toSignElementId;
+	private String signatureElementInsertion;
 
 
 	public XmlSignatureStarter(PkiExpressConfig config) {
@@ -49,6 +50,10 @@ public class XmlSignatureStarter extends SignatureStarter {
 		this.toSignElementId = toSignElementId;
 	}
 
+	public void setSignatureElementInsertion(XmlElementInsertion insertion) {
+		this.signatureElementInsertion = insertion.getValue();
+	}
+
 	public SignatureStartResult start() throws IOException {
 
 		if (xmlToSignPath == null) {
@@ -71,6 +76,12 @@ public class XmlSignatureStarter extends SignatureStarter {
 		if (!Util.isNullOrEmpty(toSignElementId)) {
 			args.add("--element-id");
 			args.add(toSignElementId);
+			this.versionManager.requireVersion(new Version("1.26.0"));
+		}
+
+		if (!Util.isNullOrEmpty(this.signatureElementInsertion)) {
+			args.add("--sig-element-insertion");
+			args.add(this.signatureElementInsertion);
 		}
 
 		// Invoke command with plain text output (to support PKI Express < 1.3)

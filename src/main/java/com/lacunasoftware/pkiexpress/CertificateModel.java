@@ -3,9 +3,9 @@ package com.lacunasoftware.pkiexpress;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CertificateModel {
@@ -18,14 +18,18 @@ public class CertificateModel {
 	private Date validityStart = null;
 	private Date validityEnd = null;
 	private CertificateModel issuer = null;
+	private PkiArgentinaCertificateModel pkiArgentina = null;
 	private PkiBrazilCertificateModel pkiBrazil = null;
+	private PkiEcuadorCertificateModel pkiEcuador = null;
 	private PkiItalyCertificateModel pkiItaly = null;
+	private PkiParaguayCertificateModel pkiParaguay = null;
+	private PkiPeruCertificateModel pkiPeru = null;
 	private String binaryThumbprintSHA256 = null;
 	private String thumbprint = null;
 	private String subjectCommonName = null;
 	private String subjectDisplayName = null;
 	private Integer keyUsage = null;
-
+	private List<CertificatePolicyModel> certificatePolicies = new ArrayList<CertificatePolicyModel>();
 
 	@JsonProperty("content")
 	public String getContent() {
@@ -115,6 +119,38 @@ public class CertificateModel {
 		this.pkiItaly = pkiItaly;
 	}
 
+	@JsonProperty("pkiArgentina")
+	public PkiArgentinaCertificateModel getPkiArgentina() {
+		return pkiArgentina;
+	}
+	public void setPkiArgentina(PkiArgentinaCertificateModel pkiArgentina) {
+		this.pkiArgentina = pkiArgentina;
+	}
+
+	@JsonProperty("pkiEcuador")
+	public PkiEcuadorCertificateModel getPkiEcuador() {
+		return pkiEcuador;
+	}
+	public void setPkiEcuador(PkiEcuadorCertificateModel pkiEcuador) {
+		this.pkiEcuador = pkiEcuador;
+	}
+
+	@JsonProperty("pkiParaguay")
+	public PkiParaguayCertificateModel getPkiParaguay() {
+		return pkiParaguay;
+	}
+	public void setPkiParaguay(PkiParaguayCertificateModel pkiParaguay) {
+		this.pkiParaguay = pkiParaguay;
+	}
+
+	@JsonProperty("pkiPeru")
+	public PkiPeruCertificateModel getPkiPeru() {
+		return pkiPeru;
+	}
+	public void setPkiPeru(PkiPeruCertificateModel pkiPeru) {
+		this.pkiPeru = pkiPeru;
+	}
+
 	@JsonProperty("binaryThumbprintSHA256")
 	public String getBinaryThumbprintSHA256() {
 		return binaryThumbprintSHA256;
@@ -154,4 +190,14 @@ public class CertificateModel {
 	public void setKeyUsage(Integer keyUsage) {
 		this.keyUsage = keyUsage;
 	}
+
+	@JsonProperty("certificatePolicies")
+	public List<CertificatePolicyModel> getCertificatePolicies() {
+		return this.certificatePolicies;
+	}
+
+	public void setCertificatePolicies(List<CertificatePolicyModel> certificatePolicies) {
+		this.certificatePolicies = certificatePolicies;
+	}
+
 }
