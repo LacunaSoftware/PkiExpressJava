@@ -4,19 +4,16 @@ PKI Express package for Java
 
 This package contains classes that encapsulate the calls to the PKI Express.
 
-The **PKI Express package** is distributed by [Bintray](https://bintray.com/lacunasoftware/maven/pki-express).
+The **PKI Express package** is distributed by [Maven](https://search.maven.org/artifact/com.lacunasoftware.pkiexpress/pki-express).
 
 The recommended way to install it is with Gradle:
     
     repositories {
         mavenCentral()
-        maven {
-            url  "http://dl.bintray.com/lacunasoftware/maven"
-        }
     }
     
     dependencies {
-        compile("com.lacunasoftware.pkiexpress:pki-express:1.17.2")
+        implementation 'com.lacunasoftware.pkiexpress:pki-express:1.18.0'
         ...
     }
         
@@ -25,7 +22,7 @@ Or with Maven:
     <dependency>
       <groupId>com.lacunasoftware.pkiexpress</groupId>
       <artifactId>pki-express</artifactId>
-      <version>1.17.2/version>
+      <version>1.18.0/version>
       <type>pom</type>
     </dependency>
       
