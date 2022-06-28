@@ -13,6 +13,7 @@ public class XmlSignatureStarter extends SignatureStarter {
 	private Path xmlToSignPath;
 	private String toSignElementId;
 	private String signatureElementInsertion;
+	private boolean useClassicEnvelopedTransform;
 
 
 	public XmlSignatureStarter(PkiExpressConfig config) {
@@ -54,6 +55,10 @@ public class XmlSignatureStarter extends SignatureStarter {
 		this.signatureElementInsertion = insertion.getValue();
 	}
 
+	public void setUseClassicEnvelopedTransform(boolean useClassicEnvelopedTransform) {
+		this.useClassicEnvelopedTransform = useClassicEnvelopedTransform;
+	}
+
 	public SignatureStartResult start() throws IOException {
 
 		if (xmlToSignPath == null) {
@@ -76,12 +81,17 @@ public class XmlSignatureStarter extends SignatureStarter {
 		if (!Util.isNullOrEmpty(toSignElementId)) {
 			args.add("--element-id");
 			args.add(toSignElementId);
-			this.versionManager.requireVersion(new Version("1.26.0"));
 		}
 
 		if (!Util.isNullOrEmpty(this.signatureElementInsertion)) {
 			args.add("--sig-element-insertion");
 			args.add(this.signatureElementInsertion);
+			this.versionManager.requireVersion(new Version("1.26.0"));
+		}
+
+		if (this.useClassicEnvelopedTransform) {
+			args.add("--classic-enveloped-transform");
+			this.versionManager.requireVersion(new Version("1.27.0"));
 		}
 
 		// Invoke command with plain text output (to support PKI Express < 1.3)

@@ -13,6 +13,7 @@ public class XmlSigner extends Signer {
 	private Path xmlToSignPath;
 	private String toSignElementId;
 	private String signatureElementInsertion;
+	private boolean useClassicEnvelopedTransform;
 
 
 	public XmlSigner(PkiExpressConfig config) {
@@ -54,6 +55,10 @@ public class XmlSigner extends Signer {
 		this.signatureElementInsertion = insertion.getValue();
 	}
 
+	public void setUseClassicEnvelopedTransform(boolean useClassicEnvelopedTransform) {
+		this.useClassicEnvelopedTransform = useClassicEnvelopedTransform;
+	}
+
 	public PKCertificate sign() throws IOException {
 		return sign(false);
 	}
@@ -84,6 +89,11 @@ public class XmlSigner extends Signer {
 			args.add("--sig-element-insertion");
 			args.add(this.signatureElementInsertion);
 			this.versionManager.requireVersion(new Version("1.26.0"));
+		}
+
+		if (this.useClassicEnvelopedTransform) {
+			args.add("--classic-enveloped-transform");
+			this.versionManager.requireVersion(new Version("1.27.0"));
 		}
 
 		if (getCert) {
