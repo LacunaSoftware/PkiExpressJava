@@ -18,7 +18,8 @@ public class PadesSignatureStarter extends SignatureStarter {
 	private String reason;
 	private String customSignatureFieldName;
 	private PadesCertificationLevel certificationLevel;
-
+	private String location;
+	private String signerName;
 
 	public PadesSignatureStarter(PkiExpressConfig config) {
 		super(config);
@@ -112,6 +113,14 @@ public class PadesSignatureStarter extends SignatureStarter {
 		this.certificationLevel = certificationLevel;
 	}
 
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public void setSignerName(String signerName) {
+		this.signerName = signerName;
+	}
+
 	public SignatureStartResult start() throws IOException {
 
 		if (pdfToSignPath == null) {
@@ -160,6 +169,18 @@ public class PadesSignatureStarter extends SignatureStarter {
 
 			// This option can only be used on versions greater than 1.13.0 of the PKI Express.
 			this.versionManager.requireVersion(new Version("1.13.0"));
+		}
+
+		if (!Util.isNullOrEmpty(location)) {
+			args.add("--location");
+			args.add(location);
+			this.versionManager.requireVersion(new Version("1.27.0"));
+		}
+
+		if (!Util.isNullOrEmpty(signerName)) {
+			args.add("--signer-name");
+			args.add(signerName);
+			this.versionManager.requireVersion(new Version("1.27.0"));
 		}
 
 		if (suppressDefaultVisualRepresentation) {
