@@ -1,7 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -10,82 +9,94 @@ targetCompatibility = 1.7
 
 group = 'com.lacunasoftware.pkiexpress'
 archivesBaseName = 'pki-express'
-version = '1.19.0'
+version = '1.20.0'
 
-repositories {
-    mavenCentral()
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 }
 
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
 }
 
-task fatJar(type: Jar) {
-    manifest {
-    }
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
+repositories {
+    mavenCentral()
+}
+sourceSets {
+    main.java.srcDirs = ['src/main/java']
 }
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
 
-artifacts {
-    archives javadocJar, sourcesJar
-}
+            artifactId = "pki-express"
+            groupId group
+            version version 
 
-signing {
-    sign configurations.archives
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                name 'pki-express'
-                packaging 'jar'
-                artifactId 'pki-express'
-                description 'Classes to use Lacuna Software PKI Express'
-                url 'https://github.com/LacunaSoftware/PkiExpressJava'
+            pom {
+                name = 'pki-express'
+                packaging = 'jar'
+                artifactId = 'pki-express'
+                description = 'Classes to use Lacuna Software PKI Express'
+                url = 'https://github.com/LacunaSoftware/PkiExpressJava'
 
                 scm {
-                    connection 'scm:git:git@github.com:LacunaSoftware/PkiExpressJava.git'
-                    developerConnection 'scm:git:git@github.com:LacunaSoftware/PkiExpressJava.git'
-                    url 'https://github.com/LacunaSoftware/PkiExpressJava'
+                    connection = 'scm:git:git@github.com:LacunaSoftware/PkiExpressJava.git'
+                    developerConnection = 'scm:git:git@github.com:LacunaSoftware/PkiExpressJava.git'
+                    url = 'https://github.com/LacunaSoftware/PkiExpressJava'
                 }
 
                 licenses {
                     license {
-                        name 'Unlicense'
+                        name = 'Unlicense'
                     }
                 }
 
                 developers {
                     developer {
-                        id 'ismaelm'
-                        name 'Ismael Medeiros'
-                        email 'IsmaelM@lacunasoftware.com'
+                        id = 'ismaelm'
+                        name = 'Ismael Medeiros'
+                        email = 'IsmaelM@lacunasoftware.com'
+                    }
+                    developer {
+                        id = 'danilob'
+                        name = 'Danilo Bispo'
+                        email = 'DaniloB@lacunasoftware.com'
                     }
                 }
             }
         }
     }
+    repositories {
+        maven {
+            url determineRepositoryUrl()
+            credentials {
+                username ossrhUsername
+                password ossrhPassword
+            }
+        }
+    }
+}
+
+def determineRepositoryUrl() {
+    def version = project.version.toString()
+    if (version.endsWith('SNAPSHOT')) {
+        return "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+    } else {
+        return "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+    sign configurations.archives
 }
