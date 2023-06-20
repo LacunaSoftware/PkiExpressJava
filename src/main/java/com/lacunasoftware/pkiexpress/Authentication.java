@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -75,6 +76,10 @@ public class Authentication extends PkiExpressOperator {
 		}
 
 		this.signature = signatureBase64;
+	}
+
+	public void setSignature(byte[] signature) {
+		this.signature = new String(signature);
 	}
 
 	public void setExternalStorage(boolean useExternalStorage) {

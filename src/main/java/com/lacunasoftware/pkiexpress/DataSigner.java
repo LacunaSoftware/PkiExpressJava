@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class DataSigner extends Signer {
@@ -25,7 +26,7 @@ public class DataSigner extends Signer {
 		this(new PkiExpressConfig());
 	}
 
-    public PKCertificate sign() throws IOException {
+    public byte[] sign() throws IOException {
         if (toSignData == null) {
             throw new RuntimeException("The \"toSignData\" argument was not set");
         }
@@ -40,7 +41,7 @@ public class DataSigner extends Signer {
         OperatorResult result = invoke(CommandEnum.CommandSignData, args);
 
         // Parse output and return model.
-        SignatureResult resultModel = parseOutput(result.getOutput()[0], SignatureResult.class);
-        return new PKCertificate(resultModel.getSigner());
+        byte[] output = Base64.getDecoder().decode(result.getOutput()[0]);
+        return output;
     }
 }
