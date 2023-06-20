@@ -109,8 +109,11 @@ public class CertificateExplorer extends PkiExpressOperator {
 		}
 		
 		List<String> args = new ArrayList<String>();
-		args.add("--file");
-		args.add(certificatePath.toString());
+
+		if (certificatePath != null) {
+			args.add("--file");
+			args.add(certificatePath.toString());
+		}
 		
 		if (validate) {
 			args.add("--validate");
@@ -132,6 +135,7 @@ public class CertificateExplorer extends PkiExpressOperator {
 
 		if(trustServiceSession != null){
 			args.add("--trust-service-session");
+			args.add(trustServiceSession);
 		}
 
 		// This operation can only be used on versions greater than 1.20 of the PKI Express.

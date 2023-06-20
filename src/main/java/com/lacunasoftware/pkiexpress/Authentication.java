@@ -1,6 +1,5 @@
 package com.lacunasoftware.pkiexpress;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,13 +11,11 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-
 public class Authentication extends PkiExpressOperator {
 	private String nonce;
 	private Path certificatePath;
 	private String signature;
 	private boolean useExternalStorage = false;
-
 
 	public Authentication(PkiExpressConfig config) {
 		super(config);
@@ -27,7 +24,6 @@ public class Authentication extends PkiExpressOperator {
 	public Authentication() throws IOException {
 		this(new PkiExpressConfig());
 	}
-
 
 	public void setNonce(String nonceBase64) {
 		try {
@@ -39,7 +35,7 @@ public class Authentication extends PkiExpressOperator {
 		this.nonce = nonceBase64;
 	}
 
-	//region setCertificate
+	// region setCertificate
 
 	public void setCertificate(InputStream inputStream) throws IOException {
 		this.certificatePath = writeToTempFile(inputStream);
@@ -66,7 +62,7 @@ public class Authentication extends PkiExpressOperator {
 		setCertificate(contentRaw);
 	}
 
-	//endregion
+	// endregion
 
 	public void setSignature(String signatureBase64) {
 		try {
@@ -79,7 +75,7 @@ public class Authentication extends PkiExpressOperator {
 	}
 
 	public void setSignature(byte[] signature) {
-		this.signature = new String(signature);
+		this.signature = Base64.getEncoder().encodeToString(signature);
 	}
 
 	public void setExternalStorage(boolean useExternalStorage) {
@@ -99,7 +95,8 @@ public class Authentication extends PkiExpressOperator {
 			this.versionManager.requireVersion(new Version("1.4"));
 		}
 
-		// This operation can only be used on versions greater than 1.4 of the PKI Express.
+		// This operation can only be used on versions greater than 1.4 of the PKI
+		// Express.
 		this.versionManager.requireVersion(new Version("1.4"));
 
 		// Invoke command.
@@ -138,7 +135,8 @@ public class Authentication extends PkiExpressOperator {
 			this.versionManager.requireVersion(new Version("1.4"));
 		}
 
-		// This operation can only be used on versions greater than 1.4 of the PKI Express.
+		// This operation can only be used on versions greater than 1.4 of the PKI
+		// Express.
 		this.versionManager.requireVersion(new Version("1.4"));
 
 		// Invoke command.
