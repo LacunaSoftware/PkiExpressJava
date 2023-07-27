@@ -148,10 +148,10 @@ public class TrustServicesManager extends PkiExpressOperator {
 	}
 
 	public List<TrustServiceAuthParameters> discoverByCpfAndStartAuth(String cpf, String redirectUrl, TrustServiceSessionTypes sessionType, String customState) throws IOException {
-		return discoverByCpfAndStartAuth(cpf, redirectUrl, sessionType, customState, false);
+		return discoverByCpfAndStartAuth(cpf, redirectUrl, sessionType, customState, false, 0);
 	}
 
-	public List<TrustServiceAuthParameters> discoverByCpfAndStartAuth(String cpf, String redirectUrl, TrustServiceSessionTypes sessionType, String customState, boolean throwExceptions) throws IOException {
+	public List<TrustServiceAuthParameters> discoverByCpfAndStartAuth(String cpf, String redirectUrl, TrustServiceSessionTypes sessionType, String customState, boolean throwExceptions, Integer lifetime) throws IOException {
 		if (Util.isNullOrEmpty(cpf)) {
 			throw new RuntimeException("The provided CPF is not valid");
 		}
@@ -220,10 +220,10 @@ public class TrustServicesManager extends PkiExpressOperator {
 	}
 
 	public List<TrustServiceAuthParameters> discoverByCnpjAndStartAuth(String cnpj, String redirectUrl, TrustServiceSessionTypes sessionType, String customState) throws IOException {
-		return discoverByCnpjAndStartAuth(cnpj, redirectUrl, sessionType, customState, false);
+		return discoverByCnpjAndStartAuth(cnpj, redirectUrl, sessionType, customState, false, 0);
 	}
 
-	public List<TrustServiceAuthParameters> discoverByCnpjAndStartAuth(String cnpj, String redirectUrl, TrustServiceSessionTypes sessionType, String customState, boolean throwExceptions) throws IOException {
+	public List<TrustServiceAuthParameters> discoverByCnpjAndStartAuth(String cnpj, String redirectUrl, TrustServiceSessionTypes sessionType, String customState, boolean throwExceptions, Integer lifetime) throws IOException {
 		if (Util.isNullOrEmpty(cnpj)) {
 			throw new RuntimeException("The provided CNPJ is not valid");
 		}
