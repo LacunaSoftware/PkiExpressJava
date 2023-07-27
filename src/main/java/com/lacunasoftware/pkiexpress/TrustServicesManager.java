@@ -189,7 +189,14 @@ public class TrustServicesManager extends PkiExpressOperator {
 			args.add("--throw");
 		}
 
-		// This operation can only be used on versions greater than 1.17 of the PKI Express.
+		if(lifetime != 0) {
+			String lifetimeString = Integer.toString(lifetime);
+			args.add("--session-lifetime");
+			args.add(lifetimeString);
+		}
+
+		// This operation can only be used on versions greater than 1.17 of the PKI
+		// Express.
 		this.versionManager.requireVersion(new Version("1.17"));
 
 		// Invoke command.
@@ -250,6 +257,12 @@ public class TrustServicesManager extends PkiExpressOperator {
 
 		if (throwExceptions) {
 			args.add("--throw");
+		}
+
+		if(lifetime != 0) {
+			String lifetimeString = Integer.toString(lifetime);
+			args.add("--session-lifetime");
+			args.add(lifetimeString);
 		}
 
 		// This operation can only be used on versions greater than 1.17 of the PKI Express.
