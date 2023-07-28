@@ -13,7 +13,7 @@ The recommended way to install it is with Gradle:
     }
     
     dependencies {
-        implementation 'com.lacunasoftware.pkiexpress:pki-express:1.19.0'
+        implementation 'com.lacunasoftware.pkiexpress:pki-express:1.20.1'
         ...
     }
         
