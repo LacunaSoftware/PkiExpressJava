@@ -1,20 +1,20 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'signing'
+}
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
 
 group = 'com.lacunasoftware.pkiexpress'
 archivesBaseName = 'pki-express'
-version = '1.20.1'
+version = '1.21.0'
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -26,9 +26,6 @@ java {
     withSourcesJar()
 }
 
-repositories {
-    mavenCentral()
-}
 sourceSets {
     main.java.srcDirs = ['src/main/java']
 }
@@ -38,14 +35,13 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
 
+            groupId = group
             artifactId = "pki-express"
-            groupId group
-            version version 
+            version = version
 
             pom {
                 name = 'pki-express'
                 packaging = 'jar'
-                artifactId = 'pki-express'
                 description = 'Classes to use Lacuna Software PKI Express'
                 url = 'https://github.com/LacunaSoftware/PkiExpressJava'
 
@@ -78,7 +74,7 @@ publishing {
     }
     repositories {
         maven {
-            url determineRepositoryUrl()
+            url = determineRepositoryUrl()
             credentials {
                 username ossrhUsername
                 password ossrhPassword
