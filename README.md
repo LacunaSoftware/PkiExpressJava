@@ -13,7 +13,7 @@ The recommended way to install it is with Gradle:
     }
     
     dependencies {
-        implementation 'com.lacunasoftware.pkiexpress:pki-express:1.20.1'
+        implementation 'com.lacunasoftware.pkiexpress:pki-express:1.21.0'
         ...
     }
         
@@ -22,7 +22,7 @@ Or with Maven:
     <dependency>
       <groupId>com.lacunasoftware.pkiexpress</groupId>
       <artifactId>pki-express</artifactId>
-      <version>1.20.1/version>
+      <version>1.21.0/version>
       <type>pom</type>
     </dependency>
       

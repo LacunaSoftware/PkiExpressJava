@@ -230,7 +230,11 @@ public abstract class PkiExpressOperator {
 		return result;
 	}
 
-	protected List<String> getPkiExpressInvocation() throws InstallationNotFoundException {
+	/**
+	 * @return
+	 * @throws InstallationNotFoundException
+	 */
+	protected List<String> getPkiExpressInvocation() throws InstallationNotFoundException, IOException {
 
 		String os;
 
@@ -249,7 +253,15 @@ public abstract class PkiExpressOperator {
 
 			if (os.equals("linux")) {
 				if (!Files.exists(home.resolve("pkie.dll"))) {
-					throw new InstallationNotFoundException("The file pkie.dll could not be found on directory " + home.toString());
+					// 25-09-23 Changed because in newer versions of PkiExpress (i.e. >1.31) this DLL file is no longer required
+					// get current version
+					Metadata metadata = new Metadata(this.config);
+					Version version = new Version(metadata.getPkiExpressVersion());
+					// compare to 1.31
+					version.compareTo(new Version("1.31"));
+					if(version.compareTo(new Version("1.31")) < 0){
+						throw new InstallationNotFoundException("The file pkie.dll could not be found on directory " + home.toString());
+					}
 				}
 			} else {
 				if (!Files.exists(home.resolve("pkie.exe"))) {
