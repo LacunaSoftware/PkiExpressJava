@@ -11,7 +11,7 @@ targetCompatibility = JavaVersion.VERSION_1_7
 
 group = 'com.lacunasoftware.pkiexpress'
 archivesBaseName = 'pki-express'
-version = '1.21.1'
+version = '1.21.2'
 
 repositories {
     mavenCentral()
