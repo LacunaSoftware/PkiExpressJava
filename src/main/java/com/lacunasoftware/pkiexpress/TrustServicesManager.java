@@ -280,11 +280,11 @@ public class TrustServicesManager extends PkiExpressOperator {
 		return authParameters;
 	}
 
-	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password) throws IOException {
-		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION);
+	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, Integer lifetime) throws IOException {
+		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION, lifetime);
 	}
 
-	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, TrustServiceSessionTypes sessionType) throws IOException {
+	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, TrustServiceSessionTypes sessionType, Integer lifetime) throws IOException {
 		if (Util.isNullOrEmpty(service)) {
 			throw new RuntimeException("The provided service is not valid");
 		}
@@ -314,6 +314,13 @@ public class TrustServicesManager extends PkiExpressOperator {
 
 		// Add sessionType.
 		args.add(sessionType.getValue());
+
+		// Add session lifetime
+		if(lifetime != 0) {
+			String lifetimeString = Integer.toString(lifetime);
+			args.add("--session-lifetime");
+			args.add(lifetimeString);
+		}
 
 		// This operation can only be used on versions greater than 1.17 of the PKI Express.
 		this.versionManager.requireVersion(new Version("1.17"));
