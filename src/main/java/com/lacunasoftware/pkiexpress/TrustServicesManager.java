@@ -284,6 +284,9 @@ public class TrustServicesManager extends PkiExpressOperator {
 		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION, 0);
 	}
 
+	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, TrustServiceSessionTypes sessionType) throws IOException{
+		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION, 0);
+	}
 	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, Integer lifetime) throws IOException {
 		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION, lifetime);
 	}
