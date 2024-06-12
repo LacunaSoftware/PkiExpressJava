@@ -280,6 +280,10 @@ public class TrustServicesManager extends PkiExpressOperator {
 		return authParameters;
 	}
 
+	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password) throws IOException {
+		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION, 0);
+	}
+
 	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, Integer lifetime) throws IOException {
 		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION, lifetime);
 	}
