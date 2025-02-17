@@ -1,9 +1,7 @@
 package com.lacunasoftware.pkiexpress;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ValidationItemModel {
@@ -58,20 +56,23 @@ public class ValidationItemModel {
 		AlgorithmNotAllowed,
 		UnacceptableSignaturePolicy,
 		TslNotAvailable,
-		PdfAnnotationChangesAfterSignature
+		SigningCertificateIssuerMismatch,
+		SigningCertificateSerialNumberMismatch,
+		PdfAnnotationChangesAfterSignature,
+		InvalidPdfByteRange,
+		RequiredDssEntryMissing
 	}
-
 
 	private TypeEnum type = null;
 	private String message = null;
 	private String detail = null;
 	private ValidationResultsModel innerValidationResults = null;
 
-
 	@JsonProperty("type")
 	public TypeEnum getType() {
 		return type;
 	}
+
 	public void setType(TypeEnum type) {
 		this.type = type;
 	}
@@ -80,6 +81,7 @@ public class ValidationItemModel {
 	public String getMessage() {
 		return message;
 	}
+
 	public void setMessage(String message) {
 		this.message = message;
 	}
@@ -88,6 +90,7 @@ public class ValidationItemModel {
 	public String getDetail() {
 		return detail;
 	}
+
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
@@ -96,6 +99,7 @@ public class ValidationItemModel {
 	public ValidationResultsModel getInnerValidationResults() {
 		return innerValidationResults;
 	}
+
 	public void setInnerValidationResults(ValidationResultsModel innerValidationResults) {
 		this.innerValidationResults = innerValidationResults;
 	}
