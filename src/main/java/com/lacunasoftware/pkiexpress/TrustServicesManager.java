@@ -148,10 +148,10 @@ public class TrustServicesManager extends PkiExpressOperator {
 	}
 
 	public List<TrustServiceAuthParameters> discoverByCpfAndStartAuth(String cpf, String redirectUrl, TrustServiceSessionTypes sessionType, String customState) throws IOException {
-		return discoverByCpfAndStartAuth(cpf, redirectUrl, sessionType, customState, false);
+		return discoverByCpfAndStartAuth(cpf, redirectUrl, sessionType, customState, false, 0);
 	}
 
-	public List<TrustServiceAuthParameters> discoverByCpfAndStartAuth(String cpf, String redirectUrl, TrustServiceSessionTypes sessionType, String customState, boolean throwExceptions) throws IOException {
+	public List<TrustServiceAuthParameters> discoverByCpfAndStartAuth(String cpf, String redirectUrl, TrustServiceSessionTypes sessionType, String customState, boolean throwExceptions, Integer lifetime) throws IOException {
 		if (Util.isNullOrEmpty(cpf)) {
 			throw new RuntimeException("The provided CPF is not valid");
 		}
@@ -189,7 +189,14 @@ public class TrustServicesManager extends PkiExpressOperator {
 			args.add("--throw");
 		}
 
-		// This operation can only be used on versions greater than 1.17 of the PKI Express.
+		if(lifetime != 0) {
+			String lifetimeString = Integer.toString(lifetime);
+			args.add("--session-lifetime");
+			args.add(lifetimeString);
+		}
+
+		// This operation can only be used on versions greater than 1.17 of the PKI
+		// Express.
 		this.versionManager.requireVersion(new Version("1.17"));
 
 		// Invoke command.
@@ -213,10 +220,10 @@ public class TrustServicesManager extends PkiExpressOperator {
 	}
 
 	public List<TrustServiceAuthParameters> discoverByCnpjAndStartAuth(String cnpj, String redirectUrl, TrustServiceSessionTypes sessionType, String customState) throws IOException {
-		return discoverByCnpjAndStartAuth(cnpj, redirectUrl, sessionType, customState, false);
+		return discoverByCnpjAndStartAuth(cnpj, redirectUrl, sessionType, customState, false, 0);
 	}
 
-	public List<TrustServiceAuthParameters> discoverByCnpjAndStartAuth(String cnpj, String redirectUrl, TrustServiceSessionTypes sessionType, String customState, boolean throwExceptions) throws IOException {
+	public List<TrustServiceAuthParameters> discoverByCnpjAndStartAuth(String cnpj, String redirectUrl, TrustServiceSessionTypes sessionType, String customState, boolean throwExceptions, Integer lifetime) throws IOException {
 		if (Util.isNullOrEmpty(cnpj)) {
 			throw new RuntimeException("The provided CNPJ is not valid");
 		}
@@ -252,6 +259,12 @@ public class TrustServicesManager extends PkiExpressOperator {
 			args.add("--throw");
 		}
 
+		if(lifetime != 0) {
+			String lifetimeString = Integer.toString(lifetime);
+			args.add("--session-lifetime");
+			args.add(lifetimeString);
+		}
+
 		// This operation can only be used on versions greater than 1.17 of the PKI Express.
 		this.versionManager.requireVersion(new Version("1.17"));
 
@@ -268,10 +281,17 @@ public class TrustServicesManager extends PkiExpressOperator {
 	}
 
 	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password) throws IOException {
-		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION);
+		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION, 0);
 	}
 
-	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, TrustServiceSessionTypes sessionType) throws IOException {
+	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, TrustServiceSessionTypes sessionType) throws IOException{
+		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION, 0);
+	}
+	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, Integer lifetime) throws IOException {
+		return passwordAuthorize(service, username, password, TrustServiceSessionTypes.SIGNATURE_SESSION, lifetime);
+	}
+
+	public TrustServiceSessionResult passwordAuthorize(String service, String username, String password, TrustServiceSessionTypes sessionType, Integer lifetime) throws IOException {
 		if (Util.isNullOrEmpty(service)) {
 			throw new RuntimeException("The provided service is not valid");
 		}
@@ -301,6 +321,13 @@ public class TrustServicesManager extends PkiExpressOperator {
 
 		// Add sessionType.
 		args.add(sessionType.getValue());
+
+		// Add session lifetime
+		if(lifetime != 0) {
+			String lifetimeString = Integer.toString(lifetime);
+			args.add("--session-lifetime");
+			args.add(lifetimeString);
+		}
 
 		// This operation can only be used on versions greater than 1.17 of the PKI Express.
 		this.versionManager.requireVersion(new Version("1.17"));

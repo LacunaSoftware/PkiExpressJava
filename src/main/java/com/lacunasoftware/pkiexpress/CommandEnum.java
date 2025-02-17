@@ -3,6 +3,7 @@ package com.lacunasoftware.pkiexpress;
 
 public enum CommandEnum {
 	CommandSignCades("sign-cades"),
+	CommandSignData("sign-data"),
 	CommandSignPades("sign-pades"),
 	CommandSignXml("sign-xml"),
 	CommandStartCades("start-cades"),

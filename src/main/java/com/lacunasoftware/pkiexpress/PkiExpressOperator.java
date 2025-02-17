@@ -230,7 +230,11 @@ public abstract class PkiExpressOperator {
 		return result;
 	}
 
-	protected List<String> getPkiExpressInvocation() throws InstallationNotFoundException {
+	/**
+	 * @return
+	 * @throws InstallationNotFoundException
+	 */
+	protected List<String> getPkiExpressInvocation() throws InstallationNotFoundException, IOException {
 
 		String os;
 
@@ -248,8 +252,12 @@ public abstract class PkiExpressOperator {
 		if (home != null) {
 
 			if (os.equals("linux")) {
-				if (!Files.exists(home.resolve("pkie.dll"))) {
-					throw new InstallationNotFoundException("The file pkie.dll could not be found on directory " + home.toString());
+				if (!Files.exists(home.resolve("pkie.dll")) && !Files.exists(home.resolve("pkie"))) {
+					// 25-09-23 Changed because in newer versions of PkiExpress (i.e. >1.31) this
+					// DLL file is no longer required
+					throw new InstallationNotFoundException(
+							"Neither the pkie.dll nor the pkie standalone file could be found on directory "
+									+ home.toString());
 				}
 			} else {
 				if (!Files.exists(home.resolve("pkie.exe"))) {
@@ -283,8 +291,18 @@ public abstract class PkiExpressOperator {
 		if (os.equals("linux")) {
 
 			if (home != null) {
-				invocArgs.add("dotnet");
-				invocArgs.add(home.resolve("pkie.dll").toString());
+				// 16-10-23 Changed because in newer versions of PkiExpress (i.e. >1.31) this
+				// DLL file is no longer required
+				if (Files.exists(home.resolve("pkie.dll"))) {
+					invocArgs.add("dotnet");
+					invocArgs.add(home.resolve("pkie.dll").toString());
+				} else if (Files.exists(home.resolve("pkie"))) {
+					invocArgs.add(home.resolve("pkie").toString());
+				} else {
+					throw new InstallationNotFoundException(
+							"Neither the pkie.dll nor the pkie standalone file could be found on directory "
+									+ home.toString());
+				}
 			} else {
 				invocArgs.add("pkie");
 			}
