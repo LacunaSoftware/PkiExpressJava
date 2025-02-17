@@ -57,7 +57,8 @@ public class ValidationItemModel {
 		UnauthorizedACIssuer,
 		AlgorithmNotAllowed,
 		UnacceptableSignaturePolicy,
-		TslNotAvailable
+		TslNotAvailable,
+		PdfAnnotationChangesAfterSignature
 	}
 
 

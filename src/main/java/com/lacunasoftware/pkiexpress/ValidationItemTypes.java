@@ -54,5 +54,6 @@ public enum ValidationItemTypes {
 	UnauthorizedACIssuer,
 	AlgorithmNotAllowed,
 	UnacceptableSignaturePolicy,
-	TslNotAvailable
+	TslNotAvailable,
+	PdfAnnotationChangesAfterSignature
 }

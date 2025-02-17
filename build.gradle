@@ -11,7 +11,7 @@ targetCompatibility = JavaVersion.VERSION_1_7
 
 group = 'com.lacunasoftware.pkiexpress'
 archivesBaseName = 'pki-express'
-version = '1.21.6'
+version = '1.21.7-rc'
 
 repositories {
     mavenCentral()
@@ -58,16 +58,16 @@ publishing {
                 }
 
                 developers {
-                    developer {
-                        id = 'ismaelm'
-                        name = 'Ismael Medeiros'
-                        email = 'IsmaelM@lacunasoftware.com'
                     }
                     developer {
                         id = 'danilob'
                         name = 'Danilo Bispo'
                         email = 'DaniloB@lacunasoftware.com'
                     }
+                    developer {
+                        id = 'danielr'
+                        name = 'Daniel Rufino'
+                        email = 'danielr@lacunasoftware.com'
                 }
             }
         }
