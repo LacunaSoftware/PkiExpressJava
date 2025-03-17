@@ -1,8 +1,9 @@
 package com.lacunasoftware.pkiexpress;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lacunasoftware.pkiexpress.SignatureAlgorithm.AlgorithmEnum;
 
-public class SignatureAlgorithmIdentifier {
+public class SignatureAlgorithm {
 
 	public enum AlgorithmEnum {
 		MD5WithRSA,

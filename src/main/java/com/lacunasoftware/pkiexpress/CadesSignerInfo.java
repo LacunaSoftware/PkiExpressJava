@@ -1,17 +1,15 @@
 package com.lacunasoftware.pkiexpress;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 /**
  * Represents one of the signatures in a CAdES signature file.
  */
 public class CadesSignerInfo {
 	private DigestAlgorithmAndValue messageDigest;
-    private SignatureAlgorithmAndValue signature;
+	private SignatureAlgorithmAndValue signature;
 	private SignaturePolicyIdentifier signaturePolicy;
 	private PKCertificate certificate;
 	private Date signingTime;
@@ -19,7 +17,6 @@ public class CadesSignerInfo {
 	private List<CadesTimestamp> timestamps = new ArrayList<CadesTimestamp>();
 	private ValidationResults validationResults;
 	private CommitmentType commitmentType;
-
 
 	CadesSignerInfo(
 			DigestAlgorithmAndValueModel messageDigest,
@@ -66,7 +63,6 @@ public class CadesSignerInfo {
 				model.getCommitmentType()
 		);
 	}
-
 
 	public DigestAlgorithmAndValue getMessageDigest() {
 		return messageDigest;
