@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class CadesSignerInfo {
 	private DigestAlgorithmAndValue messageDigest;
-	//private SignatureAlgorithmAndValueModel signature = null; // TODO!s
+    private SignatureAlgorithmAndValue signature;
 	private SignaturePolicyIdentifier signaturePolicy;
 	private PKCertificate certificate;
 	private Date signingTime;
@@ -33,7 +33,7 @@ public class CadesSignerInfo {
 			CommitmentTypeModel commitmentType
 	) {
 		this.messageDigest = new DigestAlgorithmAndValue(messageDigest);
-		//this.signature = ...; // TODO!
+		this.signature = new SignatureAlgorithmAndValue(signature);
 		this.certificate = new PKCertificate(certificate);
 		this.signingTime = signingTime;
 		this.certifiedDateReference = certifiedDateReference;
@@ -70,6 +70,10 @@ public class CadesSignerInfo {
 
 	public DigestAlgorithmAndValue getMessageDigest() {
 		return messageDigest;
+	}
+
+	public SignatureAlgorithmAndValue getSignature() {
+		return signature;
 	}
 
 	public SignaturePolicyIdentifier getSignaturePolicy() {
