@@ -14,7 +14,7 @@ public class SignatureAlgorithmAndValue {
 
 	/**
 	 * Returns the signature algorithm.
-	 * @return the signature algorithm to be used
+	 * @return the signature algorithm ID
 	 */
 	public SignatureAlgorithm getAlgorithm() {
 		return algorithm;
