@@ -13,24 +13,24 @@ public class SignatureAlgorithmAndValue {
 	}
 
 	/**
-	 * Returns the digest algorithm.
-	 * @return the algorithm to be used in the signature
+	 * Returns the signature algorithm.
+	 * @return the signature algorithm to be used
 	 */
 	public SignatureAlgorithm getAlgorithm() {
 		return algorithm;
 	}
 
 	/**
-	 * Returns the digest value.
-	 * @return the digest value
+	 * Returns the signature value.
+	 * @return the signature value
 	 */
 	public byte[] getValue() {
 		return value;
 	}
 
 	/**
-	 * Returns the digest value on hexadecimal representation.
-	 * @return the digest value on hexadecimal representation.
+	 * Returns the signature value on hexadecimal representation.
+	 * @return the signature value on hexadecimal representation.
 	 */
 	public String getHexValue() {
 		return hexValue;
