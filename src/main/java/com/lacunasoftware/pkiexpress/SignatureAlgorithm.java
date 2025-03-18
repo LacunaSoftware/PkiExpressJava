@@ -19,8 +19,12 @@ public class SignatureAlgorithm {
 	private AlgorithmEnum algorithm = null;
 
 	@JsonProperty("algorithm")
-	public AlgorithmEnum getAlgorithm() {
+	private AlgorithmEnum getEAlgorithmEnum() {
 		return algorithm;
+	}
+
+	public String getName() {
+		return algorithm.name();
 	}
 
 	public void setAlgorithm(AlgorithmEnum algorithm) {
