@@ -1,6 +1,5 @@
 package com.lacunasoftware.pkiexpress;
 
-
 /**
  * Types of validations that can be performed on a certificate or signature.
  */
@@ -54,5 +53,12 @@ public enum ValidationItemTypes {
 	UnauthorizedACIssuer,
 	AlgorithmNotAllowed,
 	UnacceptableSignaturePolicy,
-	TslNotAvailable
+	TslNotAvailable,
+	SigningCertificateIssuerMismatch,
+	SigningCertificateSerialNumberMismatch,
+	PdfAnnotationChangesAfterSignature,
+	InvalidPdfByteRange,
+	RequiredDssEntryMissing,
+	
+
 }

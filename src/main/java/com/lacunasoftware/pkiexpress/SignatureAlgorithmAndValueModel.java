@@ -7,17 +7,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SignatureAlgorithmAndValueModel {
-	private SignatureAlgorithmIdentifier algorithmIdentifier = null;
+	private SignatureAlgorithm algorithm = null;
 	private String value = null;
 	private String hexValue = null;
 
 
 	@JsonProperty("algorithmIdentifier")
-	public SignatureAlgorithmIdentifier getAlgorithmIdentifier() {
-		return algorithmIdentifier;
+	public SignatureAlgorithm getAlgorithm() {
+		return algorithm;
 	}
-	public void setAlgorithmIdentifier(SignatureAlgorithmIdentifier algorithmIdentifier) {
-		this.algorithmIdentifier = algorithmIdentifier;
+	
+	public void setAlgorithm(SignatureAlgorithm algorithm) {
+		this.algorithm = algorithm;
 	}
 
 	@JsonProperty("value")
