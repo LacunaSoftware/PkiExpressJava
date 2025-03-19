@@ -54,7 +54,7 @@ public abstract class PkiExpressOperator {
 		// Verify the argument already has quotes. Remove temporarily these quotes.
 		String content;
 		if (firstQuote == 0 && lastQuote == (arg.length() - 1)) {
-			content = arg.substring(1, (arg.length() - 2));
+			content = arg.substring(1, (arg.length() - 1)); // endIndex is exclusive
 			hasQuotes = true;
 		} else {
 			content = arg;
@@ -173,7 +173,7 @@ public abstract class PkiExpressOperator {
 		// Execute the command
 		Process proc;
 		try {
-			proc = Runtime.getRuntime().exec(argArr);
+			proc = new ProcessBuilder(argArr).start();
 		} catch (IOException ex) {
 			throw new InstallationNotFoundException("Could not find PKI Express' installation.", ex);
 		}

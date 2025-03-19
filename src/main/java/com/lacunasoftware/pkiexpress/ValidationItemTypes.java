@@ -59,6 +59,5 @@ public enum ValidationItemTypes {
 	PdfAnnotationChangesAfterSignature,
 	InvalidPdfByteRange,
 	RequiredDssEntryMissing,
-	
-
+	InvalidDocumentTimestamp
 }
