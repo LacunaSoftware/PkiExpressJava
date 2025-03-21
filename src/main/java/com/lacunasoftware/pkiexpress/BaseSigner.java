@@ -40,6 +40,11 @@ class BaseSigner extends PkiExpressOperator {
 				// This policy can only be used on version greater than 1.6 of the PKI Express.
 				versionManager.requireVersion(new Version("1.6"));
 			}
+
+			if (signaturePolicy == StandardSignaturePolicies.PkiBrazilPadesAdrCompleta ||
+					signaturePolicy == StandardSignaturePolicies.PkiBrazilPadesAdrArquivamento) {
+				versionManager.requireVersion(new Version("1.34"));
+			}
 		}
 
 

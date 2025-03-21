@@ -16,6 +16,10 @@ public enum StandardSignaturePolicies {
 	PadesBasic("pades"),
 	PadesBasicWithLTV("pades-ltv"),
 	PadesT("pades-t"),
+	PkiBrazilPadesAdrBasica("adrb"),
+	PkiBrazilPadesAdrTempo("adrt"),
+	PkiBrazilPadesAdrCompleta("adrc"),
+	PkiBrazilPadesAdrArquivamento("adra"),
 
 	// XML policies
 	NFePadraoNacional("nfe"),
@@ -55,7 +59,12 @@ public enum StandardSignaturePolicies {
 				policy.equals(PkiBrazilCadesAdrCompleta) ||
 				policy.equals(PkiBrazilCadesAdrArquivamento) ||
 				policy.equals(CadesT) ||
+
 				policy.equals(PadesT) ||
+				policy.equals(PkiBrazilPadesAdrTempo) ||
+				policy.equals(PkiBrazilPadesAdrCompleta) ||
+				policy.equals(PkiBrazilPadesAdrArquivamento) ||
+
 				policy.equals(PkiBrazilXadesAdrTempo) ||
 				policy.equals(PkiBrazilXadesAdrCompleta) ||
 				policy.equals(PkiBrazilXadesAdrArquivamento);

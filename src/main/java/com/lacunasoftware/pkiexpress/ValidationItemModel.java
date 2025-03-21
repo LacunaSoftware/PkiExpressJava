@@ -60,7 +60,8 @@ public class ValidationItemModel {
 		SigningCertificateSerialNumberMismatch,
 		PdfAnnotationChangesAfterSignature,
 		InvalidPdfByteRange,
-		RequiredDssEntryMissing
+		RequiredDssEntryMissing,
+		InvalidDocumentTimestamp
 	}
 
 	private TypeEnum type = null;
