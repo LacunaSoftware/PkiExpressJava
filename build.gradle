@@ -11,14 +11,14 @@ targetCompatibility = JavaVersion.VERSION_1_7
 
 group = 'com.lacunasoftware.pkiexpress'
 archivesBaseName = 'pki-express'
-version = '1.22.0'
+version = '1.22.1'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
 }
 
 java {
