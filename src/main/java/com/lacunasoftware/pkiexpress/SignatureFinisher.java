@@ -115,9 +115,7 @@ public class SignatureFinisher extends PkiExpressOperator {
 	}
 
 	public void setTransferFileId(String transferFileId) {
-		if (!Files.exists(config.getTransferDataFolder().resolve(transferFileId))) {
-			throw new RuntimeException("The provided transfer file was not found");
-		}
+		Util.validateFile(transferFileId, config.getTransferDataFolder());
 		this.transferFileId = transferFileId;
 	}
 	//endregion

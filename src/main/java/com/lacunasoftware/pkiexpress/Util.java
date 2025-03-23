@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -79,5 +81,29 @@ class Util {
 		}
 
 		return date;
+	}
+
+	static void validateFile(String userFile, Path baseDir) {
+		try {
+			// get normalized path
+			Path basePath = baseDir.toRealPath();
+			Path userPath = basePath.resolve(userFile).normalize();
+
+			// checks if user file path is child of base dir
+			if (!userPath.startsWith(basePath)) {
+				throw new RuntimeException("The provided file path is not valid");
+			}
+
+			// checks if file exists
+			if (!Files.exists(userPath)) {
+				throw new RuntimeException("The provided file was not found");
+			}
+
+		} catch (RuntimeException ex) {
+			throw ex;
+
+		} catch (Exception ex) {
+			throw new RuntimeException("Error validating file path", ex);
+		}
 	}
 }
