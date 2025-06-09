@@ -25,7 +25,8 @@ public enum CommandEnum {
 	CommandDiscoverServices("discover-services"),
 	CommandPasswordAuthorize("pwd-auth"),
 	CommandCompleteServiceAuth("complete-service-auth"),
-	CommandVersion("version");
+	CommandVersion("version"),
+	CommandExtendXmlArchiving("extend-xml-archiving");
 
 
 	private final String value;
