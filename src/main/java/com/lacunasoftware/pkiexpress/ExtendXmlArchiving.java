@@ -8,7 +8,7 @@ public class ExtendXmlArchiving extends PkiExpressOperator {
     
     private String inputFile;
     private String outputFile;
-    private String validationPolicy;
+    private XmlPoliciesForValidation validationPolicy;
     private boolean overwrite;
     private TimestampAuthority timestampAuthority;
 
@@ -32,11 +32,11 @@ public class ExtendXmlArchiving extends PkiExpressOperator {
         this.outputFile = outputFile;
     }
 
-    public String getValidationPolicy() {
+    public XmlPoliciesForValidation getValidationPolicy() {
         return validationPolicy;
     }
 
-    public void setValidationPolicy(String validationPolicy) {
+    public void setValidationPolicy(XmlPoliciesForValidation validationPolicy) {
         this.validationPolicy = validationPolicy;
     }
 
@@ -64,9 +64,9 @@ public class ExtendXmlArchiving extends PkiExpressOperator {
             args.add(this.outputFile);
         }
 
-        if (this.validationPolicy != null && !this.validationPolicy.isEmpty()) {
+        if (this.validationPolicy != null) {
             args.add("--policy");
-            args.add(this.validationPolicy);
+            args.add(this.validationPolicy.getValue());
         }
 
         if (this.overwrite) {

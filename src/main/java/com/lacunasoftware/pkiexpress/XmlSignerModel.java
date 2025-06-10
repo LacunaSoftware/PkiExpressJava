@@ -3,5 +3,5 @@ package com.lacunasoftware.pkiexpress;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class XadesSignerModel extends CadesSignerModel {
+public class XmlSignerModel extends CadesSignerModel {
 } 
