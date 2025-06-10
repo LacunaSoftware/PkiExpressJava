@@ -12,7 +12,7 @@ public enum CommandEnum {
 	CommandCompleteSig("complete-sig"),
 	CommandOpenPades("open-pades"),
 	CommandOpenCades("open-cades"),
-	CommandOpenXades("open-xades"),
+	CommandOpenXml("open-xml"),
 	CommandOpenCertificate("open-cert"),
 	CommandEditPdf("edit-pdf"),
 	CommandMergeCms("merge-cms"),
