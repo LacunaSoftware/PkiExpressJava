@@ -1,14 +1,22 @@
 package com.lacunasoftware.pkiexpress;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public abstract class PkiExpressOperator {
@@ -434,15 +442,60 @@ public abstract class PkiExpressOperator {
 		this.signaturePolicy = signaturePolicy;
 	}
 
-	@Deprecated
-	public void setSignaturePolicy(XmlSignaturePolicies signaturePolicy) {
-
+	public void setSignaturePolicy(XmlPoliciesForValidation signaturePolicy) {
 		switch (signaturePolicy) {
 			case NFe:
 				this.signaturePolicy = StandardSignaturePolicies.NFePadraoNacional;
 				break;
 			case Basic:
+			case XML_DSIG_BASIC:
 				this.signaturePolicy = StandardSignaturePolicies.XmlDSigBasic;
+				break;
+			case XADES_BASIC:
+				this.signaturePolicy = StandardSignaturePolicies.XadesBes;
+				break;
+			case PKI_BRAZIL:
+				this.signaturePolicy = StandardSignaturePolicies.PkiBrazilXadesAdrBasica;
+				break;
+			case PKI_BRAZIL_WITH_CERT_PROTECTION:
+				this.signaturePolicy = StandardSignaturePolicies.PkiBrazilXadesWithCertProtection;
+				break;
+			default:
+				throw new RuntimeException("Invalid signature policy: " + signaturePolicy.getValue());
+		}
+	}
+
+	public void setSignaturePolicy(XmlPoliciesForGeneration signaturePolicy) {
+		switch (signaturePolicy) {
+			case BASIC:
+			case BASIC_SHA1:
+				this.signaturePolicy = StandardSignaturePolicies.XmlDSigBasic;
+				break;
+			case NFE:
+				this.signaturePolicy = StandardSignaturePolicies.NFePadraoNacional;
+				break;
+			case COD_SHA1:
+				this.signaturePolicy = StandardSignaturePolicies.CodWithSHA1;
+				break;
+			case COD_SHA256:
+				this.signaturePolicy = StandardSignaturePolicies.CodWithSHA256;
+				break;
+			case XADES:
+				this.signaturePolicy = StandardSignaturePolicies.XadesBes;
+				break;
+			case ADRB:
+				this.signaturePolicy = StandardSignaturePolicies.PkiBrazilXadesAdrBasica;
+			case ADRB_RV:
+				this.signaturePolicy = StandardSignaturePolicies.PkiBrazilCadesAdrBasicaWithRevocationValues;
+				break;
+			case ADRT:
+				this.signaturePolicy = StandardSignaturePolicies.PkiBrazilXadesAdrTempo;
+				break;
+			case ADRC:
+				this.signaturePolicy = StandardSignaturePolicies.PkiBrazilXadesAdrCompleta;
+				break;
+			case ADRA:
+				this.signaturePolicy = StandardSignaturePolicies.PkiBrazilXadesAdrArquivamento;
 				break;
 			default:
 				throw new RuntimeException("Invalid signature policy: " + signaturePolicy.getValue());

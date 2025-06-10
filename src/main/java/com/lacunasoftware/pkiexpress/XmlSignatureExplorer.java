@@ -53,6 +53,6 @@ public class XmlSignatureExplorer extends SignatureExplorer {
 
 		// Parse output and return model.
 		XmlSignatureModel resultModel = parseOutput(result.getOutput()[0], XmlSignatureModel.class);
-		return new XmlSignatureModel(resultModel);
+		return resultModel;
 	}
 } 
