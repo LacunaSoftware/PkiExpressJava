@@ -26,7 +26,7 @@ public class XmlSignatureExplorer extends SignatureExplorer {
 		this.policy = policy;
 	}
 
-	public XmlSignatureModel open() throws IOException {
+	public List<XmlSignatureModel> open() throws IOException {
 
 		if (signatureFilePath == null) {
 			throw new RuntimeException("The provided signature file was not found");
@@ -52,7 +52,7 @@ public class XmlSignatureExplorer extends SignatureExplorer {
 		OperatorResult result = invoke(CommandEnum.CommandOpenXml, args);
 
 		// Parse output and return model.
-		XmlSignatureModel resultModel = parseOutput(result.getOutput()[0], XmlSignatureModel.class);
-		return resultModel;
+		OpenXmlCommandResult resultModel = parseOutput(result.getOutput()[0], OpenXmlCommandResult.class);
+		return resultModel.getSigners();
 	}
 } 
