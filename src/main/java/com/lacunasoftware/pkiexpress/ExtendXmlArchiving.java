@@ -16,6 +16,10 @@ public class ExtendXmlArchiving extends PkiExpressOperator {
         super(config);
     }
     
+    public ExtendXmlArchiving() throws IOException {
+        this(new PkiExpressConfig());
+    }
+    
     public String getInputFile() {
         return inputFile;
     }

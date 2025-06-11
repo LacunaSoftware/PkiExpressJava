@@ -1,5 +1,7 @@
 package com.lacunasoftware.pkiexpress;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,10 +18,20 @@ public class XmlSignatureModel extends SignatureModel {
     private CertificateModel certificate;
     private Date signingTime;
     private Date certifiedDateReference;
-    private List<CadesTimestampModel> timestamps;
-    private List<CadesTimestampModel> archiveTimestamps;
+    private List<CadesTimestampModel> timestamps = new ArrayList<CadesTimestampModel>();
+    private List<CadesTimestampModel> archiveTimestamps = new ArrayList<CadesTimestampModel>();
     private ValidationResultsModel validationResults;
     private SignerBStampModel bStamp;
+
+    // constructor with pkiexpress config
+    public XmlSignatureModel(PkiExpressConfig config) {
+        super(config);
+    }
+
+    // constructor without pkiexpress config, but creates a new one if null
+    public XmlSignatureModel() throws IOException {
+        this(new PkiExpressConfig());
+    }
 
     @JsonProperty("type")
     public XmlSignedEntityTypes getType() {

@@ -1,5 +1,6 @@
 package com.lacunasoftware.pkiexpress;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class XmlElementModel {
     private String localName;
-    private List<XmlAttributeModel> attributes;
+    private List<XmlAttributeModel> attributes = new ArrayList<XmlAttributeModel>();
     private String namespaceUri;
 
     @JsonProperty("localName")

@@ -1,5 +1,6 @@
 package com.lacunasoftware.pkiexpress;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SignerBStampModel {
     private DigestAlgorithmAndValueModel signatureDigest;
-    private List<DigestAlgorithmAndValueModel> crlsDigests;
-    private List<DigestAlgorithmAndValueModel> certificateDigests;
+    private List<DigestAlgorithmAndValueModel> crlsDigests = new ArrayList<>();
+    private List<DigestAlgorithmAndValueModel> certificateDigests = new ArrayList<>();
     private Blockchains blockchain;
     private String transactionId;
     private Date transactionDate;
