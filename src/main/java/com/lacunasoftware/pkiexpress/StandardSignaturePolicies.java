@@ -22,13 +22,15 @@ public enum StandardSignaturePolicies {
 	PkiBrazilPadesAdrArquivamento("adra"),
 
 	// XML policies
+	XmlDSigBasic("basic"),
 	NFePadraoNacional("nfe"),
 	XadesBes("xades"),
-	XmlDSigBasic("basic"),
+	XadesBrazil("xades-brazil"),
 	PkiBrazilXadesAdrBasica("adrb"),
 	PkiBrazilXadesAdrTempo("adrt"),
 	PkiBrazilXadesAdrCompleta("adrc"),
 	PkiBrazilXadesAdrArquivamento("adra"),
+	PkiBrazilXadesWithCertProtection("pki-brazil-with-cert-protection"),
 	CodWithSHA1("cod-sha1"),
 	CodWithSHA256("cod-sha256");
 

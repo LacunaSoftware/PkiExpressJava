@@ -12,6 +12,7 @@ public enum CommandEnum {
 	CommandCompleteSig("complete-sig"),
 	CommandOpenPades("open-pades"),
 	CommandOpenCades("open-cades"),
+	CommandOpenXml("open-xml"),
 	CommandOpenCertificate("open-cert"),
 	CommandEditPdf("edit-pdf"),
 	CommandMergeCms("merge-cms"),
@@ -25,7 +26,8 @@ public enum CommandEnum {
 	CommandDiscoverServices("discover-services"),
 	CommandPasswordAuthorize("pwd-auth"),
 	CommandCompleteServiceAuth("complete-service-auth"),
-	CommandVersion("version");
+	CommandVersion("version"),
+	CommandExtendXmlArchiving("extend-xml-archiving");
 
 
 	private final String value;
