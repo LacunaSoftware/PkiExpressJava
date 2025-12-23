@@ -6,7 +6,7 @@ This package contains classes that encapsulate the calls to the PKI Express.
 
 The **PKI Express package** is distributed by [Maven](https://search.maven.org/artifact/com.lacunasoftware.pkiexpress/pki-express/1.22.2/jar).
 
-The recommended way to install it is with Gradle:
+The recommended way to install it is with Gradle: 
     
     repositories {
         mavenCentral()
