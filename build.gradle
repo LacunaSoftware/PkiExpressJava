@@ -6,24 +6,30 @@ plugins {
     id 'signing'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 group = 'com.lacunasoftware.pkiexpress'
 archivesBaseName = 'pki-express'
-version = '1.22.2'
+version = '1.23.2'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+    implementation 'com.lacunasoftware.pkiexpress:pki-express:1.23.2'
 }
 
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+javadoc {
+    dependsOn jar
 }
 
 sourceSets {
@@ -68,6 +74,11 @@ publishing {
                         id = 'danielr'
                         name = 'Daniel Rufino'
                         email = 'danielr@lacunasoftware.com'
+                    }
+                    developer {
+                        id = 'eduardof'
+                        name = 'Eduardo Ferreira'
+                        email = 'eduardof@lacunasoftware.com'
                 }
             }
         }
@@ -75,10 +86,10 @@ publishing {
     repositories {
         maven {
             url = determineRepositoryUrl()
-            credentials {
-                username ossrhUsername
-                password ossrhPassword
-            }
+            // credentials {
+            //     username ossrhUsername
+            //     password ossrhPassword
+            // }
         }
     }
 }
@@ -92,7 +103,7 @@ def determineRepositoryUrl() {
     }
 }
 
-signing {
-    sign publishing.publications.mavenJava
-    sign configurations.archives
-}
+// signing {
+//     sign publishing.publications.mavenJava
+//     sign configurations.archives
+// }
