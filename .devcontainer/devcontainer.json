@@ -1,0 +1,20 @@
+{
+	"name": "PKIE Java Dev Container",
+	"build": {
+	"dockerfile": "Dockerfile"
+	},
+	"customizations": {
+	"vscode": {
+		"extensions": [
+		"vscjava.vscode-java-pack",
+		"vscjava.vscode-gradle",
+		"redhat.java"
+		]
+	}
+	},
+	"remoteUser": "vscode",
+	"mounts": [
+		"source=maven-repo,target=/home/vscode/.m2,type=volume"
+	],
+	"postStartCommand": "bash -lc 'sudo chown -R $(id -u):$(id -g) /home/vscode/.m2 || true'"
+}
