@@ -210,6 +210,7 @@ public class CadesSignerTest {
 
             assertNotNull("Signature should not be null", signature);
             assertTrue("Signature should have at least one signer", signature.getSigners().size() > 0);
+            TestUtils.validateCertificateFieldsFromSampleCertificate(signature.getSigners().get(0).getCertificate(), true);
 
             explorer.dispose();
 

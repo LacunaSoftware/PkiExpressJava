@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl zip unzip ca-certificates git \
+    curl zip unzip ca-certificates git wget jq \
     && rm -rf /var/lib/apt/lists/*
 
 # Install SDKMAN

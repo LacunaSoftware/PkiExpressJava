@@ -1,12 +1,13 @@
 package com.lacunasoftware.pkiexpress;
 
-import org.junit.Test;
-import org.junit.Before;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Integration tests for XmlSigner.
@@ -28,7 +29,11 @@ public class XmlSignerTest {
         
         // Create a temporary XML file (minimal XML structure)
         Path xmlToSign = TestUtils.LoadSampleXml();
-        
+        signer.setTrustLacunaTestRoot(true);
+        signer.setPkcs12(TestUtils.LoadSamplePkcs12AsPath());
+        signer.setCertPassword(TestUtils.getSampleCertificatePassword());
+        signer.setXmlToSign(xmlToSign);
+
         // Create output file path
         Path outputFile = Files.createTempFile("test-output", ".xml");
         signer.setOutputFile(outputFile);
@@ -38,13 +43,14 @@ public class XmlSignerTest {
         try {
             PKCertificate result = signer.sign(true);
             // Result may be null if certificate/key is not set, but invoke() was still called
+            assertNotNull("Result should not be null", result != null);
+            TestUtils.validateCertificateFieldsFromSampleCertificate(result);
         } catch (Exception e) {
             // If PKI Express is not available or XML/certificate is invalid,
             // the test will fail but we've still tested the invoke() call path
             throw new AssertionError("Failed to execute sign() with invoke() call: " + e.getMessage(), e);
         } finally {
             // Cleanup
-            Files.deleteIfExists(tempXmlFile);
             Files.deleteIfExists(outputFile);
             signer.dispose();
         }

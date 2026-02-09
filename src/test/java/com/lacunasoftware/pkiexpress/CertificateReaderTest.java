@@ -1,12 +1,12 @@
 package com.lacunasoftware.pkiexpress;
 
-import org.junit.Test;
-import org.junit.Before;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import static org.junit.Assert.assertNotNull;
 
-import static org.junit.Assert.*;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Integration tests for CertificateReader.
@@ -26,11 +26,9 @@ public class CertificateReaderTest {
         // This test exercises decode() which calls invoke(CommandEnum.CommandReadCert, args)
         // Note: This requires a valid certificate file to work properly
         
-        // Create a temporary certificate file (minimal certificate structure)
-        Path tempCertFile = Files.createTempFile("test-cert", ".cer");
-        Files.write(tempCertFile, "dummy certificate content".getBytes());
-        reader.setCert(tempCertFile);
-        
+        InputStream tempCertFile = TestUtils.LoadSampleCertificate();
+        reader.setCert(tempCertFile);  
+        reader.setTrustLacunaTestRoot(true);
         // Execute the method that contains the invoke() call
         // This will make a concrete call to invoke()
         try {
@@ -42,7 +40,6 @@ public class CertificateReaderTest {
             throw new AssertionError("Failed to execute decode() with invoke() call: " + e.getMessage(), e);
         } finally {
             // Cleanup
-            Files.deleteIfExists(tempCertFile);
             reader.dispose();
         }
     }

@@ -14,21 +14,21 @@ import java.util.List;
  * 
  * This class corresponds to the "sign-hash" command of PKI Express.
  * 
- * Usage: pkie sign-hash <to-sign-hash> [options]
+ * Usage: pkie sign-hash {@code &lt;to-sign-hash&gt;} [options]
  * 
  * Arguments:
  *   to-sign-hash   The hash to be used as input on the signature algorithm computation (hex or Base64).
  * 
  * Options:
- *   --algorithm|-a <algorithm>   The digest algorithm used to compute the hash (OID or name). If omitted,
+ *   --algorithm|-a {@code &lt;algorithm&gt;}   The digest algorithm used to compute the hash (OID or name). If omitted,
  *                                the algorithm is inferred from the size of the hash.
  * 
  * Certificate store options:
  *   --machine|-m                Use certificates from the machine certificate store.
  *   --pkcs12|-p12               Use certificates from the given PKCS #12 (.pfx) file.
- *   --password|-pw <pass>       Password for the PKCS #12 file.
- *   --thumbprint|-t <hex>       Thumbprint of the certificate (required if the store contains multiple certificates).
- *   --key-name|-kn <key-name>   Name that identifies the signer's key on Azure Key Vault.
+ *   --password|-pw {@code &lt;pass&gt;}       Password for the PKCS #12 file.
+ *   --thumbprint|-t {@code &lt;hex&gt;}       Thumbprint of the certificate (required if the store contains multiple certificates).
+ *   --key-name|-kn {@code &lt;key-name&gt;}   Name that identifies the signer's key on Azure Key Vault.
  *   --cert-file|-cf             Signer's certificate file.
  */
 public class HashSigner extends PkiExpressOperator {
