@@ -1,6 +1,5 @@
 package com.lacunasoftware.pkiexpress;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -53,8 +52,8 @@ public class AuthenticationTest {
             // Let's use pkie's sign-data command to create a signature from the nonce
             DataSigner dataSigner = new DataSigner();
             dataSigner.setToSignData(authStartResult.getNonce());
-            dataSigner.setPkcs12(getClass().getResourceAsStream("resources/Alan Mathison Turing.pfx"));
-            dataSigner.setCertPassword("1234");
+            dataSigner.setPkcs12(TestUtils.LoadSamplePkcs12AsPath());
+            dataSigner.setCertPassword(TestUtils.getSampleCertificatePassword());
             // Sign the nonce
             byte[] signature = dataSigner.sign();
             // Set the signature
@@ -73,9 +72,7 @@ public class AuthenticationTest {
             // - The validation results;
             AuthCompleteResult result = authentication.complete();
             assertNotNull("Result should not be null", result);
-            // Check if the certificate name and thumbprint are the same as the one in the certificate
-            assertEquals("ALAN MATHISON TURING", result.getCertificate().getSubjectName().getCommonName());
-            assertEquals("51ffd809785a63546d9ac083d9977385e6f09edb", result.getCertificate().getThumbprint());
+            TestUtils.validateCertificateFieldsFromSampleCertificate(result.getCertificate()); // validate the certificate fields
         } catch (Exception e) {
             // If PKI Express is not available or certificate/signature is invalid,
             // the test will fail but we've still tested the invoke() call path

@@ -25,6 +25,7 @@ public enum CommandEnum {
 	CommandDiscoverServices("discover-services"),
 	CommandPasswordAuthorize("pwd-auth"),
 	CommandCompleteServiceAuth("complete-service-auth"),
+	CommandSignHash("sign-hash"),
 	CommandVersion("version");
 
 
