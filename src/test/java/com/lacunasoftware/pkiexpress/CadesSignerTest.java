@@ -90,7 +90,7 @@ public class CadesSignerTest {
         Path outputCms = Files.createTempFile("test-signed-output", ".p7s");
 
         // Load PKCS12 file for signing
-        InputStream pkcs12File = TestUtils.LoadSampleCertificate();
+        InputStream pkcs12File = TestUtils.LoadSampleCertificateAsDERFormat();
 
         CadesSignatureStarter signatureStarter = null;
         HashSigner hashSigner = null;
@@ -107,7 +107,7 @@ public class CadesSignerTest {
             signatureStarter.setFileToSign(fileToSign);
 
             // Set certificate for the starter
-            signatureStarter.setCertificate(TestUtils.LoadSampleCertificate());
+            signatureStarter.setCertificate(TestUtils.LoadSampleCertificateAsDERFormat());
 
             // Set the 'encapsulate content' option (default: true)
             signatureStarter.setEncapsulateContent(true);

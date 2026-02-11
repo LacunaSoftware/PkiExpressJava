@@ -18,8 +18,7 @@
 	},
 	"remoteUser": "vscode",
 	"mounts": [
-		"source=maven-repo,target=/home/vscode/.m2,type=volume",
-    	"source=gradle-cache,target=/home/vscode/.gradle,type=volume"
+		"source=maven-repo,target=/home/vscode/.m2,type=volume"
 	],
 	"postStartCommand": "bash -lc 'sudo chown -R $(id -u):$(id -g) /home/vscode/.m2 || true'",
 	"containerEnv": {

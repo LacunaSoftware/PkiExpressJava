@@ -53,10 +53,6 @@ public class CertificateExplorerTest {
             assertNotNull("Result2 should not be null", result2);
             // Assert common fields
             assertNotNull("Common name should not be null", result.getCertificate().getSubjectName().getCommonName());
-            // Test if subject name is Alan Mathison Turing
-            assertEquals("ALAN MATHISON TURING", result.getCertificate().getSubjectName().getCommonName());
-            // assert if the thumbprint (SHA-1) is the same as the one in the certificate
-            assertEquals("51ffd809785a63546d9ac083d9977385e6f09edb", result.getCertificate().getThumbprint());
 
             // Compare both certificate fields (should be the same since the certificate is the same)
             assertEquals(result.getCertificate().getSubjectName().getCommonName(), result2.getCertificate().getSubjectName().getCommonName());

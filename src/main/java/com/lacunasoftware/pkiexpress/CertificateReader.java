@@ -62,8 +62,11 @@ public class CertificateReader extends PkiExpressOperator {
 		OperatorResult result = invoke(CommandEnum.CommandReadCert, args);
 
 		// Parse output and return model.
-		CertificateModel certificateModel = parseOutput(result.getOutput()[0], CertificateModel.class);
-		return new PKCertificate(certificateModel);
+		CertificateReaderModel readerModel = parseOutput(result.getOutput()[0], CertificateReaderModel.class);
+		if (readerModel == null || readerModel.getInfo() == null) {
+			throw new RuntimeException("Failed to parse certificate information from PKI Express output");
+		}
+		return new PKCertificate(readerModel.getInfo());
 	}
 
 }

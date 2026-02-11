@@ -1,12 +1,13 @@
 package com.lacunasoftware.pkiexpress;
 
-import org.junit.Test;
-import org.junit.Before;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Integration tests for CadesSignatureEditor.
@@ -27,13 +28,12 @@ public class CadesSignatureEditorTest {
         // Note: This requires valid CMS/CAdES files to work properly
         
         // Create temporary CMS files
-        Path tempCmsFile1 = Files.createTempFile("test-cms1", ".p7s");
-        Files.write(tempCmsFile1, "dummy cms content 1".getBytes());
-        editor.addCmsFile(tempCmsFile1);
-        
-        Path tempCmsFile2 = Files.createTempFile("test-cms2", ".p7s");
-        Files.write(tempCmsFile2, "dummy cms content 2".getBytes());
-        editor.addCmsFile(tempCmsFile2);
+        Path cmsFile1 = TestUtils.LoadSignedSampleCmsFile();
+        editor.addCmsFile(cmsFile1);
+        Path cmsFile2 = TestUtils.LoadSignedSecondSampleCmsFile();
+        editor.addCmsFile(cmsFile2);
+
+        editor.setEncapsulateContent(false);
         
         // Create output file path
         Path outputFile = Files.createTempFile("test-output", ".p7s");
@@ -51,8 +51,6 @@ public class CadesSignatureEditorTest {
             throw new AssertionError("Failed to execute merge() with invoke() call: " + e.getMessage(), e);
         } finally {
             // Cleanup
-            Files.deleteIfExists(tempCmsFile1);
-            Files.deleteIfExists(tempCmsFile2);
             Files.deleteIfExists(outputFile);
             editor.dispose();
         }

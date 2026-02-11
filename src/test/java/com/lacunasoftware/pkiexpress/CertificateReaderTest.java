@@ -26,8 +26,8 @@ public class CertificateReaderTest {
         // This test exercises decode() which calls invoke(CommandEnum.CommandReadCert, args)
         // Note: This requires a valid certificate file to work properly
         
-        InputStream tempCertFile = TestUtils.LoadSampleCertificate();
-        reader.setCert(tempCertFile);  
+        InputStream certFile = TestUtils.LoadSampleCertificateAsPEMFormat();
+        reader.setCert(certFile);  
         reader.setTrustLacunaTestRoot(true);
         // Execute the method that contains the invoke() call
         // This will make a concrete call to invoke()

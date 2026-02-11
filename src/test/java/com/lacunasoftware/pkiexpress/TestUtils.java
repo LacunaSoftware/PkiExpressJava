@@ -6,8 +6,13 @@ import java.io.InputStream;
 import java.nio.file.Path;
 
 public class TestUtils {
-    public static InputStream LoadSampleCertificate() {
-        return TestUtils.class.getResourceAsStream("resources/AlanTuring.cer");
+
+    public static InputStream LoadSampleCertificateAsDERFormat() {
+        return TestUtils.class.getResourceAsStream("resources/AlanTuring-DER.cer");
+    }
+
+    public static InputStream LoadSampleCertificateAsPEMFormat() {
+        return TestUtils.class.getResourceAsStream("resources/AlanTuring-PEM.cer");
     }
 
     public static Path LoadSamplePkcs12AsPath() {
@@ -39,6 +44,22 @@ public class TestUtils {
             return Path.of(TestUtils.class.getResource("resources/SampleNFe.xml").toURI());
         } catch (Exception e) {
             throw new RuntimeException("Failed to load sample XML file: " + e.getMessage(), e);
+        }
+    }
+
+    public static Path LoadSignedSampleCmsFile() {
+        try {
+            return Path.of(TestUtils.class.getResource("resources/signedCMS.p7s").toURI());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load sample CMS file: " + e.getMessage(), e);
+        }
+    }
+
+    public static Path LoadSignedSecondSampleCmsFile() {
+        try {
+            return Path.of(TestUtils.class.getResource("resources/signedCMS_2.p7s").toURI());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load sample CMS file: " + e.getMessage(), e);
         }
     }
 

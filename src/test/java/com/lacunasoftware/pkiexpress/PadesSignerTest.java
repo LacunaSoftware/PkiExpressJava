@@ -100,7 +100,7 @@ public class PadesSignerTest {
         Path outputPdf = Files.createTempFile("test-signed-output", ".pdf");
         
         // If no PKCS12 path is provided, try to generate one for testing
-        InputStream pkcs12File = TestUtils.LoadSampleCertificate();
+        InputStream pkcs12File = TestUtils.LoadSampleCertificateAsDERFormat();
         
         PadesSignatureStarter signatureStarter = null;
         HashSigner hashSigner = null;
@@ -114,7 +114,7 @@ public class PadesSignerTest {
             signatureStarter.setPdfToSign(pdfToSign);
             // Set certificate for the starter
             // In practice, extract certificate from PKCS12 or use certificate file
-            signatureStarter.setCertificate(TestUtils.LoadSampleCertificate());
+            signatureStarter.setCertificate(TestUtils.LoadSampleCertificateAsDERFormat());
             // Start the signature process - this calls invoke(CommandEnum.CommandStartPades, args)
             SignatureStartResult startResult = signatureStarter.start();
             
