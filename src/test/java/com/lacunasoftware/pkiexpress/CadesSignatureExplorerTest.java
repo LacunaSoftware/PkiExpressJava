@@ -1,12 +1,13 @@
 package com.lacunasoftware.pkiexpress;
 
-import org.junit.Test;
-import org.junit.Before;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Integration tests for CadesSignatureExplorer.
@@ -27,22 +28,22 @@ public class CadesSignatureExplorerTest {
         // Note: This requires a valid CAdES signature file to work properly
         
         // Create a temporary signature file (minimal structure)
-        Path tempSigFile = Files.createTempFile("test-sig", ".p7s");
-        Files.write(tempSigFile, "dummy signature content".getBytes());
-        explorer.setSignatureFile(tempSigFile);
-        
+        Path signatureFile = TestUtils.LoadSignedSampleCmsFile();
+        explorer.setSignatureFile(signatureFile);
+        explorer.setTrustLacunaTestRoot(true);
         // Execute the method that contains the invoke() call
         // This will make a concrete call to invoke()
         try {
             CadesSignature result = explorer.open();
             assertNotNull("Result should not be null", result);
+            assertTrue("Result should have at least one signer", result.getSigners().size() > 0);
+            TestUtils.validateCertificateFieldsFromSampleCertificate(result.getSigners().get(0).getCertificate());
         } catch (Exception e) {
             // If PKI Express is not available or signature file is invalid,
             // the test will fail but we've still tested the invoke() call path
             throw new AssertionError("Failed to execute open() with invoke() call: " + e.getMessage(), e);
         } finally {
             // Cleanup
-            Files.deleteIfExists(tempSigFile);
             explorer.dispose();
         }
     }

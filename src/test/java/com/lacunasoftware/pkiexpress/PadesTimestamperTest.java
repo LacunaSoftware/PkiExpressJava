@@ -1,12 +1,15 @@
 package com.lacunasoftware.pkiexpress;
 
-import org.junit.Test;
-import org.junit.Before;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Integration tests for PadesTimestamper.
@@ -27,9 +30,11 @@ public class PadesTimestamperTest {
         // Note: This requires a valid PDF file to work properly
         
         // Create a temporary PDF file (minimal PDF structure)
-        Path tempPdfFile = Files.createTempFile("test-pdf", ".pdf");
-        Files.write(tempPdfFile, "%PDF-1.4\n".getBytes());
-        timestamper.setPdf(tempPdfFile);
+        InputStream pdfFile = TestUtils.LoadSamplePdf();
+        timestamper.setPdf(pdfFile);
+        timestamper.setTrustLacunaTestRoot(true);
+        timestamper.setTimestampAuthority(new TimestampAuthority("https://tsa.lacunasoftware.com"));
+        timestamper.setOverwriteOriginalFile(false);
         
         // Create output file path
         Path outputFile = Files.createTempFile("test-output", ".pdf");
@@ -39,15 +44,17 @@ public class PadesTimestamperTest {
         // This will make a concrete call to invoke()
         try {
             timestamper.stamp();
-            // If successful, the output file should exist
-            assertTrue("Output file should exist after stamping", Files.exists(outputFile));
+            // TODO: Use SignatureExplorer to check if timestamp is correct and other properties from
+            // stamped documents
+            assertNotNull("Output file should not be null", outputFile);
+            assertTrue("Output file should exist", Files.exists(outputFile));
+            assertTrue("Output file should not be empty", Files.size(outputFile) > 0);
         } catch (Exception e) {
             // If PKI Express is not available or PDF is invalid,
             // the test will fail but we've still tested the invoke() call path
             throw new AssertionError("Failed to execute stamp() with invoke() call: " + e.getMessage(), e);
         } finally {
             // Cleanup
-            Files.deleteIfExists(tempPdfFile);
             Files.deleteIfExists(outputFile);
             timestamper.dispose();
         }
