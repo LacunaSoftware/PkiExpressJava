@@ -13,8 +13,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class PadesTimestamper extends PkiExpressOperator {
 	private Path pdfPath;
 	private Path outputFilePath;

@@ -1,12 +1,13 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Integration tests for TrustServicesManager.
@@ -28,7 +29,8 @@ public class TrustServicesManagerTest {
     private TrustServicesManager manager;
     String defaultTestCpf;
     String defaultTestCnpj;
-    @Before
+
+    @BeforeEach
     public void setUp() throws IOException {
         // You need to use your own CPF/CNPJ as cloud certificates are not available for testing purposes.
         // Below we use the CPF of Alan Mathison Turing (Lacuna CA v7)
@@ -45,7 +47,7 @@ public class TrustServicesManagerTest {
         try {
             CheckServiceResult result = manager.checkByCpf("safeID", defaultTestCpf);
             // check if userHasCertificates is a valid boolean
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
             assertNotNull(result.isUserHasCertificates());
             System.out.println("User has certificates: " + result.isUserHasCertificates());
         } catch (Exception e) {
@@ -63,7 +65,7 @@ public class TrustServicesManagerTest {
         // Note: This requires valid service and CNPJ to work properly
         try {
             CheckServiceResult result = manager.checkByCnpj("test-service", defaultTestCnpj);
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
         } catch (Exception e) {
             // If PKI Express is not available or service is invalid,
             // the test will fail but we've still tested the invoke() call path
@@ -79,7 +81,7 @@ public class TrustServicesManagerTest {
         // Note: This requires valid CPF to work properly
         try {
             List<TrustServiceInfo> result = manager.discoverByCpf(defaultTestCpf);
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
         } catch (Exception e) {
             // If PKI Express is not available or CPF is invalid,
             // the test will fail but we've still tested the invoke() call path
@@ -95,7 +97,7 @@ public class TrustServicesManagerTest {
         // Note: This requires valid CNPJ to work properly
         try {
             List<TrustServiceInfo> result = manager.discoverByCnpj(defaultTestCnpj);
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
         } catch (Exception e) {
             // If PKI Express is not available or CNPJ is invalid,
             // the test will fail but we've still tested the invoke() call path
@@ -115,7 +117,7 @@ public class TrustServicesManagerTest {
                 "https://example.com/redirect",
                 TrustServiceSessionTypes.SIGNATURE_SESSION
             );
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
         } catch (Exception e) {
             // If PKI Express is not available or parameters are invalid,
             // the test will fail but we've still tested the invoke() call path
@@ -135,7 +137,7 @@ public class TrustServicesManagerTest {
                 "https://example.com/redirect",
                 TrustServiceSessionTypes.SIGNATURE_SESSION
             );
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
         } catch (Exception e) {
             // If PKI Express is not available or parameters are invalid,
             // the test will fail but we've still tested the invoke() call path
@@ -156,7 +158,7 @@ public class TrustServicesManagerTest {
                 "test-password",
                 TrustServiceSessionTypes.SIGNATURE_SESSION
             );
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
         } catch (Exception e) {
             // If PKI Express is not available or credentials are invalid,
             // the test will fail but we've still tested the invoke() call path
@@ -172,7 +174,7 @@ public class TrustServicesManagerTest {
         // Note: This requires valid code and state to work properly
         try {
             TrustServiceSessionResult result = manager.completeAuth("test-code", "test-state");
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
         } catch (Exception e) {
             // If PKI Express is not available or parameters are invalid,
             // the test will fail but we've still tested the invoke() call path

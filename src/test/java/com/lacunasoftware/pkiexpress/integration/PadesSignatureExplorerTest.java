@@ -1,13 +1,14 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Integration tests for PadesSignatureExplorer.
@@ -17,7 +18,7 @@ public class PadesSignatureExplorerTest {
 
     private PadesSignatureExplorer explorer;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         explorer = new PadesSignatureExplorer();
     }
@@ -35,8 +36,8 @@ public class PadesSignatureExplorerTest {
         // This will make a concrete call to invoke()
         try {
             PadesSignature result = explorer.open();
-            assertNotNull("Result should not be null", result);
-            assertTrue("Result should have at least one signer", result.getSigners().size() > 0);
+            assertNotNull(result, "Result should not be null");
+            assertTrue(result.getSigners().size() > 0, "Result should have at least one signer");
             TestUtils.validateCertificateFieldsFromSampleCertificate(result.getSigners().get(0).getCertificate(), true);
         } catch (Exception e) {
             // If PKI Express is not available or PDF is invalid/unsigned,

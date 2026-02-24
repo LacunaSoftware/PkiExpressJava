@@ -1,13 +1,14 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Integration tests for CertificateExplorer.
@@ -18,7 +19,7 @@ public class CertificateExplorerTest {
     private CertificateExplorer explorer;
     private CertificateExplorer explorer2;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         explorer = new CertificateExplorer();
         explorer2 = new CertificateExplorer();
@@ -49,10 +50,10 @@ public class CertificateExplorerTest {
         try {
             CertificateExplorerResult result = explorer.open();
             CertificateExplorerResult result2 = explorer2.open();
-            assertNotNull("Result should not be null", result);
-            assertNotNull("Result2 should not be null", result2);
+            assertNotNull(result, "Result should not be null");
+            assertNotNull(result2, "Result2 should not be null");
             // Assert common fields
-            assertNotNull("Common name should not be null", result.getCertificate().getSubjectName().getCommonName());
+            assertNotNull(result.getCertificate().getSubjectName().getCommonName(), "Common name should not be null");
 
             // Compare both certificate fields (should be the same since the certificate is the same)
             assertEquals(result.getCertificate().getSubjectName().getCommonName(), result2.getCertificate().getSubjectName().getCommonName());

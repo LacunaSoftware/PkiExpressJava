@@ -1,7 +1,5 @@
 package com.lacunasoftware.pkiexpress;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Base64;

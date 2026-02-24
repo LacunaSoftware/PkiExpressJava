@@ -1,11 +1,11 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Integration tests for Authentication.
@@ -16,7 +16,7 @@ public class AuthenticationTest {
 
     private Authentication authentication;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         authentication = new Authentication();
     }
@@ -28,8 +28,8 @@ public class AuthenticationTest {
         // The test verifies that the invoke() call is made successfully
         try {
             AuthStartResult authStartResult = authentication.start();
-            assertNotNull("Result should not be null", authStartResult);
-            assertNotNull("Nonce should not be null", authStartResult.getNonce());
+            assertNotNull(authStartResult, "Result should not be null");
+            assertNotNull(authStartResult.getNonce(), "Nonce should not be null");
         } catch (Exception e) {
             // If PKI Express is not available, the test will fail
             // but we've still tested the invoke() call path
@@ -71,7 +71,7 @@ public class AuthenticationTest {
             // - The certificate information;
             // - The validation results;
             AuthCompleteResult result = authentication.complete();
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
             TestUtils.validateCertificateFieldsFromSampleCertificate(result.getCertificate()); // validate the certificate fields
         } catch (Exception e) {
             // If PKI Express is not available or certificate/signature is invalid,

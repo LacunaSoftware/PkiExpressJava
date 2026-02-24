@@ -1,13 +1,16 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import com.lacunasoftware.pkiexpress.TestUtils;
 
 /**
  * Integration tests for CadesSignatureEditor.
@@ -17,7 +20,7 @@ public class CadesSignatureEditorTest {
 
     private CadesSignatureEditor editor;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         editor = new CadesSignatureEditor();
     }
@@ -44,7 +47,7 @@ public class CadesSignatureEditorTest {
         try {
             editor.merge();
             // If successful, the output file should exist
-            assertTrue("Output file should exist after merging", Files.exists(outputFile));
+            assertTrue(Files.exists(outputFile), "Output file should exist after merging");
         } catch (Exception e) {
             // If PKI Express is not available or CMS files are invalid,
             // the test will fail but we've still tested the invoke() call path

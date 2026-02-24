@@ -1,10 +1,12 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import org.junit.Test;
-import org.junit.Before;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
-
-import static org.junit.Assert.*;
 
 /**
  * Integration tests for Metadata.
@@ -14,7 +16,7 @@ public class MetadataTest {
 
     private Metadata metadata;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         metadata = new Metadata();
     }
@@ -25,8 +27,8 @@ public class MetadataTest {
         // The test verifies that the invoke() call is made successfully
         try {
             String version = metadata.getPkiExpressVersion();
-            assertNotNull("Version should not be null", version);
-            assertFalse("Version should not be empty", version.isEmpty());
+            assertNotNull(version, "Version should not be null");
+            assertFalse(version.isEmpty(), "Version should not be empty");
         } catch (Exception e) {
             // If PKI Express is not available, the test will fail
             // but we've still tested the invoke() call path

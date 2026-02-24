@@ -1,15 +1,16 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Integration tests for PadesTimestamper.
@@ -19,7 +20,7 @@ public class PadesTimestamperTest {
 
     private PadesTimestamper timestamper;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         timestamper = new PadesTimestamper();
     }
@@ -46,9 +47,9 @@ public class PadesTimestamperTest {
             timestamper.stamp();
             // TODO: Use SignatureExplorer to check if timestamp is correct and other properties from
             // stamped documents
-            assertNotNull("Output file should not be null", outputFile);
-            assertTrue("Output file should exist", Files.exists(outputFile));
-            assertTrue("Output file should not be empty", Files.size(outputFile) > 0);
+            assertNotNull(outputFile, "Output file should not be null");
+            assertTrue(Files.exists(outputFile), "Output file should exist");
+            assertTrue(Files.size(outputFile) > 0, "Output file should not be empty");
         } catch (Exception e) {
             // If PKI Express is not available or PDF is invalid,
             // the test will fail but we've still tested the invoke() call path

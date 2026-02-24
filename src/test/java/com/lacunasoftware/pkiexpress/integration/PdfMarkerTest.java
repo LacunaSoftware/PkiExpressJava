@@ -1,12 +1,14 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import org.junit.Test;
-import org.junit.Before;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.Assert.*;
 
 /**
  * Integration tests for PdfMarker.
@@ -16,7 +18,7 @@ public class PdfMarkerTest {
 
     private PdfMarker marker;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         marker = new PdfMarker();
     }
@@ -40,7 +42,7 @@ public class PdfMarkerTest {
         try {
             marker.apply();
             // If successful, the output file should exist
-            assertTrue("Output file should exist after applying marks", Files.exists(outputFile));
+            assertTrue(Files.exists(outputFile), "Output file should exist after applying marks");
         } catch (Exception e) {
             // If PKI Express is not available or PDF is invalid,
             // the test will fail but we've still tested the invoke() call path

@@ -1,7 +1,10 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import com.lacunasoftware.pkiexpress.TestUtils;
 
 /**
  * Integration tests for CadesSigner.
@@ -22,7 +25,7 @@ public class CadesSignerTest {
 
     private CadesSigner signer;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         signer = new CadesSigner();
     }
@@ -42,23 +45,23 @@ public class CadesSignerTest {
             signer.setTrustLacunaTestRoot(true); // added test root for lacuna so we can test with test certificates
             PKCertificate certificate = signer.sign(true);
 
-            assertTrue("Signer certificate thumbprint should not be null", certificate.getThumbprint() != null);
-            assertTrue("Signer certificate subject name should not be null", certificate.getSubjectName() != null);
-            assertTrue("Signer certificate issuer name should not be null", certificate.getIssuerName() != null);
-            assertTrue("Signer certificate serial number should not be null", certificate.getSerialNumber() != null);
-            assertTrue("Signer certificate validity start should not be null", certificate.getValidityStart() != null);
-            assertTrue("Signer certificate validity end should not be null", certificate.getValidityEnd() != null);
-            assertTrue("Signer certificate key usage should not be null", certificate.getKeyUsage() != null);
-            assertTrue("Signer certificate certificate policies should not be null",
-                    certificate.getCertificatePolicies() != null);
-            assertTrue("Signer certificate certificate policies should not be empty",
-                    certificate.getCertificatePolicies().size() > 0);
+            assertTrue(certificate.getThumbprint() != null, "Signer certificate thumbprint should not be null");
+            assertTrue(certificate.getSubjectName() != null, "Signer certificate subject name should not be null");
+            assertTrue(certificate.getIssuerName() != null, "Signer certificate issuer name should not be null");
+            assertTrue(certificate.getSerialNumber() != null, "Signer certificate serial number should not be null");
+            assertTrue(certificate.getValidityStart() != null, "Signer certificate validity start should not be null");
+            assertTrue(certificate.getValidityEnd() != null, "Signer certificate validity end should not be null");
+            assertTrue(certificate.getKeyUsage() != null, "Signer certificate key usage should not be null");
+            assertTrue(certificate.getCertificatePolicies() != null,
+                    "Signer certificate certificate policies should not be null");
+            assertTrue(certificate.getCertificatePolicies().size() > 0,
+                    "Signer certificate certificate policies should not be empty");
 
             TestUtils.validateCertificateFieldsFromSampleCertificate(certificate);
             // Now let's verify the output file generated
-            assertNotNull("Output file should not be null", outputFile);
-            assertTrue("Output file should exist", Files.exists(outputFile));
-            assertTrue("Output file should not be empty", Files.size(outputFile) > 0);
+            assertNotNull(outputFile, "Output file should not be null");
+            assertTrue(Files.exists(outputFile), "Output file should exist");
+            assertTrue(Files.size(outputFile) > 0, "Output file should not be empty");
 
         } catch (Exception e) {
             // If PKI Express is not available or file/certificate is invalid,
@@ -117,10 +120,10 @@ public class CadesSignerTest {
             SignatureStartResult startResult = signatureStarter.start();
 
             // Verify start result
-            assertNotNull("Start result should not be null", startResult);
-            assertNotNull("ToSignHash should not be null", startResult.getToSignHash());
-            assertNotNull("DigestAlgorithm should not be null", startResult.getDigestAlgorithm());
-            assertNotNull("TransferFile should not be null", startResult.getTransferFile());
+            assertNotNull(startResult, "Start result should not be null");
+            assertNotNull(startResult.getToSignHash(), "ToSignHash should not be null");
+            assertNotNull(startResult.getDigestAlgorithm(), "DigestAlgorithm should not be null");
+            assertNotNull(startResult.getTransferFile(), "TransferFile should not be null");
 
             // Valid Digest algorithms are:
             // MD5("MD5"),
@@ -139,8 +142,8 @@ public class CadesSignerTest {
                     break;
                 }
             }
-            assertTrue("Digest Algorithm should be one of the following values: MD5, SHA-1, SHA-256, SHA-384, SHA-512",
-                    digestAlgorithmFound);
+            assertTrue(digestAlgorithmFound,
+                    "Digest Algorithm should be one of the following values: MD5, SHA-1, SHA-256, SHA-384, SHA-512");
             System.out.println("Digest Algorithm: " + algorithmName);
 
             // Step 2: Sign the hash using PKI Express sign-hash command
@@ -167,8 +170,8 @@ public class CadesSignerTest {
             byte[] signatureBytes = hashSigner.sign();
 
             // Verify signature was created
-            assertNotNull("Signature bytes should not be null", signatureBytes);
-            assertTrue("Signature bytes should not be empty", signatureBytes.length > 0);
+            assertNotNull(signatureBytes, "Signature bytes should not be null");
+            assertTrue(signatureBytes.length > 0, "Signature bytes should not be empty");
 
             // Convert signature to base64 for the finisher
             String signatureBase64 = Base64.getEncoder().encodeToString(signatureBytes);
@@ -196,9 +199,9 @@ public class CadesSignerTest {
             PKCertificate signerCert = signatureFinisher.complete(true);
 
             // Verify completion
-            assertNotNull("Signer certificate should not be null", signerCert);
-            assertTrue("Output CMS file should exist", Files.exists(outputCms));
-            assertTrue("Output CMS file should not be empty", Files.size(outputCms) > 0);
+            assertNotNull(signerCert, "Signer certificate should not be null");
+            assertTrue(Files.exists(outputCms), "Output CMS file should exist");
+            assertTrue(Files.size(outputCms) > 0, "Output CMS file should not be empty");
 
             TestUtils.validateCertificateFieldsFromSampleCertificate(signerCert);
 
@@ -208,8 +211,8 @@ public class CadesSignerTest {
             explorer.setTrustLacunaTestRoot(true);
             CadesSignature signature = explorer.open();
 
-            assertNotNull("Signature should not be null", signature);
-            assertTrue("Signature should have at least one signer", signature.getSigners().size() > 0);
+            assertNotNull(signature, "Signature should not be null");
+            assertTrue(signature.getSigners().size() > 0, "Signature should have at least one signer");
             TestUtils.validateCertificateFieldsFromSampleCertificate(signature.getSigners().get(0).getCertificate(), true);
 
             explorer.dispose();

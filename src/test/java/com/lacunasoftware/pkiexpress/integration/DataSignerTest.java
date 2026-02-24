@@ -1,12 +1,14 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Base64;
 
-import org.junit.Before;
-import org.junit.Test;
+import com.lacunasoftware.pkiexpress.TestUtils;
 
 /**
  * Integration tests for DataSigner.
@@ -16,7 +18,7 @@ public class DataSignerTest {
 
     private DataSigner signer;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         signer = new DataSigner();
     }
@@ -40,7 +42,7 @@ public class DataSignerTest {
         // This will make a concrete call to invoke()
         try {
             byte[] result = signer.sign();
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
             
         } catch (Exception e) {
             // If PKI Express is not available or certificate/key is not set,

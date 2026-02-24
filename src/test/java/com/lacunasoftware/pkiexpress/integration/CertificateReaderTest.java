@@ -1,12 +1,14 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Before;
-import org.junit.Test;
+import com.lacunasoftware.pkiexpress.TestUtils;
 
 /**
  * Integration tests for CertificateReader.
@@ -16,7 +18,7 @@ public class CertificateReaderTest {
 
     private CertificateReader reader;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         reader = new CertificateReader();
     }
@@ -33,7 +35,7 @@ public class CertificateReaderTest {
         // This will make a concrete call to invoke()
         try {
             PKCertificate result = reader.decode();
-            assertNotNull("Result should not be null", result);
+            assertNotNull(result, "Result should not be null");
         } catch (Exception e) {
             // If PKI Express is not available or certificate is invalid,
             // the test will fail but we've still tested the invoke() call path

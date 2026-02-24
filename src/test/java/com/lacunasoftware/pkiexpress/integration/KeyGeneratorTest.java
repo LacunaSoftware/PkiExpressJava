@@ -1,10 +1,11 @@
-package com.lacunasoftware.pkiexpress;
+package com.lacunasoftware.pkiexpress.integration;
+import com.lacunasoftware.pkiexpress.*;
 
-import org.junit.Test;
-import org.junit.Before;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
-
-import static org.junit.Assert.*;
 
 /**
  * Integration tests for KeyGenerator.
@@ -14,7 +15,7 @@ public class KeyGeneratorTest {
 
     private KeyGenerator generator;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         generator = new KeyGenerator();
     }
@@ -34,8 +35,8 @@ public class KeyGeneratorTest {
         // This will make a concrete call to invoke()
         try {
             KeyGenerationResult result = generator.generate();
-            assertNotNull("Result should not be null", result);
-            assertNotNull("Key should not be null", result.getKey());
+            assertNotNull(result, "Result should not be null");
+            assertNotNull(result.getKey(), "Key should not be null");
         } catch (Exception e) {
             // If PKI Express is not available, the test will fail
             // but we've still tested the invoke() call path
