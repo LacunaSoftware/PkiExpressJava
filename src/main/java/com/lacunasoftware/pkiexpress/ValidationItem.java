@@ -43,7 +43,7 @@ public class ValidationItem {
 	}
 
 	String toString(int identationLevel) {
-		String tab = Util.repeatChar('\t', identationLevel);
+		//String tab = Util.repeatChar('\t', identationLevel);
 		StringBuilder text = new StringBuilder();
 		//text.append(tab);
 		text.append(message);
