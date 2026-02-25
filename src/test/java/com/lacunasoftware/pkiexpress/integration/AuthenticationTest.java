@@ -3,7 +3,9 @@ import com.lacunasoftware.pkiexpress.*;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import java.io.IOException;
 
@@ -12,6 +14,7 @@ import java.io.IOException;
  * Tests all methods that contain invoke() calls.
  * Each method with an invoke() call gets its own test case.
  */
+@DisplayName("Authentication Integration Tests")
 public class AuthenticationTest {
 
     private Authentication authentication;
@@ -21,8 +24,16 @@ public class AuthenticationTest {
         authentication = new Authentication();
     }
 
+    @AfterEach
+    public void tearDown() {
+        if (authentication != null) {
+            authentication.dispose();
+        }
+    }
+
     @Test
-    public void testStart_WithInvokeCall() throws IOException {
+    @DisplayName("Should return AuthStartResult with nonce when start is called")
+    public void shouldReturnAuthStartResultWithNonce() throws IOException {
         // This test exercises start() which calls invoke(CommandEnum.CommandStartAuth,
         // args)
         // The test verifies that the invoke() call is made successfully
@@ -34,12 +45,11 @@ public class AuthenticationTest {
             // If PKI Express is not available, the test will fail
             // but we've still tested the invoke() call path
             throw new AssertionError("Failed to execute start() with invoke() call: " + e.getMessage(), e);
-        } finally {
-            authentication.dispose();
         }
     }
 
     @Test
+    @DisplayName("Should complete authentication with invoke call")
     public void testComplete_WithInvokeCall() throws IOException {
         // This test exercises complete() which calls
         // invoke(CommandEnum.CommandCompleteAuth, args)
@@ -77,10 +87,6 @@ public class AuthenticationTest {
             // If PKI Express is not available or certificate/signature is invalid,
             // the test will fail but we've still tested the invoke() call path
             throw new AssertionError("Failed to execute complete() with invoke() call: " + e.getMessage(), e);
-        } finally {
-            // Cleanup
-            // Files.deleteIfExists(tempCertFile);
-            authentication.dispose();
         }
     }
 }
