@@ -1,4 +1,4 @@
-name: Run Gradle Tests
+name: PR Tests
 
 on:
   pull_request:
