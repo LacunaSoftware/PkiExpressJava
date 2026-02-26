@@ -26,8 +26,12 @@ public class CertificateModel {
 	private PkiPeruCertificateModel pkiPeru = null;
 	private String binaryThumbprintSHA256 = null;
 	private String thumbprint = null;
+	private String thumbprintSHA256 = null;
 	private String subjectCommonName = null;
 	private String subjectDisplayName = null;
+	private String subjectIdentifier = null;
+	private String organization = null;
+	private String organizationIdentifier = null;
 	private Integer keyUsage = null;
 	private List<CertificatePolicyModel> certificatePolicies = new ArrayList<CertificatePolicyModel>();
 
@@ -167,6 +171,14 @@ public class CertificateModel {
 		this.thumbprint = thumbprint;
 	}
 
+	@JsonProperty("thumbprintSHA256")
+	public String getThumbprintSHA256() {
+		return thumbprintSHA256;
+	}
+	public void setThumbprintSHA256(String thumbprintSHA256) {
+		this.thumbprintSHA256 = thumbprintSHA256;
+	}
+
 	@JsonProperty("subjectCommonName")
 	public String getSubjectCommonName() {
 		return subjectCommonName;
@@ -181,6 +193,30 @@ public class CertificateModel {
 	}
 	public void setSubjectDisplayName(String subjectDisplayName) {
 		this.subjectDisplayName = subjectDisplayName;
+	}
+
+	@JsonProperty("subjectIdentifier")
+	public String getSubjectIdentifier() {
+		return subjectIdentifier;
+	}
+	public void setSubjectIdentifier(String subjectIdentifier) {
+		this.subjectIdentifier = subjectIdentifier;
+	}
+
+	@JsonProperty("organization")
+	public String getOrganization() {
+		return organization;
+	}
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+
+	@JsonProperty("organizationIdentifier")
+	public String getOrganizationIdentifier() {
+		return organizationIdentifier;
+	}
+	public void setOrganizationIdentifier(String organizationIdentifier) {
+		this.organizationIdentifier = organizationIdentifier;
 	}
 
 	@JsonProperty("keyUsage")

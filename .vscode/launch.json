@@ -1,0 +1,113 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Gradle: Run All Tests",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test all"
+        },
+        {
+            "name": "Gradle: Run Pkcs12GeneratorTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test Pkcs12GeneratorTest"
+        },
+        {
+            "name": "Gradle: Run KeyGeneratorTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test KeyGeneratorTest"
+        },
+        {
+            "name": "Gradle: Run TrustServicesManagerTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test TrustServicesManagerTest"
+        },
+        {
+            "name": "Gradle: Run AuthenticationTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test AuthenticationTest"
+        },
+        {
+            "name": "Gradle: Run SignatureFinisherTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test SignatureFinisherTest"
+        },
+        {
+            "name": "Gradle: Run PadesTimestamperTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test PadesTimestamperTest"
+        },
+        {
+            "name": "Gradle: Run MetadataTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test MetadataTest"
+        },
+        {
+            "name": "Gradle: Run DataSignerTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test DataSignerTest"
+        },
+        {
+            "name": "Gradle: Run CertificateExplorerTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test CertificateExplorerTest"
+        },
+        {
+            "name": "Gradle: Run PadesSignerTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test PadesSignerTest"
+        },
+        {
+            "name": "Gradle: Run XmlSignerTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test XmlSignerTest"
+        },
+        {
+            "name": "Gradle: Run PdfMarkerTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test PdfMarkerTest"
+        },
+        {
+            "name": "Gradle: Run PadesSignatureExplorerTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test PadesSignatureExplorerTest"
+        },
+        {
+            "name": "Gradle: Run CertificateReaderTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test CertificateReaderTest"
+        },
+        {
+            "name": "Gradle: Run CadesSignerTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test CadesSignerTest"
+        },
+        {
+            "name": "Gradle: Run CadesSignatureExplorerTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test CadesSignatureExplorerTest"
+        },
+        {
+            "name": "Gradle: Run CadesSignatureEditorTest",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "gradle: test CadesSignatureEditorTest"
+        }
+    ]
+}

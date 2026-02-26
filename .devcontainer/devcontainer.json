@@ -1,0 +1,33 @@
+{
+	"name": "PKIE Java Dev Container",
+	"build": {
+	"dockerfile": "Dockerfile"
+	},
+	"settings": {
+		"java.home": "/usr/local/sdkman/candidates/java/17.0.10-tem/",
+		"gradle.home": "/usr/local/sdkman/candidates/gradle/8.14/"
+	},
+	"customizations": {
+	"vscode": {
+		"extensions": [
+		"vscjava.vscode-java-pack",
+		"vscjava.vscode-gradle",
+		"redhat.java"
+		]
+	}
+	},
+	"remoteUser": "vscode",
+	"mounts": [
+		"source=maven-repo,target=/home/vscode/.m2,type=volume"
+	],
+	"postStartCommand": "bash -lc 'sudo chown -R $(id -u):$(id -g) /home/vscode/.m2 || true'",
+	"containerEnv": {
+    "PKIE_VERSION": "1.36.0",
+    "PKIE_DOWNLOAD_URL": "https://cdn.lacunasoftware.com/pki-express/linux/pkie-1.36.0.tar.gz"
+  },
+  "remoteEnv": {
+	"JAVA_HOME": "/usr/local/sdkman/candidates/java/17.0.10-tem/",
+	"GRADLE_HOME": "/usr/local/sdkman/candidates/gradle/8.14/"
+  },
+  "postCreateCommand": "bash -lc 'source .devcontainer/setup-pkie.sh'"
+}
