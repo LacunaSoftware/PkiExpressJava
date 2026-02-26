@@ -25,6 +25,10 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
 }
 
+test {
+    useJUnitPlatform()
+}
+
 java {
     withJavadocJar()
     withSourcesJar()
