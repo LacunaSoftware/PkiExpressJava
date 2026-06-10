@@ -17,6 +17,8 @@ abstract class Signer extends BaseSigner {
 	private String certThumb;
 	private Path pkcs12Path;
 	private String certPassword;
+	private String keyId;
+	private String certId;
 	private boolean useMachine;
 	private String trustServiceSession;
 
@@ -70,6 +72,18 @@ abstract class Signer extends BaseSigner {
 			versionManager.requireVersion(new Version("1.17"));
 		}
 
+		if (keyId != null) {
+			args.add("--key-id");
+			args.add(keyId);
+			versionManager.requireVersion(new Version("1.37"));
+		}
+
+		if (certId != null) {
+			args.add("--cert-id");
+			args.add(certId);
+			versionManager.requireVersion(new Version("1.37"));
+		}
+
 	}
 
 	public void setOutputFile(Path path) {
@@ -103,6 +117,15 @@ abstract class Signer extends BaseSigner {
 
 	public void setCertPassword(String password) {
 		this.certPassword = password;
+	}
+
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public void setCertId(String certId) {
+		this.certId = certId;
 	}
 
 	public void setUseMachine(boolean useMachine) {
