@@ -37,8 +37,8 @@ abstract class Signer extends BaseSigner {
 		// Verify and add common options between signers and signature starters.
 		super.verifyAndAddCommonOptions(args);
 
-		if (certThumb == null && pkcs12Path == null && trustServiceSession == null) {
-			throw new RuntimeException("No PKCS #12 file, certificate's thumbprint or TrustServiceSession was provided");
+		if (certThumb == null && pkcs12Path == null && trustServiceSession == null && keyId == null) {
+			throw new RuntimeException("No PKCS #12 file, certificate's thumbprint, TrustServiceSession or PKCS #11 keyId was provided");
 		}
 
 		if (certThumb != null) {
