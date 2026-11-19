@@ -46,28 +46,108 @@ public abstract class PkiExpressOperator {
 		this(new PkiExpressConfig());
 	}
 
-	private String escapeArgument(String arg) {
-		int firstQuote = arg.indexOf('\"');
-		int lastQuote = arg.lastIndexOf('\"');
-		boolean hasQuotes = false;
-
-		// Verify the argument already has quotes. Remove temporarily these quotes.
-		String content;
-		if (firstQuote == 0 && lastQuote == (arg.length() - 1)) {
-			content = arg.substring(1, (arg.length() - 1)); // endIndex is exclusive
-			hasQuotes = true;
-		} else {
-			content = arg;
+	/**
+	 * Returns whether arguments must be escaped by this class before being given to ProcessBuilder.
+	 *
+	 * On non-Windows platforms the JDK passes the argument array directly to the child process, so
+	 * no escaping is needed (and escaping would corrupt values containing quotes).
+	 *
+	 * On Windows, the JDK (java.lang.ProcessImpl.createCommandLine) joins the arguments into a
+	 * single command line, which pkie.exe splits again following the MSVCRT/CommandLineToArgvW
+	 * rules. Whether the JDK escapes quotes inside arguments depends on the value of the
+	 * jdk.lang.Process.allowAmbiguousCommands property:
+	 *
+	 * - Effectively "false" (set explicitly, or not set while a SecurityManager is installed): the
+	 *   JDK quotes each argument and escapes quotes inside it itself (VERIFICATION_WIN32_SAFE), so
+	 *   escaping here would apply it twice. JDKs older than 8u221/11.0.4 (JDK-8221858) do not
+	 *   escape in this mode either, which this library can't fix without double escaping on newer
+	 *   JDKs. In this mode the JDK also strips the outer quotes of values that start and end with a
+	 *   quote, and rejects some of them, so such values don't round-trip exactly.
+	 * - Any other value: the JDK does not escape quotes inside arguments, and copies an argument
+	 *   that starts and ends with a quote verbatim, so we must escape. This includes the default
+	 *   "legacy" mode and also the strict mode used when a SecurityManager is installed and the
+	 *   property is set to "true" (VERIFICATION_WIN32, which does not escape either). Do not add
+	 *   a SecurityManager check here: it would reopen argument injection in that configuration.
+	 *
+	 * The default value mirrors ProcessImpl. On JDK 24+ (JDK-8343958) the SecurityManager is gone
+	 * and System.getSecurityManager() always returns null, so the default is "true".
+	 */
+	@SuppressWarnings("removal")
+	private static boolean mustEscapeArguments() {
+		if (!System.getProperty("os.name").toLowerCase().contains("windows")) {
+			return false;
 		}
+		String defaultValue = System.getSecurityManager() == null ? "true" : "false";
+		String allowAmbiguousCommands = System.getProperty("jdk.lang.Process.allowAmbiguousCommands", defaultValue);
+		return !"false".equalsIgnoreCase(allowAmbiguousCommands);
+	}
 
-		// Perform the character \" escaping on the argument's content.
-		String escaped = content.replace("\"", "\\\"");
+	/**
+	 * Quotes an argument so that pkie.exe parses it back as exactly one argument with the original
+	 * value, following the MSVCRT/CommandLineToArgvW rules:
+	 *
+	 * - 2n backslashes followed by a quote produce n backslashes and a quote that opens/closes
+	 *   the quoted section;
+	 * - 2n+1 backslashes followed by a quote produce n backslashes and a literal quote;
+	 * - backslashes not followed by a quote are literal.
+	 *
+	 * These rules are common to the C runtime (UCRT, used by .NET apphosts) and CommandLineToArgvW
+	 * (used by .NET Framework). The two differ on "" inside a quoted section, which the result
+	 * never contains.
+	 *
+	 * The result always starts and ends with a quote, so the JDK treats it as already quoted and
+	 * copies it verbatim to the command line (whenever mustEscapeArguments() returns true). It
+	 * also never ends with \", which JDK 8u281+ (JDK-8250568) doesn't consider properly quoted.
+	 *
+	 * Package-private for testing.
+	 */
+	static String escapeWindowsArgument(String arg) {
 
-		// Return quotes outside the argument's content when it was removed.
-		if (hasQuotes) {
-			return String.format("\"%s\"", escaped);
+		// Separate trailing backslashes, which need special handling (see below).
+		int end = arg.length();
+		while (end > 0 && arg.charAt(end - 1) == '\\') {
+			end--;
 		}
-		return escaped;
+		int trailingBackslashes = arg.length() - end;
+
+		StringBuilder sb = new StringBuilder();
+		sb.append('"');
+		int backslashes = 0;
+		for (int i = 0; i < end; i++) {
+			char c = arg.charAt(i);
+			if (c == '\\') {
+				backslashes++;
+				continue;
+			}
+			if (c == '"') {
+				// Double the preceding backslashes and escape the quote itself.
+				appendBackslashes(sb, backslashes * 2 + 1);
+			} else {
+				appendBackslashes(sb, backslashes);
+			}
+			backslashes = 0;
+			sb.append(c);
+		}
+		appendBackslashes(sb, backslashes);
+		sb.append('"');
+
+		if (trailingBackslashes > 0) {
+			// Trailing backslashes are written after the closing quote, doubled and followed by
+			// an empty quoted section (""), which yields exactly the original backslashes. We
+			// avoid the usual form ("abc\\") because JDK 8u281+ (JDK-8250568) does not treat a
+			// string ending in \" as already quoted, and would quote it again if it contains
+			// whitespace. JDK-8282008 removed that check from JDK 19 and from 11u/17u, but it is
+			// still in 8u.
+			appendBackslashes(sb, trailingBackslashes * 2);
+			sb.append("\"\"");
+		}
+		return sb.toString();
+	}
+
+	private static void appendBackslashes(StringBuilder sb, int count) {
+		for (int i = 0; i < count; i++) {
+			sb.append('\\');
+		}
 	}
 
 
@@ -83,7 +163,8 @@ public abstract class PkiExpressOperator {
 	protected OperatorResult invoke(CommandEnum command, List<String> args, boolean plainOutput) throws IOException {
 
 		// Add PKI Express invocation arguments
-		List<String> cmdArgs = new ArrayList<>(getPkiExpressInvocation());
+		List<String> invocation = getPkiExpressInvocation();
+		List<String> cmdArgs = new ArrayList<>(invocation);
 
 		// Add PKI Express command
 		cmdArgs.add(command.getValue());
@@ -164,10 +245,14 @@ public abstract class PkiExpressOperator {
 		String[] argArr = new String[cmdArgs.size()];
 		cmdArgs.toArray(argArr);
 
-		// Escape arguments in order to treat args with \" character, which is not used as the escape
-		// character.
-		for (int i = 0; i < argArr.length; i++) {
-			argArr[i] = escapeArgument(argArr[i]);
+		// On Windows (see mustEscapeArguments), quote every argument so that values containing
+		// quotes, or backslashes before quotes, round-trip exactly and can't inject extra
+		// arguments. The invocation (the pkie.exe path, a single element on Windows) is left to
+		// the JDK, which quotes it itself.
+		if (mustEscapeArguments()) {
+			for (int i = invocation.size(); i < argArr.length; i++) {
+				argArr[i] = escapeWindowsArgument(argArr[i]);
+			}
 		}
 
 		// Execute the command
